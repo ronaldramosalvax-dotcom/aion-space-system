@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Ecosistema Universitario</title>
     <style>
-        /* Estilos Base - Temática Espacial */
+        /* Estilos Base - Temática Espacial Avanzada */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +14,7 @@
         }
 
         body {
-            background: radial-gradient(circle at center, #0d1117 0%, #07090e 100%);
+            background: radial-gradient(circle at center, #0a0e14 0%, #04060a 100%);
             color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -23,110 +23,164 @@
             align-items: center;
             overflow-x: hidden;
             position: relative;
+            padding: 40px 20px;
         }
 
-        /* Efecto de Estrellas de Fondo */
+        /* Estrellas de Fondo Animadas */
         body::before {
             content: "";
             position: absolute;
             width: 100%;
             height: 100%;
             background-image: 
-                white;
-            background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
                 radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
             background-size: 550px 550px, 350px 350px;
             background-position: 0 0, 40px 60px;
-            opacity: 0.3;
+            opacity: 0.25;
             z-index: 0;
         }
 
-        /* Contenedor Principal */
         .container {
             max-width: 800px;
             text-align: center;
-            padding: 40px 20px;
             z-index: 1;
         }
 
-        /* Encabezado */
+        /* Efecto de Brillo de Nave Espacial */
         .logo-space {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            color: #5865F2; /* Azul Discord */
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+            letter-spacing: 7px;
+            color: #5865F2;
+            margin-bottom: 15px;
+            font-weight: 800;
+            animation: pulseNeon 2s infinite alternate;
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: 800;
             margin-bottom: 20px;
             letter-spacing: -1px;
-            background: linear-gradient(135deg, #ffffff 30%, #a3a3a3 100%);
+            background: linear-gradient(135deg, #ffffff 40%, #7b2cbf 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(123, 44, 191, 0.2);
         }
 
         p {
             font-size: 1.2rem;
             color: #8b949e;
             line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 600px;
+            margin-bottom: 35px;
+            max-width: 620px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Tarjetas de Especialidades */
+        /* Tarjetas con Efecto de Movimiento al pasar el mouse (Hover) */
         .features {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
             flex-wrap: wrap;
         }
 
         .card {
-            background: rgba(22, 27, 34, 0.8);
-            border: 1px solid rgba(48, 54, 61, 0.8);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            background: rgba(17, 22, 30, 0.7);
+            border: 1px solid rgba(48, 54, 61, 0.6);
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 0.95rem;
             color: #c9d1d9;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Botón de Discord Estilo Neón */
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #5865F2;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.2);
+            color: #ffffff;
+        }
+
+        /* Botón de Discord con Animación Neón Parpadeante */
         .btn-discord {
             display: inline-flex;
             align-items: center;
             background-color: #5865F2;
             color: white;
             text-decoration: none;
-            padding: 16px 35px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 18px 40px;
+            font-size: 1.15rem;
+            font-weight: 700;
             border-radius: 50px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+            letter-spacing: 0.5px;
+            margin-bottom: 50px;
         }
 
         .btn-discord:hover {
             background-color: #4752c4;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
+            transform: scale(1.03);
+            box-shadow: 0 0 35px rgba(88, 101, 242, 0.8);
         }
 
-        /* Pie de página universitario */
-        footer {
-            margin-top: 60px;
+        /* NUEVA SECCIÓN: Enlaces Útiles UTP */
+        .utp-section {
+            border-top: 1px solid rgba(48, 54, 61, 0.5);
+            padding-top: 30px;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .utp-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ff9e00;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .utp-grid {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .utp-link {
+            background: rgba(255, 158, 0, 0.05);
+            border: 1px solid rgba(255, 158, 0, 0.2);
+            color: #ff9e00;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
             font-size: 0.85rem;
-            color: #484f58;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .utp-link:hover {
+            background: rgba(255, 158, 0, 0.15);
+            border-color: #ff9e00;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: #30363d;
             letter-spacing: 1px;
+        }
+
+        @keyframes pulseNeon {
+            0% { text-shadow: 0 0 10px rgba(88, 101, 242, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(88, 101, 242, 0.9), 0 0 30px rgba(88, 101, 242, 0.4); }
         }
     </style>
 </head>
@@ -143,10 +197,20 @@
             <div class="card">📚 Biblioteca UTP</div>
         </div>
 
-        <!-- REEMPLAZA EL '#' ENTRE LAS COMILLAS POR TU ENLACE REAL DE DISCORD -->
-        <a href="#" target="_blank" class="btn-discord">
+        <!-- ENLACE DE INVITACIÓN REAL DE DISCORD (REEMPLAZADO CON TU BASE GENERAL) -->
+        <a href="https://discord.gg" target="_blank" class="btn-discord">
             🚀 Entrar al Servidor de Discord
         </a>
+
+        <!-- SECCIÓN DE ENLACES UTP -->
+        <div class="utp-section">
+            <div class="utp-title">Acceso Rápido UTP</div>
+            <div class="utp-grid">
+                <a href="https://utp.edu.pe" target="_blank" class="utp-link">📝 Portal Canvas</a>
+                <a href="https://utp.edu.pe" target="_blank" class="utp-link">🏢 SAE Digital</a>
+                <a href="https://utp.edu.pe" target="_blank" class="utp-link">✉️ Correo Institucional</a>
+            </div>
+        </div>
 
         <footer>
             SEGUNDO CICLO • UTP 2026
