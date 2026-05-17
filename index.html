@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM | Ecosistema Universitario</title>
+    <style>
+        /* Estilos Base - Temática Espacial */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #0d1117 0%, #07090e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efecto de Estrellas de Fondo */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                white;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+            background-size: 550px 550px, 350px 350px;
+            background-position: 0 0, 40px 60px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 800px;
+            text-align: center;
+            padding: 40px 20px;
+            z-index: 1;
+        }
+
+        /* Encabezado */
+        .logo-space {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #5865F2; /* Azul Discord */
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 30%, #a3a3a3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #8b949e;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Tarjetas de Especialidades */
+        .features {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid rgba(48, 54, 61, 0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Botón de Discord Estilo Neón */
+        .btn-discord {
+            display: inline-flex;
+            align-items: center;
+            background-color: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 16px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-discord:hover {
+            background-color: #4752c4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
+        }
+
+        /* Pie de página universitario */
+        footer {
+            margin-top: 60px;
+            font-size: 0.85rem;
+            color: #484f58;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-space">AION SPACE SYSTEM</div>
+        <h1>El Centro de Control Estudiantil</h1>
+        <p>Un ecosistema tecnológico diseñado por y para estudiantes de Ingeniería de Sistemas, Informática y Electrónica. Guarda tus apuntes, comparte código y acelera tu carrera universitaria.</p>
+        
+        <div class="features">
+            <div class="card">💻 Sistemas e Informática</div>
+            <div class="card">🔌 Electrónica</div>
+            <div class="card">📚 Biblioteca UTP</div>
+        </div>
+
+        <!-- REEMPLAZA EL '#' ENTRE LAS COMILLAS POR TU ENLACE REAL DE DISCORD -->
+        <a href="#" target="_blank" class="btn-discord">
+            🚀 Entrar al Servidor de Discord
+        </a>
+
+        <footer>
+            SEGUNDO CICLO • UTP 2026
+        </footer>
+    </div>
+
+</body>
+</html>
