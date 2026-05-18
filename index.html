@@ -171,7 +171,7 @@
             line-height: 1.4;
         }
 
-        /* Contenedor del Visor de PDF Integrado */
+        /* Contenedor del Visor Inmune a Errores de Imagen Móvil */
         .pdf-viewer-container {
             display: none;
             background: rgba(10, 15, 24, 0.95);
@@ -215,13 +215,6 @@
             background: #9d4edd;
         }
 
-        .pdf-embed {
-            width: 100%;
-            height: 600px;
-            border-radius: 8px;
-            background: #fff;
-        }
-
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -256,7 +249,7 @@
                     <span class="course-desc">Lógica proposicional, teoría de conjuntos y grafos esenciales para programación.</span>
                 </a>
 
-                <!-- Clic activa la visualización del archivo que subiste recién -->
+                <!-- Al hacer clic ejecuta la función de JS para abrir el visor interactivo -->
                 <div class="course-card math" onclick="togglePdfViewer()">
                     <span class="course-name">📐 Matemática II</span>
                     <span class="course-desc">Resolución de guías de matrices, determinantes, vectores y cálculo avanzado. (Clic para visualizar guía)</span>
@@ -273,14 +266,14 @@
                 </a>
             </div>
 
-            <!-- VISOR INTERACTIVO EN LA PROPIA PÁGINA WEB -->
+            <!-- VISOR INTERACTIVO DE LA IMAGEN EN LA PROPIA PÁGINA WEB -->
             <div id="pdf-viewer-section" class="pdf-viewer-container">
                 <div class="pdf-header">
                     <div class="pdf-title">📁 Visualizando: Guía de Determinantes (Matemática II)</div>
                     <button class="btn-close-pdf" onclick="togglePdfViewer()">Cerrar Vista ×</button>
                 </div>
-                <!-- Apunta directamente a tu archivo local recién cargado -->
-                <embed src="determinantes.pdf" type="application/pdf" class="pdf-embed" />
+                <!-- Carga directa del archivo de imagen de alta calidad -->
+                <img src="determinantes.jpg" alt="Solucionario Determinantes" style="width:100%; height:auto; border-radius:8px; background:#fff;" />
             </div>
 
         </div>
@@ -294,6 +287,7 @@
                 viewer.style.display = "none";
             } else {
                 viewer.style.display = "block";
+                // Hace un scroll automático suave hacia la imagen para mejorar la experiencia de usuario
                 viewer.scrollIntoView({ behavior: 'smooth' });
             }
         }
