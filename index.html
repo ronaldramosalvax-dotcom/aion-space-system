@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Ecosistema Universitario</title>
     <style>
-        /* Estilos Base - Temática Espacial Avanzada */
+        /* Estilos Base - Temática Espacial Avanzada v3.0 */
         * {
             margin: 0;
             padding: 0;
@@ -42,12 +42,11 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 850px;
             text-align: center;
             z-index: 1;
         }
 
-        /* Efecto de Brillo de Nave Espacial */
         .logo-space {
             font-size: 1.1rem;
             text-transform: uppercase;
@@ -79,34 +78,7 @@
             margin-right: auto;
         }
 
-        /* Tarjetas con Efecto de Movimiento al pasar el mouse (Hover) */
-        .features {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 45px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: rgba(17, 22, 30, 0.7);
-            border: 1px solid rgba(48, 54, 61, 0.6);
-            padding: 14px 22px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            color: #c9d1d9;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #5865F2;
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.2);
-            color: #ffffff;
-        }
-
-        /* Botón de Discord con Animación Neón Parpadeante */
+        /* Botón de Discord */
         .btn-discord {
             display: inline-flex;
             align-items: center;
@@ -129,23 +101,78 @@
             box-shadow: 0 0 35px rgba(88, 101, 242, 0.8);
         }
 
-        /* NUEVA SECCIÓN: Enlaces Útiles UTP */
-        .utp-section {
+        /* Secciones de Contenido */
+        .section-block {
             border-top: 1px solid rgba(48, 54, 61, 0.5);
-            padding-top: 30px;
-            max-width: 550px;
-            margin: 0 auto;
+            padding-top: 40px;
+            margin-top: 20px;
+            width: 100%;
         }
 
-        .utp-title {
-            font-size: 0.9rem;
+        .block-title {
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #ff9e00;
-            margin-bottom: 20px;
-            font-weight: 600;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            font-weight: 700;
         }
 
+        /* Rejilla de Cursos e Indicadores */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .course-card {
+            background: rgba(17, 22, 30, 0.75);
+            border: 1px solid rgba(48, 54, 61, 0.6);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: left;
+            text-decoration: none;
+            color: #ffffff;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .course-card.priority { border-left: 4px solid #00f5d4; }
+        .course-card.priority:hover { border-color: #00f5d4; box-shadow: 0 0 20px rgba(0, 245, 212, 0.15); }
+
+        .course-card.math { border-left: 4px solid #7b2cbf; }
+        .course-card.math:hover { border-color: #7b2cbf; box-shadow: 0 0 20px rgba(123, 44, 191, 0.15); }
+
+        .course-card.stats { border-left: 4px solid #ff9e00; }
+        .course-card.stats:hover { border-color: #ff9e00; box-shadow: 0 0 20px rgba(255, 158, 0, 0.15); }
+
+        .course-card.star { border-left: 4px solid #ff007f; }
+        .course-card.star:hover { border-color: #ff007f; box-shadow: 0 0 20px rgba(255, 0, 127, 0.2); }
+
+        .course-card.tic { border-left: 4px solid #8b949e; }
+        .course-card.tic:hover { border-color: #ffffff; }
+
+        .course-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .course-desc {
+            font-size: 0.85rem;
+            color: #8b949e;
+            line-height: 1.4;
+        }
+
+        /* Enlaces de Utilidades UTP */
         .utp-grid {
             display: flex;
             justify-content: center;
@@ -154,25 +181,26 @@
         }
 
         .utp-link {
-            background: rgba(255, 158, 0, 0.05);
-            border: 1px solid rgba(255, 158, 0, 0.2);
-            color: #ff9e00;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(48, 54, 61, 0.8);
+            color: #c9d1d9;
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
             font-size: 0.85rem;
             font-weight: 600;
             transition: all 0.2s ease;
         }
 
         .utp-link:hover {
-            background: rgba(255, 158, 0, 0.15);
-            border-color: #ff9e00;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #8b949e;
+            color: #ffffff;
             transform: translateY(-2px);
         }
 
         footer {
-            margin-top: 50px;
+            margin-top: 60px;
             font-size: 0.8rem;
             color: #30363d;
             letter-spacing: 1px;
@@ -189,22 +217,49 @@
     <div class="container">
         <div class="logo-space">AION SPACE SYSTEM</div>
         <h1>El Centro de Control Estudiantil</h1>
-        <p>Un ecosistema tecnológico diseñado por y para estudiantes de Ingeniería de Sistemas, Informática y Electrónica. Guarda tus apuntes, comparte código y acelera tu carrera universitaria.</p>
+        <p>Un ecosistema tecnológico diseñado por y para estudiantes de Ingeniería de Sistemas, Informática y Electrónica de la UTP. Centraliza tus recursos y domina el ciclo.</p>
         
-        <div class="features">
-            <div class="card">💻 Sistemas e Informática</div>
-            <div class="card">🔌 Electrónica</div>
-            <div class="card">📚 Biblioteca UTP</div>
-        </div>
-
-        <!-- ENLACE DE INVITACIÓN REAL DE DISCORD (REEMPLAZADO CON TU BASE GENERAL) -->
+        <!-- ENLACE DIRECTO A TU DISCORD -->
         <a href="https://discord.gg" target="_blank" class="btn-discord">
             🚀 Entrar al Servidor de Discord
         </a>
 
+        <!-- SECCIÓN: REPOSITORIO DE CURSOS -->
+        <div class="section-block">
+            <div class="block-title" style="color: #00f5d4;">💻 Repositorio de Soluciones e Ingeniería</div>
+            <div class="courses-grid">
+                
+                <a href="#" target="_blank" class="course-card priority">
+                    <span class="course-name">🧠 Matemática Discreta</span>
+                    <span class="course-desc">Lógica proposicional, teoría de conjuntos y grafos esenciales para programación.</span>
+                </a>
+
+                <a href="#" target="_blank" class="course-card math">
+                    <span class="course-name">📐 Matemática II</span>
+                    <span class="course-desc">Resolución de guías de matrices, determinantes, vectores y cálculo avanzado.</span>
+                </a>
+
+                <a href="#" target="_blank" class="course-card stats">
+                    <span class="course-name">📊 Estadística Descriptiva</span>
+                    <span class="course-desc">Análisis de datos, tablas de frecuencias y cálculo de probabilidades.</span>
+                </a>
+
+                <a href="#" target="_blank" class="course-card star">
+                    <span class="course-name">🇬🇧 English for Tech & Code</span>
+                    <span class="course-desc">Vocabulario técnico avanzado, palabras clave de programación y keywords de ingeniería.</span>
+                </a>
+
+                <a href="#" target="_blank" class="course-card tic">
+                    <span class="course-name">📡 Introducción a las TICs</span>
+                    <span class="course-desc">Infraestructura tecnológica, redes de comunicación y tecnologías de información.</span>
+                </a>
+
+            </div>
+        </div>
+
         <!-- SECCIÓN DE ENLACES UTP -->
-        <div class="utp-section">
-            <div class="utp-title">Acceso Rápido UTP</div>
+        <div class="section-block">
+            <div class="block-title" style="color: #ff9e00;">Acceso Rápido Universitario</div>
             <div class="utp-grid">
                 <a href="https://utp.edu.pe" target="_blank" class="utp-link">📝 Portal Canvas</a>
                 <a href="https://utp.edu.pe" target="_blank" class="utp-link">🏢 SAE Digital</a>
