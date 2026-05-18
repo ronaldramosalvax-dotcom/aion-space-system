@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Ecosistema Universitario</title>
-    <!-- Librería para renderizar ecuaciones matemáticas perfectas -->
-    <script src="https://polyfill.io"></script>
-    <script id="MathJax-script" async src="https://jsdelivr.net"></script>
     <style>
         /* Estilos Base - Temática Espacial Avanzada v3.0 */
         * {
@@ -48,6 +45,7 @@
             max-width: 850px;
             text-align: center;
             z-index: 1;
+            width: 100%;
         }
 
         .logo-space {
@@ -157,6 +155,9 @@
         .course-card.stats { border-left: 4px solid #ff9e00; }
         .course-card.stats:hover { border-color: #ff9e00; box-shadow: 0 0 20px rgba(255, 158, 0, 0.15); }
 
+        .course-card.star { border-left: 4px solid #ff007f; }
+        .course-card.star:hover { border-color: #ff007f; box-shadow: 0 0 20px rgba(255, 0, 127, 0.2); }
+
         .course-name {
             font-size: 1.1rem;
             font-weight: 700;
@@ -170,51 +171,59 @@
             line-height: 1.4;
         }
 
-        /* NUEVA SECCIÓN: Contenedor Dinámico del Solucionario */
-        .solution-container {
+        /* Contenedor del Visor de PDF Integrado */
+        .pdf-viewer-container {
             display: none;
-            background: rgba(10, 15, 24, 0.9);
-            border: 1px solid #7b2cbf;
+            background: rgba(10, 15, 24, 0.95);
+            border: 2px solid #7b2cbf;
             border-radius: 16px;
-            padding: 30px;
-            margin-top: 25px;
-            text-align: left;
-            box-shadow: 0 0 30px rgba(123, 44, 191, 0.15);
-            animation: fadeIn 0.5s ease forwards;
+            padding: 20px;
+            margin-top: -20px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 35px rgba(123, 44, 191, 0.3);
+            animation: slideDown 0.4s ease-out forwards;
         }
 
-        .solution-title {
-            color: #00f5d4;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+        .pdf-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.4);
         }
 
-        .solution-step {
-            background: rgba(255, 255, 255, 0.02);
-            border-left: 3px solid #7b2cbf;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 10px 10px 0;
+        .pdf-title {
+            color: #00f5d4;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
-        .step-label {
-            font-weight: bold;
-            color: #ff9e00;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+        .btn-close-pdf {
+            background: #7b2cbf;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
         }
 
-        .math-display {
-            overflow-x: auto;
-            padding: 10px 0;
+        .btn-close-pdf:hover {
+            background: #9d4edd;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+        .pdf-embed {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -239,6 +248,7 @@
         <!-- SECCIÓN: REPOSITORIO DE CURSOS -->
         <div class="section-block">
             <div class="block-title" style="color: #00f5d4;">💻 Repositorio de Soluciones e Ingeniería</div>
+            
             <div class="courses-grid">
                 
                 <a href="#" class="course-card priority">
@@ -246,70 +256,45 @@
                     <span class="course-desc">Lógica proposicional, teoría de conjuntos y grafos esenciales para programación.</span>
                 </a>
 
-                <!-- Agregamos un trigger onclick para alternar la vista del solucionario -->
-                <div class="course-card math" onclick="toggleSolution()">
+                <!-- Clic activa la visualización del archivo que subiste recién -->
+                <div class="course-card math" onclick="togglePdfViewer()">
                     <span class="course-name">📐 Matemática II</span>
-                    <span class="course-desc">Resolución de guías de matrices, determinantes, vectores y cálculo avanzado. (Clic para ver ejercicio)</span>
+                    <span class="course-desc">Resolución de guías de matrices, determinantes, vectores y cálculo avanzado. (Clic para visualizar guía)</span>
                 </div>
 
                 <a href="#" class="course-card stats">
                     <span class="course-name">📊 Estadística Descriptiva</span>
                     <span class="course-desc">Análisis de datos, tablas de frecuencias y cálculo de probabilidades.</span>
                 </a>
+
+                <a href="#" class="course-card star">
+                    <span class="course-name">🔤 English for Tech & Code</span>
+                    <span class="course-desc">Vocabulario técnico avanzado, palabras clave de programación y keywords de ingeniería.</span>
+                </a>
             </div>
 
-            <!-- DESPLIEGUE EXCLUSIVO DEL SOLUCIONARIO DE DETERMINANTES -->
-            <div id="math-solution" class="solution-container">
-                <div class="solution-title">⚡ Solucionario de Matemática II: Determinantes</div>
-                
-                <p style="text-align: left; font-size: 1rem; margin-bottom: 15px;">
-                    <strong>1. Encuentra el determinante de la siguiente matriz de orden 3x3:</strong>
-                </p>
-
-                <div class="math-display">
-                    $$M = \begin{pmatrix} 4 & -2 & 0 \\ 1 & 0 & 4 \\ -2 & -3 & 9 \end{pmatrix}$$
+            <!-- VISOR INTERACTIVO EN LA PROPIA PÁGINA WEB -->
+            <div id="pdf-viewer-section" class="pdf-viewer-container">
+                <div class="pdf-header">
+                    <div class="pdf-title">📁 Visualizando: Guía de Determinantes (Matemática II)</div>
+                    <button class="btn-close-pdf" onclick="togglePdfViewer()">Cerrar Vista ×</button>
                 </div>
-
-                <div class="solution-step">
-                    <div class="step-label">Paso 1: Planteamiento mediante la Regla de Sarrus</div>
-                    <div class="math-display">
-                        $$\det(M) = [4(0)(9) + (-2)(4)(-2) + (0)(1)(-3)] - [(0)(0)(-2) + (-3)(4)(4) + (9)(1)(-2)]$$
-                    </div>
-                </div>
-
-                <div class="solution-step">
-                    <div class="step-label">Paso 2: Simplificación de productos multiplicativos</div>
-                    <div class="math-display">
-                        $$\det(M) = [0 + 16 + 0] - [0 - 48 - 18]$$
-                    </div>
-                </div>
-
-                <div class="solution-step">
-                    <div class="step-label">Paso 3: Reducción de términos y resolución final</div>
-                    <div class="math-display">
-                        $$\det(M) = 16 - (-66)$$
-                        $$\det(M) = 16 + 66 = 82$$
-                    </div>
-                </div>
-
-                <div style="color: #00f5d4; font-weight: bold; margin-top: 15px; font-size: 1.1rem;">
-                    🎯 Respuesta Correcta: \(\det(M) = 82\)
-                </div>
+                <!-- Apunta directamente a tu archivo local recién cargado -->
+                <embed src="determinantes.pdf" type="application/pdf" class="pdf-embed" />
             </div>
 
         </div>
     </div>
 
-    <!-- Script simple para controlar la visualización de la guía -->
+    <!-- Script de control interactivo -->
     <script>
-        function toggleSolution() {
-            var content = document.getElementById("math-solution");
-            if (content.style.display === "block") {
-                content.style.display = "none";
+        function togglePdfViewer() {
+            var viewer = document.getElementById("pdf-viewer-section");
+            if (viewer.style.display === "block") {
+                viewer.style.display = "none";
             } else {
-                content.style.display = "block";
-                // Forzar a MathJax a re-procesar los símbolos matemáticos al mostrar el contenedor
-                MathJax.typeset();
+                viewer.style.display = "block";
+                viewer.scrollIntoView({ behavior: 'smooth' });
             }
         }
     </script>
