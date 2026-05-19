@@ -3,290 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE SYSTEM | Centro de Control Estudiantil</title>
+    <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
     <style>
-        /* Estilos Base - Temática Espacial Avanzada v5.5 */
+        /* Estilos Base Estilo Marketplace Claro (Inspirado en Alibaba/Amazon) */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: radial-gradient(circle at center, #0a0e14 0%, #04060a 100%);
-            color: #ffffff;
+            background-color: #f4f6f8;
+            color: #222222;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 40px 20px;
         }
 
-        /* Estrellas de Fondo Animadas */
-        body::before {
-            content: "";
-            position: absolute;
+        /* Barra de Navegación Superior Estilo Alibaba */
+        .top-navbar {
             width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
-            background-size: 550px 550px, 350px 350px;
-            background-position: 0 0, 40px 60px;
-            opacity: 0.25;
-            z-index: 0;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e8ed;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .container {
-            max-width: 850px;
-            text-align: center;
-            z-index: 1;
-            width: 100%;
-        }
-
-        .logo-space {
-            font-size: 1.1rem;
+        .brand-logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ff6a00; /* Naranja corporativo estilo Alibaba */
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 7px;
-            color: #5865F2;
-            margin-bottom: 15px;
-            font-weight: 800;
-            animation: pulseNeon 2s infinite alternate;
         }
 
-        h1 {
-            font-size: 3.6rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #ffffff 40%, #7b2cbf 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(123, 44, 191, 0.2);
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555555;
         }
 
-        p {
-            font-size: 1.2rem;
-            color: #8b949e;
-            line-height: 1.6;
-            margin-bottom: 35px;
-            max-width: 655px;
-            margin-left: auto;
-            margin-right: auto;
+        .nav-links li:hover {
+            color: #ff6a00;
+            cursor: pointer;
         }
 
-        /* Botón de Discord */
-        .btn-discord {
-            display: inline-flex;
-            align-items: center;
-            background-color: #5865F2;
-            color: white;
+        .btn-account {
+            background-color: #ff6a00;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
             text-decoration: none;
-            padding: 18px 40px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
-            letter-spacing: 0.5px;
-            margin-bottom: 50px;
+            transition: background 0.2s;
         }
 
-        .btn-discord:hover {
-            background-color: #4752c4;
-            transform: scale(1.03);
-            box-shadow: 0 0 35px rgba(88, 101, 242, 0.8);
+        .btn-account:hover {
+            background-color: #e05d00;
         }
 
-        /* Secciones de Contenido */
-        .section-block {
-            border-top: 1px solid rgba(48, 54, 61, 0.5);
-            padding-top: 40px;
-            margin-top: 20px;
+        /* Contenedor Principal */
+        .main-container {
+            max-width: 1100px;
             width: 100%;
+            padding: 30px 20px;
         }
 
-        .block-title {
+        /* Gran Barra de Búsqueda Estilo Centro de Control */
+        .search-section {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            margin-bottom: 30px;
+            border: 1px solid #e5e8ed;
+        }
+
+        .search-section h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 10px;
+        }
+
+        .search-section p {
             font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            color: #666666;
             margin-bottom: 25px;
-            font-weight: 700;
         }
 
-        /* Rejillas */
-        .courses-grid {
+        .search-bar-container {
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+            border: 2px solid #ff6a00;
+            border-radius: 30px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            outline: none;
+            color: #333333;
+        }
+
+        .btn-search {
+            background-color: #ff6a00;
+            color: white;
+            border: none;
+            padding: 0 35px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-search:hover {
+            background-color: #e05d00;
+        }
+
+        /* Secciones de Categorías y Productos */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title span {
+            color: #ff6a00;
+        }
+
+        /* Rejilla de Módulos (Productos/Cursos) */
+        .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
 
-        .course-card {
-            background: rgba(17, 22, 30, 0.75);
-            border: 1px solid rgba(48, 54, 61, 0.6);
-            border-radius: 14px;
+        .product-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e8ed;
+            border-radius: 12px;
             padding: 20px;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
             text-decoration: none;
-            color: #ffffff;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            color: inherit;
         }
 
-        .course-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border-color: #ff6a00;
         }
 
-        /* Colores Estudiantiles */
-        .course-card.priority { border-left: 4px solid #00f5d4; }
-        .course-card.math { border-left: 4px solid #7b2cbf; }
-        .course-card.stats { border-left: 4px solid #ff9e00; }
-        .course-card.star { border-left: 4px solid #ff007f; }
+        .tag-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ff6a00;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
 
-        /* Colores Proyectos a Largo Plazo */
-        .card-future { border-left: 4px solid rgba(139, 148, 158, 0.4); opacity: 0.85; }
-        .card-future:hover { border-color: #00f5d4; opacity: 1; }
+        .tag-future {
+            color: #7b2cbf;
+        }
 
-        .course-name {
+        .product-title {
             font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 6px;
-            display: block;
+            color: #111111;
+            margin-bottom: 8px;
         }
 
-        .course-desc {
+        .product-desc {
             font-size: 0.85rem;
-            color: #8b949e;
+            color: #666666;
             line-height: 1.4;
+            margin-bottom: 15px;
+            flex-grow: 1;
         }
 
-        /* Contenedor del Visor de Imagen */
-        .image-viewer-container {
+        .btn-action-card {
+            background-color: #fff1e6;
+            color: #ff6a00;
+            border: 1px solid #ffbc99;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .product-card:hover .btn-action-card {
+            background-color: #ff6a00;
+            color: #ffffff;
+            border-color: #ff6a00;
+        }
+
+        /* Contenedor del Visor de Imagen Premium */
+        .viewer-container {
             display: none;
-            background: rgba(10, 15, 24, 0.95);
-            border: 2px solid #7b2cbf;
+            background-color: #ffffff;
+            border: 2px solid #ff6a00;
             border-radius: 16px;
-            padding: 20px;
-            margin-top: -20px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 35px rgba(123, 44, 191, 0.3);
-            animation: slideDown 0.4s ease-out forwards;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .viewer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(123, 44, 191, 0.4);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e8ed;
+            padding-bottom: 15px;
+        }
+
+        .viewer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #111111;
         }
 
         .btn-close {
-            background: #7b2cbf;
-            color: white;
+            background-color: #f0f2f5;
+            color: #333333;
             border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-weight: 600;
+            cursor: pointer;
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
+        .btn-close:hover {
+            background-color: #e4e6e9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulseNeon {
-            0% { text-shadow: 0 0 10px rgba(88, 101, 242, 0.5); }
-            100% { text-shadow: 0 0 20px rgba(88, 101, 242, 0.9); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="logo-space">AION SPACE SYSTEM</div>
-        <h1>El Centro de Control Estudiantil</h1>
-        <p>Un ecosistema tecnológico de alto rendimiento diseñado para estudiantes de Ingeniería de la UTP. Centraliza tus recursos académicos del ciclo, comparte código y domina los solucionarios interactivos.</p>
+    <!-- Barra Superior Estilo Alibaba/Amazon -->
+    <header class="top-navbar">
+        <div class="brand-logo">AION SPACE SYSTEM</div>
+        <ul class="nav-links">
+            <li>Inicio</li>
+            <li>Universidad</li>
+            <li>Prototipos IA</li>
+            <li>Garantía de Privacidad</li>
+        </ul>
+        <a href="https://discord.gg" target="_blank" class="btn-account">Conectar Discord</a>
+    </header>
 
-        <!-- ENLACE DIRECTO A TU DISCORD -->
-        <a href="https://discord.gg" target="_blank" class="btn-discord">
-            🚀 Entrar al Servidor de Discord
-        </a>
+    <!-- Contenedor de Contenido Comercial -->
+    <main class="main-container">
 
-        <!-- SECCIÓN ACTIVA: REPOSITORIO DE CURSOS (TU PRESENTE) -->
-        <div class="section-block">
-            <div class="block-title" style="color: #00f5d4;">📚 Repositorio de Soluciones del Ciclo (UTP)</div>
-            <div class="courses-grid">
+        <!-- Sección de Búsqueda de Soluciones -->
+        <section class="search-section">
+            <h1>El Centro de Control Tecnológico</h1>
+            <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
+            <div class="search-bar-container">
+                <input type="text" class="search-input" placeholder="Buscar guías, matrices, soluciones, asistentes de IA...">
+                <button class="btn-search">Buscar</button>
+            </div>
+        </section>
+
+        <!-- CARA 1: TU PRESENTE ACADÉMICO (GRANDES PRODUCTOS DISPONIBLES) -->
+        <section>
+            <h2 class="section-title"><span>📚</span> Repositorio de Soluciones Académicas (Ciclo II)</h2>
+            <div class="grid-layout">
                 
-                <a href="#" class="course-card priority">
-                    <span class="course-name">🧠 Matemática Discreta</span>
-                    <span class="course-desc">Lógica proposicional, teoría de conjuntos y grafos esenciales para programación.</span>
-                </a>
-
-                <!-- Activador de tu solucionario en JPG -->
-                <div class="course-card math" style="cursor: pointer;" onclick="toggleImageViewer()">
-                    <span class="course-name">📐 Matemática II</span>
-                    <span class="course-desc">Resolución de guías de matrices, determinantes y cálculo avanzado. (Clic para ver guía)</span>
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">🧠 Matemática Discreta</div>
+                        <p class="product-desc">Lógica proposicional, teoría de conjuntos, tablas de verdad y grafos fundamentales para desarrollo.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
                 </div>
 
-                <a href="#" class="course-card stats">
-                    <span class="course-name">📊 Estadística Descriptiva</span>
-                    <span class="course-desc">Análisis de datos, tablas de frecuencias y cálculo de probabilidades.</span>
-                </a>
-
-                <a href="#" class="course-card star">
-                    <span class="course-name">🔤 English for Tech & Code</span>
-                    <span class="course-desc">Vocabulario técnico avanzado, palabras clave de programación y keywords de ingeniería.</span>
-                </a>
-            </div>
-
-            <!-- VISOR INTERACTIVO DE MATEMÁTICA II -->
-            <div id="image-viewer-section" class="image-viewer-container">
-                <div class="viewer-header">
-                    <div style="color: #00f5d4; font-weight: 700;">📁 Visualizando: Guía de Determinantes (Ciclo II)</div>
-                    <button class="btn-close" onclick="toggleImageViewer()">Cerrar Vista ×</button>
+                <!-- Tarjeta Interactiva de Matemática II -->
+                <div class="product-card" onclick="toggleViewer()" style="cursor: pointer;">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">📐 Matemática II</div>
+                        <p class="product-desc">Resolución completa de guías de matrices, determinantes tridimensionales y vectores.</p>
+                    </div>
+                    <div class="btn-action-card">Visualizar Solucionario</div>
                 </div>
-                <img src="determinantes.jpg" alt="Solucionario Determinantes" style="width:100%; height:auto; border-radius:8px; background:#fff;" />
+
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">📊 Estadística Descriptiva</div>
+                        <p class="product-desc">Análisis de datos, tablas de frecuencias integradas y cálculos probabilísticos esenciales.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </div>
+
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">🔤 English for Tech & Code</div>
+                        <p class="product-desc">Glosarios técnicos avanzados, palabras clave estructurales de código y keywords de ingeniería.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </div>
+
             </div>
+        </section>
+
+        <!-- VISOR INTERACTIVO EN FORMATO MÓDULO CLARO -->
+        <div id="solution-viewer" class="viewer-container">
+            <div class="viewer-header">
+                <div class="viewer-title">📄 Mostrando Módulo: Guía de Determinantes (Matemática II)</div>
+                <button class="btn-close" onclick="toggleViewer()">Cerrar Vista ×</button>
+            </div>
+            <img src="determinantes.jpg" alt="Solucionario Determinantes" style="width:100%; height:auto; border-radius:8px; border: 1px solid #e5e8ed;" />
         </div>
 
-        <!-- SECCIÓN PROYECTADA: VISIÓN A LARGO PLAZO (TU FUTURO) -->
-        <div class="section-block" style="margin-top: 20px;">
-            <div class="block-title" style="color: #7b2cbf;">🛰️ Laboratorio de Desarrollo & Visión a Futuro</div>
-            <p style="font-size: 0.95rem; color: #8b949e; margin-bottom: 25px;">Líneas de investigación y prototipos tecnológicos proyectados para el desarrollo de soluciones de Inteligencia Artificial Corporativa Segura (AAA / SaaS).</p>
-            
-            <div class="courses-grid">
-                <div class="course-card card-future">
-                    <span class="course-name" style="color: #00f5d4;">🌐 Asistente Operativo</span>
-                    <span class="course-desc">Flujos de automatización interna y encriptación de bases de datos.</span>
+        <!-- CARA 2: TU VISIÓN A LARGO PLAZO (PROXIMOS DESPLIEGUES INDUSTRIALES) -->
+        <section style="margin-top: 20px;">
+            <h2 class="section-title"><span style="color:#7b2cbf;">🛰️</span> Línea de Prototipos de IA (Visión Futura)</h2>
+            <div class="grid-layout">
+                
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category tag-future">I+D Corporativo</span>
+                        <div class="product-title">🌐 Asistente Operativo Blindado</div>
+                        <p class="product-desc">Modelos de automatización interna de flujos críticos de información con encriptación de grado bancario.</p>
+                    </div>
+                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
                 </div>
-                <div class="course-card card-future">
-                    <span class="course-name" style="color: #9d4edd;">🤖 Agentes de Atención</span>
-                    <span class="course-desc">Modelos de lenguaje local (LLMs) optimizados para interacción privada.</span>
+
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category tag-future">I+D Corporativo</span>
+                        <div class="product-title">🤖 Agentes de Atención Segura</div>
+                        <p class="product-desc">Despliegue de modelos de lenguaje pequeños locales (LLMs) inmunes a filtraciones de datos externos.</p>
+                    </div>
+                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
                 </div>
-                <div class="course-card card-future">
-                    <span class="course-name" style="color: #ff9e00;">📊 Auditoría de Procesos</span>
-                    <span class="course-desc">Análisis predictivo de cuellos de botella mediante redes cerradas de IA.</span>
+
+                <div class="product-card">
+                    <div>
+                        <span class="tag-category tag-future">I+D Corporativo</span>
+                        <div class="product-title">📊 Auditoría de Procesos</div>
+                        <p class="product-desc">Análisis matemático automatizado mediante redes cerradas de IA para detectar cuellos de botella organizacionales.</p>
+                    </div>
+                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
                 </div>
+
             </div>
-        </div>
+        </section>
 
-    </div>
+    </main>
 
-    <!-- Script de control interactivo -->
+    <!-- Script de Control de Interfaz -->
     <script>
-        function toggleImageViewer() {
-            var viewer = document.getElementById("image-viewer-section");
+        function toggleViewer() {
+            var viewer = document.getElementById("solution-viewer");
             if (viewer.style.display === "block") {
                 viewer.style.display = "none";
             } else {
