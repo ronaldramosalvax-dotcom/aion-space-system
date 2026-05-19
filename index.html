@@ -229,52 +229,6 @@
             color: #ffffff;
             border-color: #ff6a00;
         }
-
-        /* Contenedor del Visor de Imagen Premium */
-        .viewer-container {
-            display: none;
-            background-color: #ffffff;
-            border: 2px solid #ff6a00;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .viewer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e5e8ed;
-            padding-bottom: 15px;
-        }
-
-        .viewer-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #111111;
-        }
-
-        .btn-close {
-            background-color: #f0f2f5;
-            color: #333333;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-close:hover {
-            background-color: #e4e6e9;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -304,61 +258,52 @@
             </div>
         </section>
 
-        <!-- CARA 1: TU PRESENTE ACADÉMICO (GRANDES PRODUCTOS DISPONIBLES) -->
+        <!-- CARA 1: TU PRESENTE ACADÉMICO -->
         <section>
             <h2 class="section-title"><span>📚</span> Repositorio de Soluciones Académicas (Ciclo II)</h2>
             <div class="grid-layout">
                 
-                <div class="product-card">
+                <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">🧠 Matemática Discreta</div>
                         <p class="product-desc">Lógica proposicional, teoría de conjuntos, tablas de verdad y grafos fundamentales para desarrollo.</p>
                     </div>
                     <div class="btn-action-card">Ver Recursos</div>
-                </div>
+                </a>
 
-                <!-- Tarjeta Interactiva de Matemática II -->
-                <div class="product-card" onclick="toggleViewer()" style="cursor: pointer;">
+                <!-- TARJETA CONECTADA A TU NUEVA PLANTILLA DE 51 FILAS SIMÉTRICA -->
+                <a href="https://docs.google.com/spreadsheets/d/14EHCns4vksr4ge7NSbkgEkiE5z4ThzfDvjQOcZQwOc4/edit?usp=sharing" target="_blank" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">📐 Matemática II</div>
-                        <p class="product-desc">Resolución completa de guías de matrices, determinantes tridimensionales y vectores.</p>
+                        <p class="product-desc">Registro interactivo de ejercicios. Abre tu plantilla calibrada de 51 filas con apuntes flotantes.</p>
                     </div>
-                    <div class="btn-action-card">Visualizar Solucionario</div>
-                </div>
+                    <div class="btn-action-card">Abrir Módulo Interactivo</div>
+                </a>
 
-                <div class="product-card">
+                <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">📊 Estadística Descriptiva</div>
                         <p class="product-desc">Análisis de datos, tablas de frecuencias integradas y cálculos probabilísticos esenciales.</p>
                     </div>
                     <div class="btn-action-card">Ver Recursos</div>
-                </div>
+                </a>
 
-                <div class="product-card">
+                <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">🔤 English for Tech & Code</div>
                         <p class="product-desc">Glosarios técnicos avanzados, palabras clave estructurales de código y keywords de ingeniería.</p>
                     </div>
                     <div class="btn-action-card">Ver Recursos</div>
-                </div>
+                </a>
 
             </div>
         </section>
 
-        <!-- VISOR INTERACTIVO EN FORMATO MÓDULO CLARO -->
-        <div id="solution-viewer" class="viewer-container">
-            <div class="viewer-header">
-                <div class="viewer-title">📄 Mostrando Módulo: Guía de Determinantes (Matemática II)</div>
-                <button class="btn-close" onclick="toggleViewer()">Cerrar Vista ×</button>
-            </div>
-            <img src="determinantes.jpg" alt="Solucionario Determinantes" style="width:100%; height:auto; border-radius:8px; border: 1px solid #e5e8ed;" />
-        </div>
-
-        <!-- CARA 2: TU VISIÓN A LARGO PLAZO (PROXIMOS DESPLIEGUES INDUSTRIALES) -->
+        <!-- CARA 2: TU VISIÓN A LARGO PLAZO -->
         <section style="margin-top: 20px;">
             <h2 class="section-title"><span style="color:#7b2cbf;">🛰️</span> Línea de Prototipos de IA (Visión Futura)</h2>
             <div class="grid-layout">
@@ -394,18 +339,5 @@
         </section>
 
     </main>
-
-    <!-- Script de Control de Interfaz -->
-    <script>
-        function toggleViewer() {
-            var viewer = document.getElementById("solution-viewer");
-            if (viewer.style.display === "block") {
-                viewer.style.display = "none";
-            } else {
-                viewer.style.display = "block";
-                viewer.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    </script>
 </body>
 </html>
