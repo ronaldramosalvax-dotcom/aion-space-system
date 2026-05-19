@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE SYSTEM | Inteligencia Artificial Corporativa</title>
+    <title>AION SPACE SYSTEM | Centro de Control Estudiantil</title>
     <style>
-        /* Estilos Base - Temática Espacial Corporativa v4.5 */
+        /* Estilos Base - Temática Espacial Avanzada v5.5 */
         * {
             margin: 0;
             padding: 0;
@@ -42,7 +42,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 850px;
             text-align: center;
             z-index: 1;
             width: 100%;
@@ -52,14 +52,14 @@
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 7px;
-            color: #00f5d4;
+            color: #5865F2;
             margin-bottom: 15px;
             font-weight: 800;
             animation: pulseNeon 2s infinite alternate;
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: 3.6rem;
             font-weight: 800;
             margin-bottom: 20px;
             letter-spacing: -1px;
@@ -69,18 +69,18 @@
             text-shadow: 0 0 30px rgba(123, 44, 191, 0.2);
         }
 
-        .subtitle {
-            font-size: 1.25rem;
+        p {
+            font-size: 1.2rem;
             color: #8b949e;
             line-height: 1.6;
             margin-bottom: 35px;
-            max-width: 720px;
+            max-width: 655px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Botón de Acción Corporativo */
-        .btn-cta {
+        /* Botón de Discord */
+        .btn-discord {
             display: inline-flex;
             align-items: center;
             background-color: #5865F2;
@@ -96,10 +96,10 @@
             margin-bottom: 50px;
         }
 
-        .btn-cta:hover {
+        .btn-discord:hover {
             background-color: #4752c4;
             transform: scale(1.03);
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.4);
+            box-shadow: 0 0 35px rgba(88, 101, 242, 0.8);
         }
 
         /* Secciones de Contenido */
@@ -118,10 +118,10 @@
             font-weight: 700;
         }
 
-        /* Rejilla de Asistentes */
+        /* Rejillas */
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
@@ -130,7 +130,7 @@
             background: rgba(17, 22, 30, 0.75);
             border: 1px solid rgba(48, 54, 61, 0.6);
             border-radius: 14px;
-            padding: 24px;
+            padding: 20px;
             text-align: left;
             text-decoration: none;
             color: #ffffff;
@@ -142,61 +142,72 @@
 
         .course-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Colores Estudiantiles */
         .course-card.priority { border-left: 4px solid #00f5d4; }
-        .course-card.priority:hover { border-color: #00f5d4; }
-
         .course-card.math { border-left: 4px solid #7b2cbf; }
-        .course-card.math:hover { border-color: #7b2cbf; }
-
         .course-card.stats { border-left: 4px solid #ff9e00; }
-        .course-card.stats:hover { border-color: #ff9e00; }
+        .course-card.star { border-left: 4px solid #ff007f; }
+
+        /* Colores Proyectos a Largo Plazo */
+        .card-future { border-left: 4px solid rgba(139, 148, 158, 0.4); opacity: 0.85; }
+        .card-future:hover { border-color: #00f5d4; opacity: 1; }
 
         .course-name {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: block;
-            color: #ffffff;
         }
 
         .course-desc {
             font-size: 0.85rem;
             color: #8b949e;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
-        /* Panel de Blindaje de Datos */
-        .shield-panel {
-            background: rgba(123, 44, 191, 0.05);
-            border: 1px solid rgba(123, 44, 191, 0.3);
+        /* Contenedor del Visor de Imagen */
+        .image-viewer-container {
+            display: none;
+            background: rgba(10, 15, 24, 0.95);
+            border: 2px solid #7b2cbf;
             border-radius: 16px;
-            padding: 25px;
-            margin-top: 20px;
-            text-align: left;
+            padding: 20px;
+            margin-top: -20px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 35px rgba(123, 44, 191, 0.3);
+            animation: slideDown 0.4s ease-out forwards;
         }
 
-        .shield-title {
-            color: #00f5d4;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+        .viewer-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.4);
         }
 
-        .shield-desc {
-            font-size: 0.9rem;
-            color: #c9d1d9;
-            line-height: 1.6;
+        .btn-close {
+            background: #7b2cbf;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes pulseNeon {
-            0% { text-shadow: 0 0 10px rgba(0, 245, 212, 0.5); }
-            100% { text-shadow: 0 0 20px rgba(0, 245, 212, 0.9), 0 0 30px rgba(0, 245, 212, 0.4); }
+            0% { text-shadow: 0 0 10px rgba(88, 101, 242, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(88, 101, 242, 0.9); }
         }
     </style>
 </head>
@@ -204,45 +215,85 @@
 
     <div class="container">
         <div class="logo-space">AION SPACE SYSTEM</div>
-        <h1>Asistentes Digitales Corporativos Blindados</h1>
-        <p class="subtitle">Desplegamos redes de asistentes inteligentes adaptadas exactamente a las necesidades de tu negocio. Maximizamos el rendimiento de tus flujos críticos bajo estrictos estándares de seguridad y privacidad absoluta.</p>
+        <h1>El Centro de Control Estudiantil</h1>
+        <p>Un ecosistema tecnológico de alto rendimiento diseñado para estudiantes de Ingeniería de la UTP. Centraliza tus recursos académicos del ciclo, comparte código y domina los solucionarios interactivos.</p>
 
-        <!-- ENLACE AL DISCORD DE ADMISIÓN / DIAGNÓSTICO -->
-        <a href="https://discord.gg" target="_blank" class="btn-cta">
-            🚀 Solicitar Diagnóstico de Automatización
+        <!-- ENLACE DIRECTO A TU DISCORD -->
+        <a href="https://discord.gg" target="_blank" class="btn-discord">
+            🚀 Entrar al Servidor de Discord
         </a>
 
-        <!-- SECCIÓN: REPOSITORIO DE ASISTENTES SOLICITADOS -->
+        <!-- SECCIÓN ACTIVA: REPOSITORIO DE CURSOS (TU PRESENTE) -->
         <div class="section-block">
-            <div class="block-title" style="color: #00f5d4;">💼 Soluciones Tecnológicas de Grado Empresarial</div>
-            
+            <div class="block-title" style="color: #00f5d4;">📚 Repositorio de Soluciones del Ciclo (UTP)</div>
             <div class="courses-grid">
                 
-                <div class="course-card priority">
-                    <span class="course-name">🌐 Asistente Operativo Blindado</span>
-                    <span class="course-desc">Automatización de flujos de trabajo internos, reportes y bases de datos con encriptación de extremo a extremo.</span>
+                <a href="#" class="course-card priority">
+                    <span class="course-name">🧠 Matemática Discreta</span>
+                    <span class="course-desc">Lógica proposicional, teoría de conjuntos y grafos esenciales para programación.</span>
+                </a>
+
+                <!-- Activador de tu solucionario en JPG -->
+                <div class="course-card math" style="cursor: pointer;" onclick="toggleImageViewer()">
+                    <span class="course-name">📐 Matemática II</span>
+                    <span class="course-desc">Resolución de guías de matrices, determinantes y cálculo avanzado. (Clic para ver guía)</span>
                 </div>
 
-                <div class="course-card math">
-                    <span class="course-name">🤖 Agentes de Atención Segura</span>
-                    <span class="course-desc">Modelos de lenguaje locales optimizados para interactuar con clientes de forma privada y sin intermediarios.</span>
-                </div>
+                <a href="#" class="course-card stats">
+                    <span class="course-name">📊 Estadística Descriptiva</span>
+                    <span class="course-desc">Análisis de datos, tablas de frecuencias y cálculo de probabilidades.</span>
+                </a>
 
-                <div class="course-card stats">
-                    <span class="course-name">📊 Auditoría y Diagnóstico de Procesos</span>
-                    <span class="course-desc">Análisis inteligente de cuellos de botella en la empresa mediante redes cerradas de IA.</span>
-                </div>
-
+                <a href="#" class="course-card star">
+                    <span class="course-name">🔤 English for Tech & Code</span>
+                    <span class="course-desc">Vocabulario técnico avanzado, palabras clave de programación y keywords de ingeniería.</span>
+                </a>
             </div>
 
-            <!-- SECCIÓN EXTRA: PILAR DE PRIVACIDAD SOLICITADO -->
-            <div class="shield-panel">
-                <div class="shield-title">🔒 Compromiso de Confidencialidad y Privacidad Coorporativa</div>
-                <p class="shield-desc">Nuestros asistentes se diseñan con tecnologías de aislamiento de datos (VPC o servidores dedicados). Garantizamos cero retención de registros de forma pública y blindaje total bajo acuerdos legales de confidencialidad (NDA). Tu información nunca entrenará a inteligencias artificiales externas.</p>
+            <!-- VISOR INTERACTIVO DE MATEMÁTICA II -->
+            <div id="image-viewer-section" class="image-viewer-container">
+                <div class="viewer-header">
+                    <div style="color: #00f5d4; font-weight: 700;">📁 Visualizando: Guía de Determinantes (Ciclo II)</div>
+                    <button class="btn-close" onclick="toggleImageViewer()">Cerrar Vista ×</button>
+                </div>
+                <img src="determinantes.jpg" alt="Solucionario Determinantes" style="width:100%; height:auto; border-radius:8px; background:#fff;" />
             </div>
-
         </div>
+
+        <!-- SECCIÓN PROYECTADA: VISIÓN A LARGO PLAZO (TU FUTURO) -->
+        <div class="section-block" style="margin-top: 20px;">
+            <div class="block-title" style="color: #7b2cbf;">🛰️ Laboratorio de Desarrollo & Visión a Futuro</div>
+            <p style="font-size: 0.95rem; color: #8b949e; margin-bottom: 25px;">Líneas de investigación y prototipos tecnológicos proyectados para el desarrollo de soluciones de Inteligencia Artificial Corporativa Segura (AAA / SaaS).</p>
+            
+            <div class="courses-grid">
+                <div class="course-card card-future">
+                    <span class="course-name" style="color: #00f5d4;">🌐 Asistente Operativo</span>
+                    <span class="course-desc">Flujos de automatización interna y encriptación de bases de datos.</span>
+                </div>
+                <div class="course-card card-future">
+                    <span class="course-name" style="color: #9d4edd;">🤖 Agentes de Atención</span>
+                    <span class="course-desc">Modelos de lenguaje local (LLMs) optimizados para interacción privada.</span>
+                </div>
+                <div class="course-card card-future">
+                    <span class="course-name" style="color: #ff9e00;">📊 Auditoría de Procesos</span>
+                    <span class="course-desc">Análisis predictivo de cuellos de botella mediante redes cerradas de IA.</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Script de control interactivo -->
+    <script>
+        function toggleImageViewer() {
+            var viewer = document.getElementById("image-viewer-section");
+            if (viewer.style.display === "block") {
+                viewer.style.display = "none";
+            } else {
+                viewer.style.display = "block";
+                viewer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 </html>
