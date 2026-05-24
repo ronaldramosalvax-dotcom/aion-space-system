@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
     <style>
-        /* Estilos Base Estilo Marketplace Claro (Inspirado en Alibaba/Amazon) */
+        /* Estilos Base Estilo Gamer / Modo Oscuro Premium */
         * {
             margin: 0;
             padding: 0;
@@ -14,19 +14,19 @@
         }
 
         body {
-            background-color: #f4f6f8;
-            color: #222222;
+            background-color: #12161a; /* Plomo oscuro de fondo */
+            color: #e3e6e8; /* Texto claro para contraste */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Barra de Navegación Superior Estilo Alibaba */
+        /* Barra de Navegación Superior Estilo Gamer */
         .top-navbar {
             width: 100%;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e8ed;
+            background-color: #1a2126; /* Plomo intermedio */
+            border-bottom: 2px solid #00ff66; /* Línea verde neón */
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -34,15 +34,16 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.1);
         }
 
         .brand-logo {
             font-size: 1.3rem;
             font-weight: 800;
-            color: #ff6a00; /* Naranja corporativo estilo Alibaba */
+            color: #00ff66; /* Verde Neón */
             letter-spacing: 1px;
             text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
         }
 
         .nav-links {
@@ -51,17 +52,17 @@
             list-style: none;
             font-size: 0.9rem;
             font-weight: 600;
-            color: #555555;
+            color: #a0aec0;
         }
 
         .nav-links li:hover {
-            color: #ff6a00;
+            color: #00ff66;
             cursor: pointer;
         }
 
         .btn-account {
-            background-color: #ff6a00;
-            color: #ffffff;
+            background-color: #00ff66;
+            color: #12161a;
             border: none;
             padding: 8px 18px;
             border-radius: 20px;
@@ -69,11 +70,13 @@
             font-size: 0.85rem;
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .btn-account:hover {
-            background-color: #e05d00;
+            background-color: #00cc52;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
         }
 
         /* Contenedor Principal */
@@ -83,27 +86,27 @@
             padding: 30px 20px;
         }
 
-        /* Gran Barra de Búsqueda Estilo Centro de Control */
+        /* Barra de Búsqueda Estilo Centro de Control Gamer */
         .search-section {
-            background-color: #ffffff;
+            background-color: #1a2126;
             border-radius: 16px;
             padding: 35px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.3);
             margin-bottom: 30px;
-            border: 1px solid #e5e8ed;
+            border: 1px solid #2d3748;
         }
 
         .search-section h1 {
             font-size: 2.2rem;
             font-weight: 800;
-            color: #111111;
+            color: #ffffff;
             margin-bottom: 10px;
         }
 
         .search-section p {
             font-size: 1rem;
-            color: #666666;
+            color: #a0aec0;
             margin-bottom: 25px;
         }
 
@@ -111,10 +114,11 @@
             display: flex;
             max-width: 700px;
             margin: 0 auto;
-            border: 2px solid #ff6a00;
+            border: 2px solid #00ff66;
             border-radius: 30px;
             overflow: hidden;
-            background-color: #ffffff;
+            background-color: #12161a;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.1);
         }
 
         .search-input {
@@ -123,12 +127,17 @@
             padding: 15px 25px;
             font-size: 1rem;
             outline: none;
-            color: #333333;
+            color: #ffffff;
+            background-color: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #4a5568;
         }
 
         .btn-search {
-            background-color: #ff6a00;
-            color: white;
+            background-color: #00ff66;
+            color: #12161a;
             border: none;
             padding: 0 35px;
             font-size: 1rem;
@@ -138,14 +147,14 @@
         }
 
         .btn-search:hover {
-            background-color: #e05d00;
+            background-color: #00cc52;
         }
 
         /* Secciones de Categorías y Productos */
         .section-title {
             font-size: 1.4rem;
             font-weight: 700;
-            color: #111111;
+            color: #ffffff;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -153,7 +162,7 @@
         }
 
         .section-title span {
-            color: #ff6a00;
+            color: #00ff66;
         }
 
         /* Rejilla de Módulos (Productos/Cursos) */
@@ -165,56 +174,56 @@
         }
 
         .product-card {
-            background-color: #ffffff;
-            border: 1px solid #e5e8ed;
+            background-color: #1a2126;
+            border: 1px solid #2d3748;
             border-radius: 12px;
             padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
             text-decoration: none;
             color: inherit;
         }
 
         .product-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            border-color: #ff6a00;
+            box-shadow: 0 6px 20px rgba(0, 255, 102, 0.15);
+            border-color: #00ff66;
         }
 
         .tag-category {
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            color: #ff6a00;
+            color: #00ff66;
             margin-bottom: 8px;
             display: inline-block;
         }
 
         .tag-future {
-            color: #7b2cbf;
+            color: #b76eff; /* Un toque violeta de alta tecnología para el futuro */
         }
 
         .product-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #111111;
+            color: #ffffff;
             margin-bottom: 8px;
         }
 
         .product-desc {
             font-size: 0.85rem;
-            color: #666666;
+            color: #a0aec0;
             line-height: 1.4;
             margin-bottom: 15px;
             flex-grow: 1;
         }
 
         .btn-action-card {
-            background-color: #fff1e6;
-            color: #ff6a00;
-            border: 1px solid #ffbc99;
+            background-color: rgba(0, 255, 102, 0.1);
+            color: #00ff66;
+            border: 1px solid rgba(0, 255, 102, 0.4);
             padding: 10px;
             border-radius: 8px;
             text-align: center;
@@ -224,16 +233,30 @@
             transition: all 0.2s;
         }
 
+        .btn-future-card {
+            background-color: rgba(183, 110, 255, 0.1);
+            color: #b76eff;
+            border: 1px solid rgba(183, 110, 255, 0.4);
+        }
+
         .product-card:hover .btn-action-card {
-            background-color: #ff6a00;
-            color: #ffffff;
-            border-color: #ff6a00;
+            background-color: #00ff66;
+            color: #12161a;
+            border-color: #00ff66;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        }
+
+        .product-card:hover .btn-future-card {
+            background-color: #b76eff;
+            color: #12161a;
+            border-color: #b76eff;
+            box-shadow: 0 0 10px rgba(183, 110, 255, 0.4);
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior Estilo Alibaba/Amazon -->
+    <!-- Barra Superior Estilo Alibaba/Amazon (Rediseño Gamer) -->
     <header class="top-navbar">
         <div class="brand-logo">AION SPACE SYSTEM</div>
         <ul class="nav-links">
@@ -253,91 +276,40 @@
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
             <div class="search-bar-container">
-                <input type="text" class="search-input" placeholder="Buscar guías, matrices, soluciones, asistentes de IA...">
+                <input type="text" class="search-input" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
                 <button class="btn-search">Buscar</button>
             </div>
         </section>
 
-        <!-- CARA 1: TU PRESENTE ACADÉMICO -->
+        <!-- SECCIÓN ÚNICA DE RECURSOS Y PROTOTIPOS -->
         <section>
-            <h2 class="section-title"><span>📚</span> Repositorio de Soluciones Académicas (Ciclo II)</h2>
+            <h2 class="section-title"><span>📚</span> Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
                 
+                <!-- TARJETA 1: ENGLISH FOR TECH & CODE -->
+                <a href="#" class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">📝 English for Tech & Code</div>
+                        <p class="product-desc">Glosarios técnicos avanzados, palabras clave estructurales de código y keywords de ingeniería.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </a>
+
+                <!-- TARJETA 2: MATEMÁTICA II -->
+                <a href="#" class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">📐 Matemática II</div>
+                        <p class="product-desc">Cálculo integral, derivadas parciales, matrices lineales y aplicaciones aplicadas al desarrollo de software.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </a>
+
+                <!-- TARJETA 3: MATEMÁTICA DISCRETA -->
                 <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">🧠 Matemática Discreta</div>
                         <p class="product-desc">Lógica proposicional, teoría de conjuntos, tablas de verdad y grafos fundamentales para desarrollo.</p>
                     </div>
-                    <div class="btn-action-card">Ver Recursos</div>
-                </a>
-
-                <!-- TARJETA CONECTADA A TU NUEVA PLANTILLA DE 51 FILAS SIMÉTRICA -->
-                <a href="https://docs.google.com/spreadsheets/d/14EHCns4vksr4ge7NSbkgEkiE5z4ThzfDvjQOcZQwOc4/edit?usp=sharing" target="_blank" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">📐 Matemática II</div>
-                        <p class="product-desc">Registro interactivo de ejercicios. Abre tu plantilla calibrada de 51 filas con apuntes flotantes.</p>
-                    </div>
-                    <div class="btn-action-card">Abrir Módulo Interactivo</div>
-                </a>
-
-                <a href="#" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">📊 Estadística Descriptiva</div>
-                        <p class="product-desc">Análisis de datos, tablas de frecuencias integradas y cálculos probabilísticos esenciales.</p>
-                    </div>
-                    <div class="btn-action-card">Ver Recursos</div>
-                </a>
-
-                <a href="#" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">🔤 English for Tech & Code</div>
-                        <p class="product-desc">Glosarios técnicos avanzados, palabras clave estructurales de código y keywords de ingeniería.</p>
-                    </div>
-                    <div class="btn-action-card">Ver Recursos</div>
-                </a>
-
-            </div>
-        </section>
-
-        <!-- CARA 2: TU VISIÓN A LARGO PLAZO -->
-        <section style="margin-top: 20px;">
-            <h2 class="section-title"><span style="color:#7b2cbf;">🛰️</span> Línea de Prototipos de IA (Visión Futura)</h2>
-            <div class="grid-layout">
-                
-                <div class="product-card">
-                    <div>
-                        <span class="tag-category tag-future">I+D Corporativo</span>
-                        <div class="product-title">🌐 Asistente Operativo Blindado</div>
-                        <p class="product-desc">Modelos de automatización interna de flujos críticos de información con encriptación de grado bancario.</p>
-                    </div>
-                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <span class="tag-category tag-future">I+D Corporativo</span>
-                        <div class="product-title">🤖 Agentes de Atención Segura</div>
-                        <p class="product-desc">Despliegue de modelos de lenguaje pequeños locales (LLMs) inmunes a filtraciones de datos externos.</p>
-                    </div>
-                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <span class="tag-category tag-future">I+D Corporativo</span>
-                        <div class="product-title">📊 Auditoría de Procesos</div>
-                        <p class="product-desc">Análisis matemático automatizado mediante redes cerradas de IA para detectar cuellos de botella organizacionales.</p>
-                    </div>
-                    <div class="btn-action-card" style="color:#7b2cbf; background:#f5eefb; border-color:#dcbdf2;">Próximamente</div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-</body>
-</html>
