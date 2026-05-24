@@ -93,30 +93,30 @@
             padding: 40px 20px;
         }
 
-        /* Centro de Control Estilo Original */
+        /* Centro de Control */
         .search-section {
             background-color: rgba(35, 39, 42, 0.7);
             border-radius: 16px;
-            padding: 50px 30px;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 45px;
+            margin-bottom: 40px;
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .search-section h1 {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .search-section p {
             font-size: 1.05rem;
             color: #b9bbbe;
             max-width: 800px;
-            margin: 0 auto 35px auto;
+            margin: 0 auto 30px auto;
             line-height: 1.6;
         }
 
@@ -166,27 +166,20 @@
             font-size: 1.4rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* Rejilla forzada simétrica de 3 columnas */
+        /* Rejilla de Columnas Ajustada a 280px para evitar desborde */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 45px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        @media (max-width: 900px) {
-            .grid-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Tarjetas con su altura y tamaño estándar original */
         .product-card {
             background-color: #2f3136;
             border-radius: 12px;
@@ -275,7 +268,8 @@
             <div class="search-bar-container">
                 <input type="text" class="search-input" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
                 <button class="btn-search">Buscar</button>
-            </section>
+            </div>
+        </section>
 
         <!-- SECCIÓN 1: RECURSOS ACADÉMICOS -->
         <section>
@@ -313,9 +307,11 @@
         </section>
 
         <!-- SECCIÓN 2: LÍNEA DE PROTOTIPOS DE IA -->
-        <section style="margin-top: 30px;">
+        <section style="margin-top: 10px;">
             <h2 class="section-title">🚀 Línea de Prototipos de IA (Visión Futura)</h2>
             <div class="grid-layout">
                 
                 <a href="#" class="product-card">
                     <div>
+                        <span class="tag-category tag-future">I+D Corporativo</span>
+                        <div class="product-title">🤖 Asistente Operativo Blindado</div>
