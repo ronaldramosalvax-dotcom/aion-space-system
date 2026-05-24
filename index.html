@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
     <style>
-        /* Estilos Base HUD Mecha / Cyberpunk */
+        /* Estilos Base Inspirados en la Interfaz de Discord */
         * {
             margin: 0;
             padding: 0;
@@ -14,8 +14,9 @@
         }
 
         body {
-            background: radial-gradient(circle at center, #1a222d 0%, #0d1117 100%);
-            color: #e3e6e8;
+            /* Gradiente de azul profundo a azul espacial oficial de Discord */
+            background: linear-gradient(180deg, #1a2238 0%, #23272a 40%, #404eed 100%);
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -24,130 +25,119 @@
             background-attachment: fixed;
         }
 
-        /* Barra de Navegación Estilo Panel de Control Blindado */
+        /* Barra de Navegación Limpia Estilo Discord */
         .top-navbar {
             width: 100%;
-            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
-            border-bottom: 3px solid #00ff66;
-            padding: 15px 20px;
+            background-color: rgba(35, 39, 42, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 102, 0.15);
+            backdrop-filter: blur(10px);
         }
 
         .brand-logo {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #00ff66;
-            letter-spacing: 2px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             list-style: none;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #a0aec0;
-            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .nav-links li {
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
         }
 
         .nav-links li:hover {
-            color: #00ff66;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #5765f2;
             cursor: pointer;
-            text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
         }
 
-        /* Botón con Cortes Geométricos Estilo Panel */
+        /* Botón de Cuenta Estilo "Open Discord" Redondeado Blanco */
         .btn-account {
-            background: #161b22;
-            color: #00ff66;
-            border: 2px solid #00ff66;
-            padding: 8px 20px;
-            font-weight: 800;
+            background-color: #ffffff;
+            color: #23272a;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
             font-size: 0.85rem;
-            text-transform: uppercase;
             cursor: pointer;
             text-decoration: none;
-            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-            transition: all 0.2s ease;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+            transition: background-color 0.2s, box-shadow 0.2s;
         }
 
         .btn-account:hover {
-            background: #00ff66;
-            color: #0d1117;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
+            background-color: #f6f6f6;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
         }
 
         /* Contenedor Principal */
         .main-container {
             max-width: 1100px;
             width: 100%;
-            padding: 40px 20px;
+            padding: 50px 20px;
         }
 
-        /* Sección de Búsqueda Estilo Monitor de Flujo Pesado */
+        /* Sección de Búsqueda Estilo Bloque de Presentación */
         .search-section {
-            background-color: #0d1117;
-            border: 2px solid #21262d;
-            border-top: 4px solid #00ff66;
-            border-bottom: 4px solid #00ff66;
-            padding: 45px;
+            background-color: rgba(35, 39, 42, 0.7);
+            border-radius: 16px;
+            padding: 50px 30px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
-            position: relative;
-            clip-path: polygon(0 0, 97% 0, 100% 4%, 100% 100%, 3% 100%, 0 96%);
-        }
-
-        /* Esquinas o muescas mecánicas simuladas */
-        .search-section::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 15px;
-            height: 15px;
-            border-left: 3px solid #00ff66;
-            border-top: 3px solid #00ff66;
+            margin-bottom: 50px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .search-section h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
+            font-size: 2.6rem;
+            font-weight: 800;
             color: #ffffff;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
         .search-section p {
-            font-size: 1rem;
-            color: #8b949e;
-            margin-bottom: 30px;
+            font-size: 1.05rem;
+            color: #b9bbbe;
+            max-width: 800px;
+            margin: 0 auto 35px auto;
+            line-height: 1.6;
         }
 
-        /* Campo de Texto Mecánico */
+        /* Barra de búsqueda con bordes redondeados */
         .search-bar-container {
             display: flex;
             max-width: 650px;
             margin: 0 auto;
-            border: 2px solid #30363d;
-            background-color: #161b22;
-            padding: 2px;
+            border-radius: 30px;
+            overflow: hidden;
+            background-color: #2f3136;
+            padding: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .search-input {
             flex: 1;
             border: none;
-            padding: 15px 20px;
+            padding: 12px 20px;
             font-size: 1rem;
             outline: none;
             color: #ffffff;
@@ -155,45 +145,38 @@
         }
 
         .search-input::placeholder {
-            color: #484f58;
+            color: #72767d;
         }
 
+        /* Botón de Buscar estilo Discord Blurple */
         .btn-search {
-            background-color: #21262d;
-            color: #00ff66;
-            border: 1px solid #30363d;
-            padding: 0 30px;
+            background-color: #404eed;
+            color: #ffffff;
+            border: none;
+            padding: 0 25px;
             font-size: 0.9rem;
-            font-weight: 800;
-            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s;
         }
 
         .btn-search:hover {
-            background-color: #00ff66;
-            color: #0d1117;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            background-color: #5765f2;
         }
 
-        /* Títulos de las Secciones */
+        /* Secciones de Contenido */
         .section-title {
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: #ffffff;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .section-title span {
-            color: #00ff66;
-        }
-
-        /* Rejilla Modular de Paneles Blindados */
+        /* Rejilla de Cursos Redondeada */
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -201,83 +184,72 @@
             margin-bottom: 40px;
         }
 
-        /* Tarjetas con la estética exacta de los recuadros con esquinas reforzadas */
+        /* Tarjetas de Cursos Estilo Discord Containers */
         .product-card {
-            background-color: #0d1117;
-            border: 2px solid #21262d;
-            /* Bordes superiores e inferiores resaltados imitando las franjas de energía de la imagen */
-            border-top: 3px solid #00ff66;
-            border-bottom: 3px solid #00ff66;
+            background-color: #2f3136;
+            border-radius: 12px;
             padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s ease-in-out;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
             text-decoration: none;
             color: inherit;
-            position: relative;
-            clip-path: polygon(0 0, 94% 0, 100% 8%, 100% 100%, 6% 100%, 0 92%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .product-card:hover {
-            transform: translateY(-2px);
-            border-color: #00ff66;
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
-            background-color: #161b22;
+            transform: translateY(-4px);
+            background-color: #36393f;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
-        /* Pestaña de Categoría Interna */
         .tag-category {
-            font-size: 0.7rem;
-            font-weight: 800;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            color: #00ff66;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-
-        .product-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #ffffff;
+            color: #404eed;
             margin-bottom: 10px;
             letter-spacing: 0.5px;
         }
 
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
         .product-desc {
-            font-size: 0.85rem;
-            color: #8b949e;
+            font-size: 0.9rem;
+            color: #b9bbbe;
             line-height: 1.5;
             margin-bottom: 25px;
             flex-grow: 1;
         }
 
-        /* Botón de Acción Estilo Marco Rectangular Limpio */
+        /* Botón de la Tarjeta Estilo Descarga/Acción Redondeado */
         .btn-action-card {
-            background-color: #161b22;
+            background-color: #4f545c;
             color: #ffffff;
-            border: 1px solid #30363d;
+            border: none;
             padding: 12px;
+            border-radius: 25px;
             text-align: center;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
         .product-card:hover .btn-action-card {
-            background-color: transparent;
-            color: #00ff66;
-            border-color: #00ff66;
-            text-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
+            background-color: #404eed;
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior / HUD Menu -->
+    <!-- Barra Superior Estilo Discord -->
     <header class="top-navbar">
         <div class="brand-logo">AION SPACE SYSTEM</div>
         <ul class="nav-links">
@@ -291,7 +263,7 @@
 
     <main class="main-container">
 
-        <!-- Sección de Búsqueda / Monitor Principal -->
+        <!-- Sección de Búsqueda Principal -->
         <section class="search-section">
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
@@ -303,10 +275,10 @@
 
         <!-- REPOSITORIO DE SOLUCIONES ACADÉMICAS -->
         <section>
-            <h2 class="section-title"><span>//</span> Repositorio de Soluciones Académicas</h2>
+            <h2 class="section-title">📊 Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
                 
-                <!-- PANELES DE LOS 6 CURSOS SIMÉTRICOS -->
+                <!-- CURSO 1 -->
                 <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
@@ -316,3 +288,26 @@
                     <div class="btn-action-card">Ver Recursos</div>
                 </a>
 
+                <!-- CURSO 2 -->
+                <a href="#" class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">📐 Matemática II</div>
+                        <p class="product-desc">Cálculo integral, derivadas parciales, matrices lineales y aplicaciones aplicadas al desarrollo de software.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </a>
+
+                <!-- CURSO 3 -->
+                <a href="#" class="product-card">
+                    <div>
+                        <span class="tag-category">Asignatura</span>
+                        <div class="product-title">🧠 Matemática Discreta</div>
+                        <p class="product-desc">Lógica proposicional, teoría de conjuntos, tablas de verdad y grafos fundamentales para desarrollo.</p>
+                    </div>
+                    <div class="btn-action-card">Ver Recursos</div>
+                </a>
+
+                <!-- CURSO 4 -->
+                <a href="#" class="product-card">
+                    <div>
