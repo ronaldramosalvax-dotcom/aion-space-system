@@ -14,18 +14,40 @@
         }
 
         body {
-            background-color: #12161a; /* Plomo oscuro de fondo */
-            color: #e3e6e8; /* Texto claro para contraste */
+            /* Fondo con gradiente y líneas diagonales inspirado en tu logo */
+            background: 
+                linear-gradient(135px, rgba(0, 255, 102, 0.15) 0%, rgba(0,0,0,0) 50%),
+                linear-gradient(225px, rgba(26, 38, 57, 0.6) 0%, rgba(18, 22, 26, 1) 100%),
+                repeating-linear-gradient(45px, transparent, transparent 40px, rgba(0, 255, 102, 0.02) 40px, rgba(0, 255, 102, 0.02) 41px),
+                #12161a;
+            color: #e3e6e8;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Franjas geométricas decorativas de fondo (estilo el logo) */
+        body::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 140%;
+            height: 140%;
+            background: linear-gradient(115px, transparent 40%, rgba(0, 255, 102, 0.03) 45%, transparent 50%, rgba(26, 38, 57, 0.2) 60%, transparent 70%);
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* Barra de Navegación Superior Estilo Gamer */
         .top-navbar {
             width: 100%;
-            background-color: #1a2126; /* Plomo intermedio */
+            background-color: rgba(26, 33, 38, 0.9); /* Transparencia premium */
+            backdrop-filter: blur(10px);
             border-bottom: 2px solid #00ff66; /* Línea verde neón */
             padding: 15px 20px;
             display: flex;
@@ -34,13 +56,13 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 255, 102, 0.15);
         }
 
         .brand-logo {
             font-size: 1.3rem;
             font-weight: 800;
-            color: #00ff66; /* Verde Neón */
+            color: #00ff66;
             letter-spacing: 1px;
             text-transform: uppercase;
             text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
@@ -88,13 +110,14 @@
 
         /* Barra de Búsqueda Estilo Centro de Control Gamer */
         .search-section {
-            background-color: #1a2126;
+            background-color: rgba(26, 33, 38, 0.85);
             border-radius: 16px;
             padding: 35px;
             text-align: center;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             margin-bottom: 30px;
-            border: 1px solid #2d3748;
+            border: 1px solid rgba(0, 255, 102, 0.15);
+            backdrop-filter: blur(4px);
         }
 
         .search-section h1 {
@@ -165,17 +188,17 @@
             color: #00ff66;
         }
 
-        /* Rejilla de Módulos (Productos/Cursos) */
+        /* Rejilla de Módulos Corregida */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
 
         .product-card {
-            background-color: #1a2126;
-            border: 1px solid #2d3748;
+            background-color: rgba(26, 33, 38, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 20px;
             display: flex;
@@ -184,12 +207,14 @@
             transition: all 0.2s;
             text-decoration: none;
             color: inherit;
+            backdrop-filter: blur(4px);
         }
 
         .product-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 6px 20px rgba(0, 255, 102, 0.15);
             border-color: #00ff66;
+            background-color: rgba(26, 33, 38, 0.95);
         }
 
         .tag-category {
@@ -202,7 +227,7 @@
         }
 
         .tag-future {
-            color: #b76eff; /* Un toque violeta de alta tecnología para el futuro */
+            color: #b76eff;
         }
 
         .product-title {
@@ -256,7 +281,7 @@
 </head>
 <body>
 
-    <!-- Barra Superior Estilo Alibaba/Amazon (Rediseño Gamer) -->
+    <!-- Barra Superior -->
     <header class="top-navbar">
         <div class="brand-logo">AION SPACE SYSTEM</div>
         <ul class="nav-links">
@@ -268,10 +293,9 @@
         <a href="https://discord.gg" target="_blank" class="btn-account">Conectar Discord</a>
     </header>
 
-    <!-- Contenedor de Contenido Comercial -->
     <main class="main-container">
 
-        <!-- Sección de Búsqueda de Soluciones -->
+        <!-- Sección de Búsqueda -->
         <section class="search-section">
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
@@ -281,7 +305,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN ÚNICA DE RECURSOS Y PROTOTIPOS -->
+        <!-- REPOSITORIO COMPLETO CON LOS 6 ELEMENTOS -->
         <section>
             <h2 class="section-title"><span>📚</span> Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
@@ -297,19 +321,3 @@
                 </a>
 
                 <!-- TARJETA 2: MATEMÁTICA II -->
-                <a href="#" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">📐 Matemática II</div>
-                        <p class="product-desc">Cálculo integral, derivadas parciales, matrices lineales y aplicaciones aplicadas al desarrollo de software.</p>
-                    </div>
-                    <div class="btn-action-card">Ver Recursos</div>
-                </a>
-
-                <!-- TARJETA 3: MATEMÁTICA DISCRETA -->
-                <a href="#" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">🧠 Matemática Discreta</div>
-                        <p class="product-desc">Lógica proposicional, teoría de conjuntos, tablas de verdad y grafos fundamentales para desarrollo.</p>
-                    </div>
