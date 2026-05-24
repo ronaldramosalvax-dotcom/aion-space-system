@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
     <style>
-        /* Estilos Base HUD Cyberpunk Gamer */
+        /* Estilos Base HUD Mecha / Cyberpunk */
         * {
             margin: 0;
             padding: 0;
@@ -14,21 +14,20 @@
         }
 
         body {
-            /* Fondo dividido exactamente a la mitad por una diagonal Verde Eléctrico y Plomo Tecnológico */
-            background: linear-gradient(135px, #12a454 0%, #12a454 50%, #1f242d 50%, #1f242d 100%);
+            background: radial-gradient(circle at center, #1a222d 0%, #0d1117 100%);
             color: #e3e6e8;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
-            background-attachment: fixed; /* Mantiene la diagonal fija al hacer scroll */
+            background-attachment: fixed;
         }
 
-        /* Barra de Navegación Estilo Panel de Control */
+        /* Barra de Navegación Estilo Panel de Control Blindado */
         .top-navbar {
             width: 100%;
-            background-color: rgba(22, 27, 34, 0.95);
+            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
             border-bottom: 3px solid #00ff66;
             padding: 15px 20px;
             display: flex;
@@ -37,7 +36,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.25);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 102, 0.15);
         }
 
         .brand-logo {
@@ -46,7 +45,7 @@
             color: #00ff66;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
         }
 
         .nav-links {
@@ -65,25 +64,26 @@
             text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
         }
 
-        /* Botón estilo Botón de Interfaz de Stream */
+        /* Botón con Cortes Geométricos Estilo Panel */
         .btn-account {
-            background: linear-gradient(135px, #00ff66 0%, #00cc52 100%);
-            color: #0b0d10;
-            border: none;
-            padding: 10px 22px;
+            background: #161b22;
+            color: #00ff66;
+            border: 2px solid #00ff66;
+            padding: 8px 20px;
             font-weight: 800;
             font-size: 0.85rem;
             text-transform: uppercase;
             cursor: pointer;
             text-decoration: none;
-            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
         }
 
         .btn-account:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(0, 255, 102, 0.7);
+            background: #00ff66;
+            color: #0d1117;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.6);
         }
 
         /* Contenedor Principal */
@@ -93,34 +93,34 @@
             padding: 40px 20px;
         }
 
-        /* Gran Marco de Pantalla Stream */
+        /* Sección de Búsqueda Estilo Monitor de Flujo Pesado */
         .search-section {
-            background-color: rgba(22, 27, 34, 0.95);
-            border: 2px solid #00ff66;
-            border-radius: 4px;
-            padding: 40px;
+            background-color: #0d1117;
+            border: 2px solid #21262d;
+            border-top: 4px solid #00ff66;
+            border-bottom: 4px solid #00ff66;
+            padding: 45px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             margin-bottom: 40px;
             position: relative;
+            clip-path: polygon(0 0, 97% 0, 100% 4%, 100% 100%, 3% 100%, 0 96%);
         }
 
-        /* Detalles estéticos en las esquinas */
+        /* Esquinas o muescas mecánicas simuladas */
         .search-section::before {
-            content: "SYSTEM LIVE";
+            content: "";
             position: absolute;
-            top: -12px;
-            left: 20px;
-            background-color: #00ff66;
-            color: #0b0d10;
-            font-size: 0.7rem;
-            font-weight: 900;
-            padding: 2px 8px;
-            border-radius: 3px;
+            top: 0;
+            left: 0;
+            width: 15px;
+            height: 15px;
+            border-left: 3px solid #00ff66;
+            border-top: 3px solid #00ff66;
         }
 
         .search-section h1 {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 900;
             color: #ffffff;
             letter-spacing: 1px;
@@ -130,18 +130,18 @@
 
         .search-section p {
             font-size: 1rem;
-            color: #a0aec0;
+            color: #8b949e;
             margin-bottom: 30px;
         }
 
-        /* Contenedor de entrada estilo barra de interfaz */
+        /* Campo de Texto Mecánico */
         .search-bar-container {
             display: flex;
             max-width: 650px;
             margin: 0 auto;
-            border: 1px solid #4a5568;
-            background-color: #0b0d10;
-            padding: 4px;
+            border: 2px solid #30363d;
+            background-color: #161b22;
+            padding: 2px;
         }
 
         .search-input {
@@ -155,13 +155,13 @@
         }
 
         .search-input::placeholder {
-            color: #4a5568;
+            color: #484f58;
         }
 
         .btn-search {
-            background-color: #1a232e;
+            background-color: #21262d;
             color: #00ff66;
-            border: 1px solid #00ff66;
+            border: 1px solid #30363d;
             padding: 0 30px;
             font-size: 0.9rem;
             font-weight: 800;
@@ -172,11 +172,11 @@
 
         .btn-search:hover {
             background-color: #00ff66;
-            color: #0b0d10;
+            color: #0d1117;
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
         }
 
-        /* Secciones de Categorías y Título */
+        /* Títulos de las Secciones */
         .section-title {
             font-size: 1.3rem;
             font-weight: 800;
@@ -193,7 +193,7 @@
             color: #00ff66;
         }
 
-        /* Rejilla Stream */
+        /* Rejilla Modular de Paneles Blindados */
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -201,72 +201,77 @@
             margin-bottom: 40px;
         }
 
-        /* Paneles / Tarjetas estilo los recuadros de la imagen */
+        /* Tarjetas con la estética exacta de los recuadros con esquinas reforzadas */
         .product-card {
-            background-color: rgba(22, 27, 34, 0.95);
-            border: 1px solid #2d3748;
-            border-left: 4px solid #00ff66;
+            background-color: #0d1117;
+            border: 2px solid #21262d;
+            /* Bordes superiores e inferiores resaltados imitando las franjas de energía de la imagen */
+            border-top: 3px solid #00ff66;
+            border-bottom: 3px solid #00ff66;
             padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s ease;
+            transition: all 0.2s ease-in-out;
             text-decoration: none;
             color: inherit;
             position: relative;
+            clip-path: polygon(0 0, 94% 0, 100% 8%, 100% 100%, 6% 100%, 0 92%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         .product-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: #00ff66;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
-            background-color: #1c232c;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.25);
+            background-color: #161b22;
         }
 
+        /* Pestaña de Categoría Interna */
         .tag-category {
             font-size: 0.7rem;
             font-weight: 800;
             text-transform: uppercase;
             color: #00ff66;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .product-title {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 10px;
+            letter-spacing: 0.5px;
         }
 
         .product-desc {
             font-size: 0.85rem;
-            color: #a0aec0;
+            color: #8b949e;
             line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-grow: 1;
         }
 
-        /* Botón de la tarjeta con corte angular */
+        /* Botón de Acción Estilo Marco Rectangular Limpio */
         .btn-action-card {
-            background-color: transparent;
+            background-color: #161b22;
             color: #ffffff;
-            border: 1px solid #4a5568;
+            border: 1px solid #30363d;
             padding: 12px;
             text-align: center;
             font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
-            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
             transition: all 0.2s;
         }
 
         .product-card:hover .btn-action-card {
-            background: linear-gradient(135px, #00ff66 0%, #00cc52 100%);
-            color: #0b0d10;
+            background-color: transparent;
+            color: #00ff66;
             border-color: #00ff66;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+            text-shadow: 0 0 5px rgba(0, 255, 102, 0.5);
         }
     </style>
 </head>
@@ -286,7 +291,7 @@
 
     <main class="main-container">
 
-        <!-- Sección de Búsqueda / Pantalla Central del Stream -->
+        <!-- Sección de Búsqueda / Monitor Principal -->
         <section class="search-section">
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
@@ -296,12 +301,12 @@
             </div>
         </section>
 
-        <!-- REPOSITORIO COMPLETO / REJILLA DE PANELES (6 CURSOS) -->
+        <!-- REPOSITORIO DE SOLUCIONES ACADÉMICAS -->
         <section>
             <h2 class="section-title"><span>//</span> Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
                 
-                <!-- CURSO 1: ENGLISH FOR TECH & CODE -->
+                <!-- PANELES DE LOS 6 CURSOS SIMÉTRICOS -->
                 <a href="#" class="product-card">
                     <div>
                         <span class="tag-category">Asignatura</span>
@@ -311,7 +316,3 @@
                     <div class="btn-action-card">Ver Recursos</div>
                 </a>
 
-                <!-- CURSO 2: MATEMÁTICA II -->
-                <a href="#" class="product-card">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
