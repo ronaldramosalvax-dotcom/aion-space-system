@@ -97,7 +97,7 @@
         .search-section {
             background-color: rgba(35, 39, 42, 0.7);
             border-radius: 16px;
-            padding: 40px 30px;
+            padding: 45px 30px;
             text-align: center;
             margin-bottom: 40px;
             backdrop-filter: blur(8px);
@@ -106,7 +106,7 @@
         }
 
         .search-section h1 {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #ffffff;
             margin-bottom: 12px;
@@ -172,12 +172,18 @@
             gap: 10px;
         }
 
-        /* Rejilla de Columnas Ajustada a 280px para evitar desborde */
+        /* Rejilla fija de 3 columnas estrictas para PC */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
             margin-bottom: 40px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
         }
 
         .product-card {
@@ -307,11 +313,10 @@
         </section>
 
         <!-- SECCIÓN 2: LÍNEA DE PROTOTIPOS DE IA -->
-        <section style="margin-top: 10px;">
+        <section style="margin-top: 30px;">
             <h2 class="section-title">🚀 Línea de Prototipos de IA (Visión Futura)</h2>
             <div class="grid-layout">
                 
                 <a href="#" class="product-card">
                     <div>
                         <span class="tag-category tag-future">I+D Corporativo</span>
-                        <div class="product-title">🤖 Asistente Operativo Blindado</div>
