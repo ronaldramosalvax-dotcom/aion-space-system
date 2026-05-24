@@ -90,33 +90,33 @@
         .main-container {
             max-width: 1100px;
             width: 100%;
-            padding: 20px 20px;
+            padding: 40px 20px;
         }
 
-        /* Centro de Control */
+        /* Centro de Control Estilo Original */
         .search-section {
             background-color: rgba(35, 39, 42, 0.7);
             border-radius: 16px;
-            padding: 30px 25px;
+            padding: 50px 30px;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 45px;
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .search-section h1 {
-            font-size: 2.2rem;
+            font-size: 2.6rem;
             font-weight: 800;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .search-section p {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             color: #b9bbbe;
             max-width: 800px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 35px auto;
             line-height: 1.6;
         }
 
@@ -134,8 +134,8 @@
         .search-input {
             flex: 1;
             border: none;
-            padding: 10px 15px;
-            font-size: 0.95rem;
+            padding: 12px 20px;
+            font-size: 1rem;
             outline: none;
             color: #ffffff;
             background-color: transparent;
@@ -149,8 +149,8 @@
             background-color: #404eed;
             color: #ffffff;
             border: none;
-            padding: 0 20px;
-            font-size: 0.85rem;
+            padding: 0 25px;
+            font-size: 0.9rem;
             font-weight: 700;
             border-radius: 20px;
             cursor: pointer;
@@ -163,34 +163,34 @@
 
         /* Secciones de Contenido */
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* Rejilla Forzada para evitar que se oculten abajo */
+        /* Rejilla forzada simétrica de 3 columnas */
         .grid-layout {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Forzar exactamente 3 columnas */
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 45px;
         }
 
-        /* Adaptabilidad para pantallas muy pequeñas (Móviles) */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .grid-layout {
                 grid-template-columns: 1fr;
             }
         }
 
+        /* Tarjetas con su altura y tamaño estándar original */
         .product-card {
             background-color: #2f3136;
             border-radius: 12px;
-            padding: 18px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -207,11 +207,11 @@
         }
 
         .tag-category {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             color: #404eed;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
         }
 
@@ -220,17 +220,17 @@
         }
 
         .product-title {
-            font-size: 1.05rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #ffffff;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
 
         .product-desc {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #b9bbbe;
-            line-height: 1.4;
-            margin-bottom: 15px;
+            line-height: 1.5;
+            margin-bottom: 25px;
             flex-grow: 1;
         }
 
@@ -238,10 +238,10 @@
             background-color: #4f545c;
             color: #ffffff;
             border: none;
-            padding: 8px;
+            padding: 12px;
             border-radius: 25px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -275,8 +275,7 @@
             <div class="search-bar-container">
                 <input type="text" class="search-input" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
                 <button class="btn-search">Buscar</button>
-            </div>
-        </section>
+            </section>
 
         <!-- SECCIÓN 1: RECURSOS ACADÉMICOS -->
         <section>
@@ -314,7 +313,7 @@
         </section>
 
         <!-- SECCIÓN 2: LÍNEA DE PROTOTIPOS DE IA -->
-        <section>
+        <section style="margin-top: 30px;">
             <h2 class="section-title">🚀 Línea de Prototipos de IA (Visión Futura)</h2>
             <div class="grid-layout">
                 
