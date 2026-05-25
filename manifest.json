@@ -1,0 +1,17 @@
+{
+  "short_name": "AION Space",
+  "name": "AION SPACE SYSTEM",
+  "icons": [
+    {
+      "src": "https://flaticon.com",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#1a2238",
+  "theme_color": "#23272a",
+  "display": "standalone",
+  "orientation": "portrait"
+}
