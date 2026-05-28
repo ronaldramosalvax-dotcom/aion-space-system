@@ -190,13 +190,77 @@
             gap: 25px;
             margin-bottom: 40px;
         }
+                @media (max-width: 900px) {
+            /* 1. Menú superior en vertical para celular */
+            .top-navbar {
+                flex-direction: column !important;
+                gap: 12px !important;
+                padding: 15px !important;
+                text-align: center !important;
+                height: auto !important;
+            }
+            
+            .brand-logo {
+                font-size: 1.1rem !important;
+                text-align: center !important;
+            }
 
-        @media (max-width: 900px) {
+            .nav-links {
+                justify-content: center !important;
+                gap: 12px !important;
+                font-size: 0.75rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            .btn-account {
+                padding: 6px 16px !important;
+                font-size: 0.75rem !important;
+                width: auto !important;
+            }
+
+            /* 2. Corrige el botón "comido" del buscador */
+            .search-bar-container {
+                height: auto !important;
+                padding: 6px !important;
+                align-items: center !important;
+            }
+
+            .search-input {
+                padding: 10px 12px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .btn-search {
+                padding: 10px 20px !important;
+                white-space: nowrap !important;
+                border-radius: 20px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            /* 3. Rejilla de tarjetas en una sola columna */
             .grid-layout {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+
+            /* 4. Apilar botones dobles abajo de las tarjetas */
+            .product-card div[style*="display: flex"],
+            .product-card > div:last-child {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                margin-top: auto !important;
+            }
+
+            .product-card .btn-action-card {
+                width: 100% !important;
+                display: block !important;
+                text-align: center !important;
             }
         }
-
+  
         .product-card {
             background-color: #2f3136;
             border-radius: 12px;
