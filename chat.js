@@ -2,15 +2,15 @@ import { initializeApp } from "https://gstatic.com";
 import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://gstatic.com";
 
 // !!! REEMPLAZA ESTO CON TUS CREDENCIALES COPIADAS DE FIREBASE !!!
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  databaseURL: "TU_DATABASE_URL",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID"
-};
+ const firebaseConfig = {
+    apiKey: "AIzaSyAj3xOG2R6C-fMqpByP0BBlR_8CgV8wH_g",
+    authDomain: "aion-chat-utp.firebaseapp.com",
+    databaseURL: "https://aion-chat-utp-default-rtdb.firebaseio.com",
+    projectId: "aion-chat-utp",
+    storageBucket: "aion-chat-utp.firebasestorage.app",
+    messagingSenderId: "744552027801",
+    appId: "1:744552027801:web:30a3b2f245eb145e1c4a08"
+  };
 
 // Inicializar base de datos
 const app = initializeApp(firebaseConfig);
