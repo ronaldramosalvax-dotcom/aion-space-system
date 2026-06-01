@@ -1,5 +1,6 @@
-import { initializeApp } from "https://gstatic.com";
-import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://gstatic.com";
+import { initializeApp } from "https://gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
 
 // !!! REEMPLAZA ESTO CON TUS CREDENCIALES COPIADAS DE FIREBASE !!!
  const firebaseConfig = {
