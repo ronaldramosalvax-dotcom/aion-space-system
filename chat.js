@@ -81,9 +81,10 @@ onChildAdded(consultaUltimos50, (snapshot) => {
 });
 // 1. Crear la función que busca el botón Enviar
 window.enviarMensajeArena = function() {
-    const inputUsuario = document.querySelector('input[placeholder="U25321792"]');
-    const inputMensaje = document.querySelector('input[placeholder="Hola"]');
-    
+     const inputs = document.querySelectorAll('input[type="text"]');
+    const inputUsuario = inputs[0];
+    const inputMensaje = inputs[1];
+
     const usuario = inputUsuario ? inputUsuario.value.trim() : "";
     const texto = inputMensaje ? inputMensaje.value.trim() : "";
 
