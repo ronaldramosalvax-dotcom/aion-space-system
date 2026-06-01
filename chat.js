@@ -1,10 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
 
-
-
-// !!! REEMPLAZA ESTO CON TUS CREDENCIALES COPIADAS DE FIREBASE !!!
- const firebaseConfig = {
+// Credenciales oficiales de tu proyecto Aion
+const firebaseConfig = {
     apiKey: "AIzaSyAj3xOG2R6C-fMqpByP0BBlR_8CgV8wH_g",
     authDomain: "aion-chat-utp.firebaseapp.com",
     databaseURL: "https://aion-chat-utp-default-rtdb.firebaseio.com",
@@ -12,7 +10,7 @@ import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, 
     storageBucket: "aion-chat-utp.firebasestorage.app",
     messagingSenderId: "744552027801",
     appId: "1:744552027801:web:30a3b2f245eb145e1c4a08"
-  };
+};
 
 // Inicializar base de datos
 const app = initializeApp(firebaseConfig);
@@ -20,39 +18,45 @@ const db = getDatabase(app);
 const mensajesRef = ref(db, 'mensajes');
 
 // Filtro para traer únicamente la cola final de 40 mensajes de la nube
-const consultaUltimos50 = query(mensajesRef, orderByKey(), limitToLast(40));
+const consultaUltimos40 = query(mensajesRef, orderByKey(), limitToLast(40));
 
-// FUNCION GLOBAL: Enviar mensaje al presionar el botón
+// FUNCION GLOBAL: Enviar mensaje a Firebase
 window.enviarMensajeArena = function() {
-    const inputMsg = document.getElementById('input-mensaje-arena');
-    const inputUser = document.getElementById('nombre-usuario-arena');
+    const inputUsuario = document.getElementById('nombre-usuario-arena');
+    const inputMensaje = document.getElementById('input-mensaje-arena');
     
-    const usuario = inputUser.value.trim() || "Cachimbo_Anonimo";
-    const texto = inputMsg.value.trim();
+    const usuario = inputUsuario ? inputUsuario.value.trim() : "Cachimbo_Anonimo";
+    const texto = inputMensaje ? inputMensaje.value.trim() : "";
     
-    if (texto !== "") {
+    if (usuario !== "" && texto !== "") {
         push(mensajesRef, {
             usuario: usuario,
-            texto: texto,
+            texto: texto, // Sincronizado como 'texto'
             timestamp: Date.now()
         });
-        inputMsg.value = ""; // Limpiar barra
+        if (inputMensaje) inputMensaje.value = ""; // Limpiar barra de texto
+    } else {
+        alert("Por favor, ingresa tu usuario y mensaje.");
     }
 }
 
 // FUNCION GLOBAL: Detectar el envío con la tecla Enter
-window.detectarEnter = function(e) {
-    if (e.key === 'Enter') { window.enviarMensajeArena(); }
+window.detectarEnter = function(event) {
+    if (event.key === 'Enter') { 
+        window.enviarMensajeArena(); 
+    }
 }
 
-// ESCUCHADOR EN TIEMPO REAL: Cola circular FIFO (Límite 40)
-onChildAdded(consultaUltimos50, (snapshot) => {
+// ESCUCHADOR EN TIEMPO REAL: Muestra los mensajes en tu contenedor
+onChildAdded(consultaUltimos40, (snapshot) => {
     const data = snapshot.val();
     const key = snapshot.key;
-    const caja = document.getElementById('caja-mensajes-arena');
+    const caja = document.getElementById('caja-mensajes-arena') || document.getElementById('chatContainer');
     
+    if (!caja) return;
+
     // Obtener la letra inicial para el avatar
-    const inicial = data.usuario.charAt(0).toUpperCase();
+    const inicial = data.usuario ? data.usuario.charAt(0).toUpperCase() : "?";
     
     // Inyectar el mensaje estructurado con avatar al contenedor
     caja.innerHTML += `
@@ -60,7 +64,7 @@ onChildAdded(consultaUltimos50, (snapshot) => {
             <div class="avatar-aion">${inicial}</div>
             <div>
                 <span style="color: #5765f2; font-weight: bold; font-size:11px;">${data.usuario}</span><br>
-                <span style="word-break: break-all;">${data.texto}</span>
+                <span style="word-break: break-all; color: #00ff00;">${data.texto}</span>
             </div>
         </div>
     `;
@@ -69,8 +73,8 @@ onChildAdded(consultaUltimos50, (snapshot) => {
     // Contar los elementos cargados en la pantalla
     const mensajesActuales = caja.querySelectorAll('.contenedor-msg');
 
-    // Si supera los 50, se elimina el primero (el más antiguo) de la pantalla y de la nube
-    if (mensajesActuales.length > 50) {
+    // Cola circular estricta FIFO: Si supera los 40, borra el viejo de la pantalla y la nube
+    if (mensajesActuales.length > 40) {
         const mensajeAntiguoHTML = mensajesActuales[0];
         mensajeAntiguoHTML.remove(); // Borrado visual
 
@@ -79,33 +83,3 @@ onChildAdded(consultaUltimos50, (snapshot) => {
         remove(referenciaMensajeBorrar); // Borrado en la base de datos
     }
 });
-// 1. Crear la función que busca el botón Enviar
-window.enviarMensajeArena = function() {
-        const inputUsuario = document.getElementById('nombre-usuario-arena');
-    const inputMensaje = document.getElementById('input-mensaje-arena');
-
-    const usuario = inputUsuario ? inputUsuario.value.trim() : "";
-    const texto = inputMensaje ? inputMensaje.value.trim() : "";
-
-
-    if (usuario !== "" && texto !== "") {
-        // Enviar a la base de datos de Firebase
-       
-        push(ref(db, "mensajes"), {
-            usuario: usuario,
-            mensaje: texto,
-            timestamp: Date.now()
-        });
-        inputMensaje.value = ""; // Limpiar campo
-    } else {
-        alert("Por favor, ingresa tu usuario y mensaje.");
-    }
-}
-
-// 2. Crear la función para que funcione al presionar la tecla Enter
-window.detectarEnter = function(event) {
-    if (event.key === "Enter") {
-        enviarMensajeArena();
-    }
-}
-
