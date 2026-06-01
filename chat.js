@@ -79,3 +79,32 @@ onChildAdded(consultaUltimos50, (snapshot) => {
         remove(referenciaMensajeBorrar); // Borrado en la base de datos
     }
 });
+// 1. Crear la función que busca el botón Enviar
+window.enviarMensajeArena = function() {
+    const inputUsuario = document.querySelector('input[placeholder="U25321792"]');
+    const inputMensaje = document.querySelector('input[placeholder="Hola"]');
+    
+    const usuario = inputUsuario ? inputUsuario.value.trim() : "";
+    const texto = inputMensaje ? inputMensaje.value.trim() : "";
+
+    if (usuario !== "" && texto !== "") {
+        // Enviar a la base de datos de Firebase
+        const dbRef = ref(getDatabase());
+        push(ref(dbRef, "mensajes"), {
+            usuario: usuario,
+            mensaje: texto,
+            timestamp: Date.now()
+        });
+        inputMensaje.value = ""; // Limpiar campo
+    } else {
+        alert("Por favor, ingresa tu usuario y mensaje.");
+    }
+}
+
+// 2. Crear la función para que funcione al presionar la tecla Enter
+window.detectarEnter = function(event) {
+    if (event.key === "Enter") {
+        enviarMensajeArena();
+    }
+}
+
