@@ -347,6 +347,29 @@
                 <button class="btn-search">↑</button>
 
             </div>
+                        <!-- CHAT ESTILO MECH ARENA (AUMENTADO ADENTRO DEL PANEL) -->
+            <div id="panel-chat-arena" style="margin: 25px auto 0 auto; max-width: 650px; background: #202225; border: 1px solid #404eed; border-radius: 12px; display: flex; flex-direction: column; height: 260px; overflow: hidden; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">
+                <!-- Cabecera -->
+                <div style="background: #23272a; padding: 8px 15px; border-bottom: 1px solid #404eed; font-family: monospace; font-size: 11px; color: #5765f2; font-weight: bold; letter-spacing: 1px;">
+                    📡 RADAR DE COMUNICACIÓN GLOBAL (UTP)
+                </div>
+                
+                <!-- Pantalla de mensajes (Tope FIFO de 50) -->
+                <div id="caja-mensajes-arena" style="flex: 1; padding: 12px; overflow-y: auto; font-size: 12px; color: #dcddde; background: #2f3136; display: flex; flex-direction: column; gap: 8px;">
+                    <p class="msg-sistema" style="color: #3ba55d; font-family: monospace; font-size: 10px; margin: 0;">[SISTEMA]: Enlace cuántico establecido. Historial fijado en 50 transmisiones.</p>
+                </div>
+
+                <!-- Inputs inferiores de comando -->
+                <div style="padding: 8px; display: flex; gap: 6px; background: #23272a; border-top: 1px solid #202225; align-items: center;">
+                    <input type="text" id="nombre-usuario-arena" placeholder="Código" style="width: 25%; background: #202225; border: 1px solid #4f545c; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
+                    <input type="text" id="input-mensaje-arena" placeholder="Transmitir al escuadrón..." onkeypress="detectarEnter(event)" style="width: 55%; background: #202225; border: 1px solid #404eed; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
+                    <button id="btn-enviar-arena" onclick="enviarMensajeArena()" style="width: 20%; background: #404eed; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; height: 33px;">Enviar</button>
+                </div>
+            </div>
+
+            <!-- Scripts de lógica en el mismo bloque -->
+            <script type="module" src="./chat.js"></script>
+
         </section>
 
         <!-- SECCIÓN 1: RECURSOS ACADÉMICOS -->
