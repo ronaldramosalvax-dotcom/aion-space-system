@@ -19,8 +19,8 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const mensajesRef = ref(db, 'mensajes');
 
-// Filtro para traer únicamente la cola final de 50 mensajes de la nube
-const consultaUltimos50 = query(mensajesRef, orderByKey(), limitToLast(50));
+// Filtro para traer únicamente la cola final de 40 mensajes de la nube
+const consultaUltimos50 = query(mensajesRef, orderByKey(), limitToLast(40));
 
 // FUNCION GLOBAL: Enviar mensaje al presionar el botón
 window.enviarMensajeArena = function() {
@@ -45,7 +45,7 @@ window.detectarEnter = function(e) {
     if (e.key === 'Enter') { window.enviarMensajeArena(); }
 }
 
-// ESCUCHADOR EN TIEMPO REAL: Cola circular FIFO (Límite 50)
+// ESCUCHADOR EN TIEMPO REAL: Cola circular FIFO (Límite 40)
 onChildAdded(consultaUltimos50, (snapshot) => {
     const data = snapshot.val();
     const key = snapshot.key;
