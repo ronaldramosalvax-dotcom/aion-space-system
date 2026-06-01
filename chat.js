@@ -81,17 +81,17 @@ onChildAdded(consultaUltimos50, (snapshot) => {
 });
 // 1. Crear la función que busca el botón Enviar
 window.enviarMensajeArena = function() {
-     const inputs = document.querySelectorAll('input[type="text"]');
-    const inputUsuario = inputs[0];
-    const inputMensaje = inputs[1];
+        const inputUsuario = document.getElementById('nombre-usuario-arena');
+    const inputMensaje = document.getElementById('input-mensaje-arena');
 
     const usuario = inputUsuario ? inputUsuario.value.trim() : "";
     const texto = inputMensaje ? inputMensaje.value.trim() : "";
 
+
     if (usuario !== "" && texto !== "") {
         // Enviar a la base de datos de Firebase
-        const dbRef = ref(getDatabase());
-        push(ref(dbRef, "mensajes"), {
+       
+        push(ref(db, "mensajes"), {
             usuario: usuario,
             mensaje: texto,
             timestamp: Date.now()
