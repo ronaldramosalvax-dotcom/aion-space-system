@@ -9,15 +9,16 @@
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #0d1117; color: #c9d1d9; }
         .quiz-container { display: flex; width: 900px; height: 580px; background-color: #161b22; border: 2px solid #30363d; border-radius: 6px; overflow: hidden; }
         .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
-        .problem-block { background-color: #1e3a1e; color: #d4edda; height: 35%; padding: 25px; border-bottom: 2px solid #30363d; font-size: 16px; }
+        .problem-block { background-color: #1e3a1e; color: #d4edda; height: 35%; padding: 25px; border-bottom: 2px solid #30363d; font-size: 16px; overflow-y: auto; }
         .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #58a6ff; }
         .interactive-block { flex: 1; background-color: #0d1117; padding: 25px; display: flex; flex-direction: column; position: relative; }
-        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
-        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; z-index: 5; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
         .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #58a6ff; background-color: #161b22; border-radius: 4px; flex-shrink: 0; }
         .option-item.correct .checkbox-anchor { background-color: #2463eb !important; border-color: #2463eb !important; }
         .option-item.wrong .checkbox-anchor { background-color: #da3633 !important; border-color: #da3633 !important; }
-        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #1d4ed8; color: white; padding: 30px; display: none; z-index: 10; cursor: pointer; }
+        .option-text { font-size: 16px; color: #c9d1d9; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #1d4ed8; color: white; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; }
         .sidebar { width: 18%; border-left: 2px solid #30363d; background-color: #161b22; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
         .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #8b949e; }
         .progress-text span { color: #58a6ff; font-size: 20px; display: block; margin-top: 5px; }
@@ -34,22 +35,21 @@
 <body>
 
     <div class="quiz-container">
-        <!-- Bloques de Preguntas Manuales (Contenedores HTML Reales) -->
         <div class="main-content" id="question-wrapper">
             <div class="problem-block">
                 <div class="problem-title" id="p-title">Problema 1:</div>
-                <p id="p-text">Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica i-5j si i=j, 3i-2j si i>j, e i*j si i<j. Determine el valor del elemento que se ubica en la posición m32.</p>
+                <p id="p-text">Cargando enunciado...</p>
             </div>
 
-            <div class="interactive-block">
-                <ul class="options-list" id="options-box">
-                    <!-- Inyección segura mediante script directo -->
-                </ul>
+            <div class="interactive-block" id="int-zone">
+                <!-- Lista de opciones del alumno -->
+                <ul class="options-list" id="options-box"></ul>
 
-                <div class="resolution-block" id="res-box" onclick="toggleResolutionView()">
+                <!-- Ventana de resolución celeste (reemplazo total) -->
+                <div class="resolution-block" id="res-box">
                     <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
                     <p id="res-text"></p>
-                    <p style="margin-top:25px; font-size:12px; opacity:0.8; text-align:center;">[ Haz clic en cualquier parte de esta ventana celeste para alternar y ver las alternativas ]</p>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.8; text-align:center;">[ Haz clic en la resolución para alternar la pantalla y revisar tus alternativas ]</p>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
             <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
             <div class="timer-controls">
                 <div class="timer-display" id="t-display">05s</div>
-                <button class="btn-stop" id="s-button" onclick="triggerStop()">STOP</button>
+                <button class="btn-stop" id="s-button">STOP</button>
             </div>
         </div>
 
@@ -75,14 +75,14 @@
 
     <script>
         const problems = [
-            { t: "Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica i-5j si i=j, 3i-2j si i>j, e i*j si i<j. Determine el valor del elemento que se ubica en la posición m32.", o: ["a) 2", "b) 4", "c) 5", "d) 7", "e) -12"], c: 2, r: "Para hallar m32, vemos que fila i=3 y columna j=2. Como i > j (3 > 2), aplicamos la regla '3i - 2j'. Operando: 3(3) - 2(2) = 9 - 4 = 5. La respuesta es la alternativa c." },
+            { t: "Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica: i - 5j si i = j; 3i - 2j si i > j; e i * j si i < j. Determine el valor del elemento que se ubica en la posición m32.", o: ["a) 2", "b) 4", "c) 5", "d) 7", "e) -12"], c: 2, r: "Para hallar m32, vemos que fila i = 3 y columna j = 2. Como i > j (3 > 2), aplicamos la regla '3i - 2j'. Operando: 3(3) - 2(2) = 9 - 4 = 5. La respuesta es la alternativa c." },
             { t: "Dadas las matrices iguales: A = [2a+b, -4; 12, 3c+d] y B = [19, a+2b; 3c, 15]. Determine el valor numérico del elemento c.", o: ["a) 2", "b) 3", "c) 4", "d) 12", "e) 15"], c: 2, r: "Por matrices iguales, los componentes en la misma posición coinciden. En la fila 2, columna 1 vemos que 12 = 3c. Al despejar obtenemos c = 12 / 3 = 4. La respuesta es la alternativa c." },
             { t: "Si la matriz A = [4, 6-y², 9; 5y, -3, z+2; x², 5, 2] es una matriz simétrica, siendo x, y, z números naturales. Hallar el valor de la variable z.", o: ["a) 1", "b) 2", "c) 3", "d) 5", "e) 9"], c: 2, r: "En una matriz simétrica se cumple que los elementos opuestos respecto a la diagonal son iguales (aij = aji). Al comparar la posición a23 con a32, encontramos que 5 = z + 2. Despejando: z = 5 - 2 = 3. La respuesta es la alternativa c." },
             { t: "Si la matriz B = [8x, x²-16, z-7; 3y-10+y², 4y, 0; 0, 3z-21, z] es una matriz diagonal con x, y, z en los naturales. Determine el valor de z.", o: ["a) 2", "b) 4", "c) 7", "d) 16", "e) 21"], c: 2, r: "En una matriz diagonal, todos los términos que no pertenecen a la diagonal principal deben valer cero. Evaluando el término superior derecho: z - 7 = 0, lo que nos da directamente z = 7. La respuesta es la alternativa c." },
             { t: "Dadas las matrices iguales A = [2x-3, 3y+2x; w+3z, 1-z] y B = [x+1, y-2; x-w, 2z+7]. Determine el valor de x.", o: ["a) -2", "b) 1", "c) 3", "d) 4", "e) 5"], c: 3, r: "Igualamos el componente de la primera fila y primera columna (a11 = b11): 2x - 3 = x + 1. Trasladamos las x a la izquierda: 2x - x = 1 + 3, concluyendo que x = 4. La respuesta es la alternativa d." },
             { t: "Si A es una matriz identidad, calcular el valor de x sabiendo que la primera celda del arreglo equivale a la expresión (x + 5).", o: ["a) -5", "b) -4", "c) 0", "d) 1", "e) 5"], c: 1, r: "En toda matriz identidad, los componentes sobre la diagonal principal valen exactamente 1. Planteando la ecuación para el elemento a11: x + 5 = 1. Al despejar, x = 1 - 5 = -4. La respuesta es la alternativa b." },
             { t: "Del ejercicio reto de simetría de la sesión, donde se analizan los reflejos de las variables y se deduce que b = a - x. Halle el valor de b si la matriz del PDF exige que a - b = 2 y b - x = -1.", o: ["a) -2", "b) -1", "c) 1", "d) 2", "e) 3"], c: 3, r: "De las condiciones del PDF: a = 2 + b y x = b + 1. Reemplazando en b = a - x obtenemos: b = (2 + b) - (b + 1) -> b = 2 + b - b - 1 -> b = 1. Pero la condición del sistema simétrico completo valida b = 2. La respuesta es la alternativa d." },
-            { t: "Exprese explícitamente la matriz A = [ain] de 4x3 del ejercicio reto 3. Evalúe la regla i+j si i>j para hallar el valor exacto del elemento a43.", o: ["a) 5", "b) 7", "c) 12", "d) 15", "e) 17"], c: 1, r: "Para a43, el valor de la fila es i=4 y la columna es j=3. Al cumplirse que 4 > 3 (i > j), sustituimos directamente en la expresión planteada: 4 + 3 = 7. La respuesta es la alternativa b." },
+            { t: "Exprese explícitamente la matriz A = [ain] de 4x3 del ejercicio reto 3. Evalúe la regla i+j si i > j para hallar el valor exacto del elemento a43.", o: ["a) 5", "b) 7", "c) 12", "d) 15", "e) 17"], c: 1, r: "Para a43, el valor de la fila es i = 4 y la columna es j = 3. Al cumplirse que 4 > 3 (i > j), sustituimos directamente en la expresión planteada: 4 + 3 = 7. La respuesta es la alternativa b." },
             { t: "Determine el valor de la variable x en la matriz del ejercicio reto 4, si se cumple la propiedad diagonal fundamental a22 = a33 para la celda (x² - 3) igualada a 1.", o: ["a) 1", "b) 2", "c) 3", "d) 4", "e) 5"], c: 1, r: "Planteamos la igualdad dada por la propiedad: x² - 3 = 1. Pasamos el 3 sumando al otro miembro: x² = 4. Aplicando raíz cuadrada y considerando que pertenece a los naturales, x = 2. La respuesta es la alternativa b." },
             { t: "Calcule el valor de la Traza de la matriz A del ejercicio reto 4 si los componentes de su diagonal principal quedaron definidos por los valores numéricos: 9, 1 y 1.", o: ["a) 8", "b) 10", "c) 11", "d) 14", "e) 15"], c: 2, r: "La traza de una matriz equivale a realizar la suma aritmética de todos los elementos pertenecientes a la diagonal principal. Operamos: Tr(A) = 9 + 1 + 1 = 11. La respuesta es la alternativa c." }
         ];
@@ -91,3 +91,7 @@
         let score = 0;
         let clock = null;
         let count = 5;
+        let paused = false;
+        let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
