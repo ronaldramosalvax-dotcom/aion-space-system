@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Operaciones con Matrices</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f5f5f5; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e2efda; color: #385723; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #1e4620; }
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; }
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #5b9bd5; color: white; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title">Problema:</div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <p id="res-text"></p>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">05s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal">🥉</div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { t: "Dadas las matrices A de orden 2x2 y B de orden 3x2, determine qué afirmación es matemáticamente correcta respecto a la operación A + B.", o: ["a) Se genera una matriz de 3x2", "b) Se genera una matriz de 2x2", "c) Da como resultado una matriz nula", "d) NO se pueden sumar porque tienen diferentes órdenes", "e) Solo se pueden restar"], c: 3, r: "Por definición fundamental del álgebra matricial, dos matrices se pueden sumar o restar si y solo si poseen estrictamente el mismo orden. Como el orden de A (2x2) es diferente al de B (3x2), la operación no está definida." },
+            { t: "Si tenemos la matriz A = [2, 3; -7, 1], calcule la matriz resultante correspondiente a la operación k * A, siendo k = 3. Indique el elemento de la posición a21.", o: ["a) -21", "b) -7", "c) 3", "d) 6", "e) 9"], c: 0, r: "Al multiplicar una matriz por un número escalar, este afecta de forma individual multiplicando a cada término del arreglo. Para la posición a21 multiplicamos 3 * (-7) = -21." },
+            { t: "Del Ejercicio Reto 1 de la sesión, calcule el valor exacto de la variable lineal z si se cumple la siguiente igualdad matricial en las celdas de la primera fila y segunda columna: 5 - (-2) = z.", o: ["a) -2", "b) 3", "c) 5", "d) 7", "e) 12"], c: 3, r: "Comparamos de forma directa los elementos homólogos ubicados en la primera fila y segunda columna: 5 - (-2) = z. Operando los signos del paréntesis: 5 + 2 = z, lo que nos da como resultado z = 7." },
+            { t: "Utilizando el mismo Ejercicio Reto 1 de la sesión, halle el valor de la variable y evaluando los componentes de la posición de la segunda fila y segunda columna, resolviendo la ecuación: (7 + 3y) - 2y = 12.", o: ["a) -17", "b) 1", "c) 5", "d) 7", "e) 12"], c: 2, r: "Formulamos la ecuación lineal correspondiente con los términos de la posición a22: (7 + 3y) - 2y = 12. Reduciendo los términos semejantes: 7 + y = 12, por lo tanto despejando resulta y = 5." },
+            { t: "Complete el Ejercicio Reto 1 determinando ahora el valor final de la incógnita x a partir de la esquina superior izquierda, planteando la ecuación diferencial: (3 - x) - 5 = 15.", o: ["a) -17", "b) -15", "c) 3", "d) 5", "e) 17"], c: 0, r: "Planteamos la ecuación con las posiciones a11 correspondientes: (3 - x) - 5 = 15. Operamos los números constantes: -2 - x = 15. Trasladamos la variable para despejarla de forma correcta: -2 - 15 = x, concluyendo que x = -17." },
+            { t: "Resuelva la ecuación matricial 2A + 3X = 3B sabiendo que la diagonal principal de 3B equivale a 15, -21, 3 y la de 2A equivale a -4, -4, 4. Halle el valor de la Traza de X.", o: ["a) -1/3", "b) 0", "c) 1/3", "d) 1", "e) 3"], c: 2, r: "Restamos las diagonales para hallar la traza de 3X: (15 - (-4)) + (-21 - (-4)) + (3 - 4) = 19 - 17 - 1 = 1. Como 3 * Tr(X) = 1, despejamos dividiendo entre 3, dándonos Tr(X) = 1/3." },
+            { t: "Sabiendo que 2X - 3Y = [1, 5; 4, 2] y que X - Y = [-1, 0; 3, 6], aplique el método de sustitución algebraica matricial para determinar el valor final de la matriz Y.", o: ["a) [-3,-5; 2,10]", "b) [-4,-5; 5,16]", "c) [5,20; -11,-14]", "d) [0,0; 0,0]", "e) [1,1; 1,1]"], c: 0, r: "Despejamos X de la segunda ecuación: X = [-1, 0; 3, 6] + Y. Sustituimos en la primera: 2([-1, 0; 3, 6] + Y) - 3Y = [1, 5; 4, 2]. Simplificando elemento a elemento, se concluye que Y = [-3, -5; 2, 10]." },
+            { t: "Tomando las matrices calculadas en el ejercicio explicativo anterior, halle la matriz final resultante de C = Xt - 3Y, considerando Xt = [-4, 5; -5, 16] y -3Y = [9, 15; -6, -30].", o: ["a) [-4,5; -5,16]", "b) [9,15; -6,-30]", "c) [5,20; -11,-14]", "d) [1,2; 3,4]", "e) [0,-5; 2,1]"], c: 2, r: "Realizamos la suma algebraica de ambos componentes de forma directa posición por posición: [-4+9, 5+15; -5+(-6), 16+(-30)], lo que genera como resultado final la matriz [5, 20; -11, -14]." },
+            { t: "Resuelva el Ejercicio Reto 2 buscando la matriz A en el sistema matricial sumando de forma directa las ecuaciones: 3A - B = [1, 3; 5, 0] y -2A + B = [-3, 1; 4, 2].", o: ["a) [-7,9; 22,6]", "b) [-2,4; 9,2]", "c) [-3,-2; 36,4]", "d) [1,1; 1,1]", "e) [2,2; 2,2]"], c: 1, r: "Sumamos las dos ecuaciones para cancelar la matriz variable B: (3A - 2A) + (-B + B) = [1+(-3), 3+1; 5+4, 0+2]. Operando aritméticamente cada término se obtiene directo la matriz A = [-2, 4; 9, 2]." },
+            { t: "Utilizando las celdas calculadas en el Ejercicio Reto 2 anterior, determine el valor de la matriz combinada C = 5A - Bt, siendo 5A = [-10, 20; 45, 10] y Bt = [-7, 22; 9, 6].", o: ["a) [-7,22; 9,6]", "b) [-10,20; 45,10]", "c) [-3,-2; 36,4]", "d) [5,5; 5,5]", "e) [-3,36; -2,4]"], c: 2, r: "Restamos los elementos homólogos uno a uno respetando los signos negativos de las celdas correspondientes: [-10-(-7), 20-22; 45-9, 10-6], lo que da como resultado la matriz final [-3, -2; 36, 4]." }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 5; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 5;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = `Problema ${index + 1}:`;
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.textContent = item.r;
+
+            optionsBox.innerHTML = '';
+            item.o.forEach((txt, i) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor"></div><div class="option-text">${txt}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { lis[chosen].classList.add('correct'); score++; }
+            else { lis[chosen].classList.add('wrong'); }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { step(); }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            document.getElementById('results-panel').style.display = 'flex';
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 aciertos)`;
+            const medal = document.getElementById('r-medal');
+            const n = document.getElementById('r-name');
+            if(score===0){ medal.textContent="❌"; n.textContent="Sin Medalla"; }
+            else if(score<=2){ medal.textContent="🥉"; n.textContent="Medalla de Bronce"; }
+            else if(score<=4){ medal.textContent="🥈"; n.textContent="Medalla de Plata"; }
+            else if(score<=6){ medal.textContent="🥇"; n.textContent="Medalla de Oro"; }
+            else if(score<=8){ medal.textContent="💎"; n.textContent="Medalla de Diamante"; }
+            else { medal.textContent="🪐"; n.textContent="Medalla de Rodio"; }
+        }
+
+        render();
+    </script>
+</body>
+</html>
