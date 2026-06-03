@@ -68,7 +68,7 @@
         </div>
     </div>
 
-    <script>
+       <script>
         const problems = [
             { t: "Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica: i - 5j si i es igual a j; 3i - 2j si i es mayor que j; e i * j si i es menor que j. Determine el valor del elemento que se ubica en la posición m32.", o: ["a) 2", "b) 4", "c) 5", "d) 7", "e) -12"], c: 2, r: "Para hallar m32, vemos que fila i = 3 y columna j = 2. Como i es mayor que j (3 > 2), aplicamos la regla '3i - 2j'. Operando: 3(3) - 2(2) = 9 - 4 = 5. La respuesta es la alternativa c." },
             { t: "Dadas las matrices iguales: A = [2a+b, -4; 12, 3c+d] y B = [19, a+2b; 3c, 15]. Determine el valor numérico del elemento c.", o: ["a) 2", "b) 3", "c) 4", "d) 12", "e) 15"], c: 2, r: "Por matrices iguales, los componentes en la misma posición coinciden. En la fila 2, columna 1 vemos que 12 = 3c. Al despejar obtenemos c = 12 / 3 = 4. La respuesta es la alternativa c." },
@@ -89,3 +89,95 @@
         const optionsBox = document.getElementById('options-box');
         const resBox = document.getElementById('res-box');
         const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 5;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = `Problema ${index + 1}:`;
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.textContent = item.r;
+
+            optionsBox.innerHTML = '';
+            item.o.forEach((txt, i) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor"></div><div class="option-text">${txt}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { lis[chosen].classList.add('correct'); score++; }
+            else { lis[chosen].classList.add('wrong'); }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { step(); }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            document.getElementById('results-panel').style.display = 'flex';
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 aciertos)`;
+            const medal = document.getElementById('r-medal');
+            const n = document.getElementById('r-name');
+            if(score===0){ medal.textContent="❌"; n.textContent="Sin Medalla"; }
+            else if(score<=2){ medal.textContent="🥉"; n.textContent="Medalla de Bronce"; }
+            else if(score<=4){ medal.textContent="🥈"; n.textContent="Medalla de Plata"; }
+            else if(score<=6){ medal.textContent="🥇"; n.textContent="Medalla de Oro"; }
+            else if(score<=8){ medal.textContent="💎"; n.textContent="Medalla de Diamante"; }
+            else { medal.textContent="🪐"; n.textContent="Medalla de Rodio"; }
+        }
+
+        render();
+    </script>
