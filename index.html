@@ -387,7 +387,9 @@
                     <span class="btn-action-card" style="display: block; text-align: center;">Ver Recursos</span>
                 </a>
         <!-- Tarjeta 2: Matemática II (Teoría y Práctica) -->
-        <div class="product-card">
+            <div class="product-card" onclick="const d = document.getElementById('mat2-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+
+     
             <div>
                 <span class="tag-category">Asignatura</span>
                 <div class="product-title">📐 Matemática II</div>
@@ -398,6 +400,15 @@
                 <a href="https://docs.google.com/spreadsheets/d/1xMIaWZjLQjCzpUZPoB_6Lak151QJal4MDxK79KNytiU/edit?usp=sharing" target="_blank" class="btn-action-card" style="flex: 1; text-decoration: none; display: block; text-align: center; background-color: #404eed;">💻 Práctica</a>
             </div>
         </div>
+                    <!-- Lista Desplegable que conecta a tus 10 problemas -->
+    <ul id="mat2-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; margin-top: 10px; width: 100%; padding: 0;">
+        <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="matrices.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Matrices y Tipos de Matrices</a></li>
+        <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5; border-bottom: 1px solid rgba(255,255,255,0.05);">2. Cálculo Integral Definida</li>
+        <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5; border-bottom: 1px solid rgba(255,255,255,0.05);">3. Derivadas Parciales Complejas</li>
+        <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5; border-bottom: 1px solid rgba(255,255,255,0.05);">4. Optimización Multivariable</li>
+        <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">5. Aplicación de Software</li>
+    </ul>
+
 
                 <!-- Tarjeta 3: Matemática Discreta (Corregido el cierre de etiqueta) -->
                 <a href="#" class="product-card">
