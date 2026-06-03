@@ -12,7 +12,7 @@
         .problem-block { background-color: #1e3a1e; color: #d4edda; height: 35%; padding: 25px; border-bottom: 2px solid #30363d; font-size: 16px; overflow-y: auto; }
         .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #58a6ff; }
         .interactive-block { flex: 1; background-color: #0d1117; padding: 25px; display: flex; flex-direction: column; position: relative; }
-        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; z-index: 5; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
         .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
         .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #58a6ff; background-color: #161b22; border-radius: 4px; flex-shrink: 0; }
         .option-item.correct .checkbox-anchor { background-color: #2463eb !important; border-color: #2463eb !important; }
@@ -37,24 +37,20 @@
     <div class="quiz-container">
         <div class="main-content" id="question-wrapper">
             <div class="problem-block">
-                <div class="problem-title" id="p-title">Problema 1:</div>
-                <p id="p-text">Cargando enunciado...</p>
+                <div class="problem-title" id="p-title">Problema:</div>
+                <p id="p-text">Cargando...</p>
             </div>
 
             <div class="interactive-block" id="int-zone">
-                <!-- Lista de opciones del alumno -->
                 <ul class="options-list" id="options-box"></ul>
-
-                <!-- Ventana de resolución celeste (reemplazo total) -->
                 <div class="resolution-block" id="res-box">
                     <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
                     <p id="res-text"></p>
-                    <p style="margin-top:25px; font-size:12px; opacity:0.8; text-align:center;">[ Haz clic en la resolución para alternar la pantalla y revisar tus alternativas ]</p>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.8; text-align:center;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
                 </div>
             </div>
         </div>
 
-        <!-- Barra lateral -->
         <div class="sidebar" id="side-bar">
             <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
             <div class="timer-controls">
@@ -63,35 +59,33 @@
             </div>
         </div>
 
-        <!-- Pantalla de medallas -->
         <div class="results-screen" id="results-panel">
             <h2>Práctica Finalizada</h2>
             <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
             <div class="medal-box" id="r-medal">🥉</div>
-            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla de Bronce</p>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
             <a href="index.html" class="btn-back">Volver a los Temas</a>
         </div>
     </div>
 
     <script>
         const problems = [
-            { t: "Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica: i - 5j si i = j; 3i - 2j si i > j; e i * j si i < j. Determine el valor del elemento que se ubica en la posición m32.", o: ["a) 2", "b) 4", "c) 5", "d) 7", "e) -12"], c: 2, r: "Para hallar m32, vemos que fila i = 3 y columna j = 2. Como i > j (3 > 2), aplicamos la regla '3i - 2j'. Operando: 3(3) - 2(2) = 9 - 4 = 5. La respuesta es la alternativa c." },
+            { t: "Exprese de forma explícita la siguiente matriz M = [mij] de 4x4 sabiendo que la regla aplica: i - 5j si i es igual a j; 3i - 2j si i es mayor que j; e i * j si i es menor que j. Determine el valor del elemento que se ubica en la posición m32.", o: ["a) 2", "b) 4", "c) 5", "d) 7", "e) -12"], c: 2, r: "Para hallar m32, vemos que fila i = 3 y columna j = 2. Como i es mayor que j (3 > 2), aplicamos la regla '3i - 2j'. Operando: 3(3) - 2(2) = 9 - 4 = 5. La respuesta es la alternativa c." },
             { t: "Dadas las matrices iguales: A = [2a+b, -4; 12, 3c+d] y B = [19, a+2b; 3c, 15]. Determine el valor numérico del elemento c.", o: ["a) 2", "b) 3", "c) 4", "d) 12", "e) 15"], c: 2, r: "Por matrices iguales, los componentes en la misma posición coinciden. En la fila 2, columna 1 vemos que 12 = 3c. Al despejar obtenemos c = 12 / 3 = 4. La respuesta es la alternativa c." },
             { t: "Si la matriz A = [4, 6-y², 9; 5y, -3, z+2; x², 5, 2] es una matriz simétrica, siendo x, y, z números naturales. Hallar el valor de la variable z.", o: ["a) 1", "b) 2", "c) 3", "d) 5", "e) 9"], c: 2, r: "En una matriz simétrica se cumple que los elementos opuestos respecto a la diagonal son iguales (aij = aji). Al comparar la posición a23 con a32, encontramos que 5 = z + 2. Despejando: z = 5 - 2 = 3. La respuesta es la alternativa c." },
             { t: "Si la matriz B = [8x, x²-16, z-7; 3y-10+y², 4y, 0; 0, 3z-21, z] es una matriz diagonal con x, y, z en los naturales. Determine el valor de z.", o: ["a) 2", "b) 4", "c) 7", "d) 16", "e) 21"], c: 2, r: "En una matriz diagonal, todos los términos que no pertenecen a la diagonal principal deben valer cero. Evaluando el término superior derecho: z - 7 = 0, lo que nos da directamente z = 7. La respuesta es la alternativa c." },
             { t: "Dadas las matrices iguales A = [2x-3, 3y+2x; w+3z, 1-z] y B = [x+1, y-2; x-w, 2z+7]. Determine el valor de x.", o: ["a) -2", "b) 1", "c) 3", "d) 4", "e) 5"], c: 3, r: "Igualamos el componente de la primera fila y primera columna (a11 = b11): 2x - 3 = x + 1. Trasladamos las x a la izquierda: 2x - x = 1 + 3, concluyendo que x = 4. La respuesta es la alternativa d." },
             { t: "Si A es una matriz identidad, calcular el valor de x sabiendo que la primera celda del arreglo equivale a la expresión (x + 5).", o: ["a) -5", "b) -4", "c) 0", "d) 1", "e) 5"], c: 1, r: "En toda matriz identidad, los componentes sobre la diagonal principal valen exactamente 1. Planteando la ecuación para el elemento a11: x + 5 = 1. Al despejar, x = 1 - 5 = -4. La respuesta es la alternativa b." },
             { t: "Del ejercicio reto de simetría de la sesión, donde se analizan los reflejos de las variables y se deduce que b = a - x. Halle el valor de b si la matriz del PDF exige que a - b = 2 y b - x = -1.", o: ["a) -2", "b) -1", "c) 1", "d) 2", "e) 3"], c: 3, r: "De las condiciones del PDF: a = 2 + b y x = b + 1. Reemplazando en b = a - x obtenemos: b = (2 + b) - (b + 1) -> b = 2 + b - b - 1 -> b = 1. Pero la condición del sistema simétrico completo valida b = 2. La respuesta es la alternativa d." },
-            { t: "Exprese explícitamente la matriz A = [ain] de 4x3 del ejercicio reto 3. Evalúe la regla i+j si i > j para hallar el valor exacto del elemento a43.", o: ["a) 5", "b) 7", "c) 12", "d) 15", "e) 17"], c: 1, r: "Para a43, el valor de la fila es i = 4 y la columna es j = 3. Al cumplirse que 4 > 3 (i > j), sustituimos directamente en la expresión planteada: 4 + 3 = 7. La respuesta es la alternativa b." },
+            { t: "Exprese explícitamente la matriz A = [ain] de 4x3 del ejercicio reto 3. Evalúe la regla i+j si i es mayor que j para hallar el valor exacto del elemento a43.", o: ["a) 5", "b) 7", "c) 12", "d) 15", "e) 17"], c: 1, r: "Para a43, el valor de la fila es i = 4 y la columna es j = 3. Al cumplirse que 4 > 3 (i > j), sustituimos directamente en la expresión planteada: 4 + 3 = 7. La respuesta es la alternativa b." },
             { t: "Determine el valor de la variable x en la matriz del ejercicio reto 4, si se cumple la propiedad diagonal fundamental a22 = a33 para la celda (x² - 3) igualada a 1.", o: ["a) 1", "b) 2", "c) 3", "d) 4", "e) 5"], c: 1, r: "Planteamos la igualdad dada por la propiedad: x² - 3 = 1. Pasamos el 3 sumando al otro miembro: x² = 4. Aplicando raíz cuadrada y considerando que pertenece a los naturales, x = 2. La respuesta es la alternativa b." },
             { t: "Calcule el valor de la Traza de la matriz A del ejercicio reto 4 si los componentes de su diagonal principal quedaron definidos por los valores numéricos: 9, 1 y 1.", o: ["a) 8", "b) 10", "c) 11", "d) 14", "e) 15"], c: 2, r: "La traza de una matriz equivale a realizar la suma aritmética de todos los elementos pertenecientes a la diagonal principal. Operamos: Tr(A) = 9 + 1 + 1 = 11. La respuesta es la alternativa c." }
         ];
 
-        let index = 0;
-        let score = 0;
-        let clock = null;
-        let count = 5;
-        let paused = false;
-        let viewRes = false;
+        let index = 0; let score = 0; let clock = null; let count = 5; let paused = false; let viewRes = false;
 
         const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
