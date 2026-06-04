@@ -402,7 +402,8 @@
             <h2 class="section-title">📚 Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
                          <!-- Tarjeta 1: Tecnologías de la Información (TIC) -->
-<div class="product-card" onclick="const d = document.getElementById('tic-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+<div class="product-card" onclick="const t = document.getElementById('tic-dropdown'); const isOpen = t.style.maxHeight === '300px'; document.getElementById('alg-dropdown').style.maxHeight = '0px'; document.getElementById('mat2-dropdown').style.maxHeight = '0px'; t.style.maxHeight = isOpen ? '0px' : '300px';" style="position: relative;">
+
     <div>
         <span class="tag-category">Asignatura</span>
         <div class="product-title">💻 Introducción a las TIC</div>
@@ -419,7 +420,8 @@
 </div> <!-- ◄ Aquí cierra la tarjeta con el menú bien guardado adentro -->
 
                                <!-- Tarjeta 2: Principios de Algoritmos -->
-<div class="product-card" onclick="const d = document.getElementById('alg-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+<div class="product-card" onclick="const a = document.getElementById('alg-dropdown'); const isOpen = a.style.maxHeight === '300px'; document.getElementById('tic-dropdown').style.maxHeight = '0px'; document.getElementById('mat2-dropdown').style.maxHeight = '0px'; a.style.maxHeight = isOpen ? '0px' : '300px';" style="position: relative;">
+
     <div>
         <span class="tag-category">Asignatura</span>
         <div class="product-title">💻 Principios de Algoritmos</div>
@@ -438,7 +440,8 @@
 </div> <!-- Aquí cierra de forma definitiva la tarjeta de Algoritmos -->
 
         <!-- Tarjeta 3: Matemática II -->
-<div class="product-card" onclick="const d = document.getElementById('mat2-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+<div class="product-card" onclick="const m = document.getElementById('mat2-dropdown'); const isOpen = m.style.maxHeight === '300px'; document.getElementById('tic-dropdown').style.maxHeight = '0px'; document.getElementById('alg-dropdown').style.maxHeight = '0px'; m.style.maxHeight = isOpen ? '0px' : '300px';" style="position: relative;">
+
     <div>
         <span class="tag-category">Asignatura</span>
         <div class="product-title">📐 Matemática II</div>
