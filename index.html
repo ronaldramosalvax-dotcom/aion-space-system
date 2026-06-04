@@ -469,11 +469,47 @@
 
 </div> <!-- Cierre definitivo del contenedor 'wrapper-plataforma-aion' -->
 
-<!-- SCRIPT DE CONTROL DE PILOTOS (ESTILO MECH ARENA) -->
+<!-- PANTALLA DE REGISTRO INICIAL (ESTILO MECH ARENA) -->
+<div id="pantalla-registro-mecha" class="modal-registro-mecha">
+  <div class="contenedor-registro-mecha">
+    <h2>CREACIÓN DE PILOTO</h2>
+    <p class="subtitulo-registro">Regístrate para acceder al Radar de Comunicación</p>
+    
+    <input type="text" id="input-nickname-mecha" class="input-mecha-piloto" placeholder="Introduce tu Nickname..." maxlength="12">
+
+    <h3 class="titulo-seleccion-mecha">Selecciona tu Piloto de Combate</h3>
+    
+    <div class="grid-pilotos-mecha">
+      <!-- Piloto 1: ALPHA -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'ALPHA')">
+        <img src="https://dicebear.com" alt="Alpha">
+        <div class="tag-nombre-avatar">ALPHA</div>
+      </div>
+      <!-- Piloto 2: NOVA -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'NOVA')">
+        <img src="https://dicebear.com" alt="Nova">
+        <div class="tag-nombre-avatar">NOVA</div>
+      </div>
+      <!-- Piloto 3: VORTEX -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'VORTEX')">
+        <img src="https://dicebear.com" alt="Vortex">
+        <div class="tag-nombre-avatar">VORTEX</div>
+      </div>
+      <!-- Piloto 4: APEX -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'APEX')">
+        <img src="https://dicebear.com" alt="Apex">
+        <div class="tag-nombre-avatar">APEX</div>
+      </div>
+    </div>
+
+    <button class="btn-desplegar-piloto" onclick="confirmarDesplieguePiloto()">INICIAR OPERACIONES</button>
+  </div>
+</div>
+
+<!-- SCRIPT DE CONTROL DE LOGUEO -->
 <script>
     let avatarSeleccionadoUrl = "";
 
-    // 1. Función para resaltar la tarjeta del Mecha elegido
     function seleccionarAvatarMecha(elemento, urlImagen, nombreAvatar) {
         document.querySelectorAll('.tarjeta-piloto-opcion').forEach(card => {
             card.classList.remove('seleccionada');
@@ -482,7 +518,6 @@
         avatarSeleccionadoUrl = urlImagen;
     }
 
-    // 2. Función que procesa el botón "INICIAR OPERACIONES"
     function confirmarDesplieguePiloto() {
         const nicknameInput = document.getElementById("input-nickname-mecha").value.trim();
 
@@ -491,11 +526,10 @@
             return;
         }
         if (avatarSeleccionadoUrl === "") {
-            alert("🚨 Seleccione un diseño de Mecha para su avatar de escuadrón.");
+            alert("🚨 Seleccione un diseño de Piloto para su avatar.");
             return;
         }
 
-        // Generar un código único aleatorio de 4 dígitos (Ej: AION-7420)
         const codigoAleatorio = `AION-${Math.floor(1000 + Math.random() * 9000)}`;
 
         const perfilPiloto = {
@@ -504,26 +538,20 @@
             avatar: avatarSeleccionadoUrl
         };
 
-        // Guardar de forma permanente en la memoria interna del teléfono
         localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfilPiloto));
-
-        // Dar acceso inmediato a la plataforma
         activarPlataformaAion(perfilPiloto);
     }
 
-    // 3. Función para ocultar el registro y abrir la interfaz principal
     function activarPlataformaAion(perfil) {
         document.getElementById("pantalla-registro-mecha").style.display = "none";
         document.getElementById("wrapper-plataforma-aion").style.display = "block";
         
-        // Colocar automáticamente el nombre fijo en el input del chat
         const inputNombreChat = document.getElementById("nombre-usuario-arena");
         if (inputNombreChat) {
             inputNombreChat.value = `${perfil.nombre} [${perfil.codigo}]`;
         }
     }
 
-    // 4. VERIFICACIÓN AUTOMÁTICA AL ABRIR LA APLICACIÓN
     window.addEventListener("DOMContentLoaded", () => {
         const cuentaExistente = localStorage.getItem("cuenta_aion_instalada");
 
@@ -539,6 +567,3 @@
 
 </body>
 </html>
-
-              
-       
