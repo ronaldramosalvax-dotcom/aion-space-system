@@ -184,13 +184,25 @@
         }
 
         /* Rejilla fija de 3 columnas estrictas para PC */
-        .grid-layout {
-          display: flex !important;
-            justify-content: space-between !important;
-            align-items: flex-start !important;
+        .grid-layout {        
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
             gap: 25px !important;
             margin-bottom: 40px;
+            align-items: start !important;
         }
+
+        .grid-layout ul {
+            position: absolute !important;
+            width: 100% !important;
+            z-index: 9999 !important;
+            background-color: #1e1f22 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+            margin-top: 10px !important;
+        }
+
+    
        
                 @media (max-width: 900px) {
             /* 1. Menú superior en vertical para celular */
