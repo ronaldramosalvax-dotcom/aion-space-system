@@ -1,0 +1,84 @@
+<!-- ... Todo tu código HTML y CSS anterior ... -->
+
+<script>
+            const problems = [
+            { 
+                t: "Toda ecuación lineal de una incógnita o primer grado es representada por la forma general ax + b = 0. ¿Qué condición obligatoria deben cumplir los parámetros?", 
+                o: ["a) a, b ∈ ℝ  y  a ≠ 0", "b) a, b ∈ ℝ  y  b ≠ 0", "c) a = 0  y  b = 0", "d) a, b ∈ ℤ  y  a = 1", "e) No hay ninguna restricción real"], 
+                c: 0, 
+                r: "<b>[ CONDICIÓN DE PRIMER GRADO ]</b><br>• Para garantizar que la variable de potencia uno no desaparezca, el coeficiente 'a' debe pertenecer a los reales y ser estrictamente <b>diferente de cero (a ≠ 0)</b>. Si fuera cero, la variable se eliminaría." 
+            },
+            { 
+                t: "Si al evaluar el Conjunto Solución (C.S.) de una ecuación lineal ax + b = 0, se descubre que los coeficientes cumplen la condición a = 0 y b = 0, ¿cuál es el resultado correcto?", 
+                o: ["a) C.S. = { -b/a }", "b) C.S. = 𝝓 (Vacío)", "c) C.S. = ℝ (Todos los reales)", "d) C.S. = { 0 }", "e) x = 1"], 
+                c: 2, 
+                r: "<b>[ COMPATIBLE INDETERMINADA ]</b><br>• Reducción teórica: 0 · x = 0.<br>• Cualquier número real multiplicado por cero da cero (0 = 0).<br>• Por lo tanto, existen infinitas soluciones válidas en el universo numérico: <b>C.S. = ℝ</b>." 
+            },
+            { 
+                t: "Resuelva la siguiente ecuación lineal de primer grado e indique su conjunto solución: 3(6 - 5x) - 4(2 - x) - (x + 1) = 0.", 
+                o: ["a) C.S. = { -3/4 }", "b) C.S. = { 4/3 }", "c) C.S. = { 3/4 }", "d) C.S. = ℝ", "e) C.S. = 𝝓"], 
+                c: 2, 
+                r: "<b>[ RESOLUCIÓN CON PARÉNTESIS ]</b><br>• Propiedad distributiva: 18 - 15x - 8 + 4x - x - 1 = 0<br>• Agrupando términos semejantes: -12x + 9 = 0<br>• Transponiendo términos: -12x = -9<br>• Despejando la incógnita: x = -9 / -12 = <b>3/4</b> → <b>C.S. = { 3/4 }</b>" 
+            },
+            { 
+                t: "Resolver la ecuación analítica e indicar su conjunto solución: (2x + 1)² - 5(x + 3) = 4x² - 7(x + 2) + 6x.", 
+                o: ["a) x = -14", "b) C.S. = ℝ", "c) C.S. = 𝝓", "d) x = 0", "e) x = 14"], 
+                c: 1, 
+                r: "<b>[ ANÁLISIS DE PRODUCTOS NOTABLES ]</b><br>• Desarrollando el binomio al cuadrado: 4x² + 4x + 1 - 5x - 15 = 4x² - 7x - 14 + 6x<br>• Eliminando los bloques cuadráticos (4x²) de ambos lados: -x - 14 = -x - 14<br>• Operando las variables: 0 · x = 0  →  0 = 0 (Verdad absoluta).<br>• Por ende, la ecuación posee infinitas soluciones: <b>C.S. = ℝ</b>" 
+            },
+            { 
+                t: "Al evaluar y reducir la ecuación de primer grado 2(3 - 2x) + 6x = 2(x + 5), ¿qué se obtiene como solución final?", 
+                o: ["a) x = 4", "b) C.S. = ℝ", "c) x = -4", "d) C.S. = 𝝓", "e) x = 0"], 
+                c: 3, 
+                r: "<b>[ EVALUACIÓN DE INCONSISTENCIA ]</b><br>• Rompiendo bloques: 6 - 4x + 6x = 2x + 10  →  6 + 2x = 2x + 10<br>• Agrupando incógnitas lineales: 2x - 2x = 10 - 6<br>• Simplificación final: 0 · x = 4  →  0 = 4 (Falso/Absurdo).<br>• Al ser una inconsistencia matemática, no tiene raíces: <b>C.S. = 𝝓</b>" 
+            },
+            { 
+                t: "Determine el conjunto solución de la ecuación con fracciones: (3x - 5)/4 - (8 - x)/3 - x/6 = x.", 
+                o: ["a) C.S. = { 47 }", "b) C.S. = { -47 }", "c) C.S. = { -47/12 }", "d) C.S. = { 12/47 }", "e) C.S. = 𝝓"], 
+                c: 1, 
+                r: "<b>[ FRACCIONARIO CON M.C.M. = 12 ]</b><br>• Multiplicando la ecuación completa por 12:<br>&nbsp;&nbsp;3(3x - 5) - 4(8 - x) - 2(x) = 12(x)<br>&nbsp;&nbsp;9x - 15 - 32 + 4x - 2x = 12x<br>&nbsp;&nbsp;11x - 47 = 12x  →  -47 = 12x - 11x<br>• Conclusión analítica directa: <b>x = -47</b> → <b>C.S. = { -47 }</b>" 
+            },
+            { 
+                t: "Dada la ecuación (x - 2)/3 - (2 - y)/5 = 3y + 5. Si se parametrizan las variables como x = -3t e y = 2 + t, halle el valor numérico de t.", 
+                o: ["a) t = 175/57", "b) t = -57/175", "c) t = -175/57", "d) t = 0", "e) t = -165/45"], 
+                c: 2, 
+                r: "<b>[ RE EMPLAZO DE VARIABLES SIMULTÁNEO ]</b><br>• Sustituyendo en la ecuación: (-3t - 2)/3 - (2 - (2 + t))/5 = 3(2 + t) + 5<br>• Simplificando: (-3t - 2)/3 - (-t)/5 = 11 + 3t<br>• Por m.c.m. = 15: 5(-3t - 2) - 3(-t) = 15(11 + 3t)<br>&nbsp;&nbsp;-15t - 10 + 3t = 165 + 45t  →  -12t - 10 = 165 + 45t<br>&nbsp;&nbsp;-10 - 165 = 45t + 12t  →  -175 = 57t  →  <b>t = -175/57</b>" 
+            },
+            { 
+                t: "Encuentre el conjunto solución tras reducir la ecuación lineal fraccionaria compleja: 2x - (2 - 3x)/4 - (5 + x)/5 = 2(x - 3) - 3/5.", 
+                o: ["a) C.S. = { 102/11 }", "b) C.S. = { -102/11 }", "c) C.S. = { -11/102 }", "d) C.S. = 𝝓", "e) C.S. = ℝ"], 
+                c: 1, 
+                r: "<b>[ DESARROLLO CON M.C.M. = 20 ]</b><br>• Multiplicando todos los términos por 20 para anular denominadores:<br>&nbsp;&nbsp;40x - 5(2 - 3x) - 4(5 + x) = 40(x - 3) - 4(3)<br>&nbsp;&nbsp;40x - 10 + 15x - 20 - 4x = 40x - 120 - 12<br>&nbsp;&nbsp;51x - 30 = 40x - 132  →  51x - 40x = -132 + 30<br>&nbsp;&nbsp;11x = -102  →  <b>x = -102/11</b>" 
+            },
+            { 
+                t: "Resuelve la siguiente ecuación fraccionaria y determina el valor correcto de la incógnita x: (5x - 4)/4 - (3 - x)/3 - x/6 = 2x", 
+                o: ["a) x = -2", "b) x = 4", "c) x = -24/7", "d) x = 12/15", "e) El sistema no tiene solución"], 
+                c: 2, 
+                r: "<b>[ DESARROLLO CON MÍNIMO COMÚN MÚLTIPLO ]</b><br>• El mínimo común múltiplo de (4, 3 y 6) es 12. Multiplicamos cada término por 12:<br>&nbsp;&nbsp;3(5x - 4) - 4(3 - x) - 2(x) = 12(2x)<br>• Propiedad distributiva cuidando los signos:<br>&nbsp;&nbsp;15x - 12 - 12 + 4x - 2x = 24x<br>&nbsp;&nbsp;17x - 24 = 24x<br>• Pasamos las x al lado derecho para despejar:<br>&nbsp;&nbsp;-24 = 24x - 17x  →  -24 = 7x  →  <b>x = -24/7</b>" 
+            },
+            { 
+                t: "Cuando trabajamos con una ecuación lineal que tiene muchas variables (como x₁, x₂, x₃...), el modelo matemático se escribe así: a₁x₁ + a₂x₂ + ... + a_nx_n + k = 0. ¿A qué exponente deben estar elevadas obligatoriamente todas las variables?", 
+                o: ["a) Exponente cero (0)", "b) Exponente uno (1)", "c) Exponente dos (2)", "d) Exponente 'n'", "e) Cualquier exponente real"], 
+                c: 1, 
+                r: "<b>[ REGLA DE LAS ECUACIONES DE PRIMER GRADO ]</b><br>• Una ecuación es lineal (o de primer grado) porque el exponente más alto de todas sus letras es el <b>número 1</b>.<br>• Esto significa que las variables no pueden estar elevadas al cuadrado (x²) ni al cubo (x³). Si ves una letra sin exponente visible, matemáticamente su potencia es <b>uno</b>." 
+            }
+        ];
+
+    const problems = [
+        {
+            t: "Toda ecuación lineal...",
+            o: ["a)...", "b)..."],
+            c: 0,
+            r: "<b>..."
+        },
+        // ... El resto de tus 10 preguntas ...
+    ];
+
+    // AQUÍ ABAJO CONTINÚAN TUS FUNCIONES (render, evaluate, startClock, finish...)
+    let index = 0; 
+    let score = 0;
+    // ... etc.
+</script>
+
+</body>
+</html>
