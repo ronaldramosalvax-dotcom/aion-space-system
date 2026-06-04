@@ -378,7 +378,7 @@
             <div class="grid-layout">
                                 <!-- Tarjeta 1: Tecnologías de la Información (TIC) -->
                 <div class="product-card" onclick="const d = document.getElementById('tic-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
-                    <div>
+                    
                         <span class="tag-category">Asignatura</span>
                         <div class="product-title">💻 Introducción a las TIC</div>
                         <p class="product-desc">Modelos de redes globales, infraestructura de servidores cloud, ciberseguridad avanzada y flujos de datos.</p>
@@ -386,13 +386,12 @@
                     <div style="display: flex; gap: 10px; margin-top: auto;">
                         <span class="btn-action-card" style="flex: 1; text-align: center;">📚 Temas</span>
                     </div>
-                </div>
+                
                 <!-- Lista Desplegable de TIC -->
-                <ul id="tic-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; margin-top: 10px; width: 100%; padding: 0; grid-column: span 1;">
-                    <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="tic1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Arquitectura de Redes (OSI y TCP/IP)</a></li>
-                    <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">2. Infraestructura Cloud y Servidores</li>
-                    <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">3. Ciberseguridad y Gestión de Riesgos</li>
-                </ul>
+                        <ul id="tic-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; margin-top: 10px; width: 100%; padding: 0; position: absolute; left: 0; top: 100%; z-index: 50;">
+                            <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="tic1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Arquitectura de Redes (OSI y TCP/IP)</a></li>
+                        </ul>
+
                                 <!-- Tarjeta 2: Principios de Algoritmos -->
                 <div class="product-card" onclick="const d = document.getElementById('alg-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
                     <div>
