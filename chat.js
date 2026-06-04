@@ -20,24 +20,31 @@ const mensajesRef = ref(db, 'mensajes');
 // Filtro para traer únicamente la cola final de 40 mensajes de la nube
 const consultaUltimos40 = query(mensajesRef, orderByKey(), limitToLast(40));
 
-// FUNCION GLOBAL: Enviar mensaje a Firebase
+// FUNCION GLOBAL: Enviar mensaje a Firebase (Estilo Mech Arena)
 window.enviarMensajeArena = function() {
-    const inputUsuario = document.getElementById('nombre-usuario-arena');
     const inputMensaje = document.getElementById('input-mensaje-arena');
-    
-    const usuario = inputUsuario ? inputUsuario.value.trim() : "Cachimbo_Anonimo";
     const texto = inputMensaje ? inputMensaje.value.trim() : "";
     
-    if (usuario !== "" && texto !== "") {
-        push(mensajesRef, {
-            usuario: usuario,
-            texto: texto, // Sincronizado como 'texto'
-            timestamp: Date.now()
-        });
-        if (inputMensaje) inputMensaje.value = ""; // Limpiar barra de texto
-    } else {
-        alert("Por favor, ingresa tu usuario y mensaje.");
+    if (texto === "") return;
+
+    // Recuperamos de forma segura la cuenta del celular
+    const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+    if (!cuentaLocal) {
+        alert("🚨 Error: No se encontró perfil de piloto en este dispositivo.");
+        return;
     }
+    const perfil = JSON.parse(cuentaLocal);
+    
+    // Subimos el paquete de datos blindado a Firebase
+    push(mensajesRef, {
+        usuario: perfil.nombre,
+        codigo: perfil.codigo,
+        avatar: perfil.avatar, // Almacena la URL del Mecha
+        texto: texto,
+        timestamp: Date.now()
+    });
+    
+    if (inputMensaje) inputMensaje.value = ""; // Limpiar barra de texto
 }
 
 // FUNCION GLOBAL: Detectar el envío con la tecla Enter
@@ -47,7 +54,7 @@ window.detectarEnter = function(event) {
     }
 }
 
-// ESCUCHADOR EN TIEMPO REAL: Muestra los mensajes en tu contenedor
+// ESCUCHADOR EN TIEMPO REAL: Muestra los mensajes en tu contenedor con diseño Mech Arena
 onChildAdded(consultaUltimos40, (snapshot) => {
     const data = snapshot.val();
     const key = snapshot.key;
@@ -55,25 +62,34 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     
     if (!caja) return;
 
-    // Obtener la letra inicial para el avatar
-    const inicial = data.usuario ? data.usuario.charAt(0).toUpperCase() : "?";
-    
-    // Inyectar el mensaje estructurado con avatar al contenedor
+    // Validar datos por si existen mensajes antiguos guardados con la estructura vieja
+    const nombrePiloto = data.usuario || "Anónimo";
+    const codigoPiloto = data.codigo || "#0000";
+    const avatarUrl = data.avatar || `https://robohash.org{nombrePiloto}.png?set=set1`;
+
+    // Inyectar el mensaje estructurado con la nueva estética
     caja.innerHTML += `
-        <div id="msg-${key}" class="contenedor-msg">
-            <div class="avatar-aion">${inicial}</div>
-            <div>
-                <span style="color: #5765f2; font-weight: bold; font-size:11px;">${data.usuario}</span><br>
-                <span style="word-break: break-all; color: #00ff00;">${data.texto}</span>
+        <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; padding: 6px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+            <!-- Avatar Redondo del Mecha -->
+            <img src="${avatarUrl}" style="width: 38px; height: 38px; border-radius: 50%; background: #1a2238; border: 1px solid #404eed; object-fit: cover;">
+            
+            <!-- Bloque de contenido -->
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div>
+                    <span style="color: #3ba55d; font-weight: bold; font-size:12px;">${nombrePiloto}</span>
+                    <span style="color: #72767d; font-size: 10px; font-family: monospace; margin-left: 5px;">${codigoPiloto}</span>
+                </div>
+                <span style="word-break: break-word; color: #ffffff; font-size: 12px; line-height: 1.4;">${data.texto}</span>
             </div>
         </div>
     `;
+    
     caja.scrollTop = caja.scrollHeight; // Auto-scroll abajo
 
     // Contar los elementos cargados en la pantalla
     const mensajesActuales = caja.querySelectorAll('.contenedor-msg');
 
-    // Cola circular estricta FIFO: Si supera los 40, borra el viejo de la pantalla y la nube
+    // Cola circular estricta FIFO
     if (mensajesActuales.length > 40) {
         const mensajeAntiguoHTML = mensajesActuales[0];
         mensajeAntiguoHTML.remove(); // Borrado visual
