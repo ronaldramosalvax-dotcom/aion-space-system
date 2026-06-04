@@ -85,3 +85,23 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+<div class="tag-nombre-avatar">VORTEX</div>
+      </div>
+      <!-- Piloto 4: APEX -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'APEX')">
+        <img src="https://dicebear.com" alt="Apex">
+        <div class="tag-nombre-avatar">APEX</div>
+      </div>
+    </div>
+
+    <button class="btn-desplegar-piloto" onclick="confirmarDesplieguePiloto()">INICIAR OPERACIONES</button>
+  </div>
+</div>
+
