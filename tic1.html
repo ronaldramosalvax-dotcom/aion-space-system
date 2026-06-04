@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Seguridad en TIC</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f5f5f5; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e2efda; color: #385723; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #1e4620; }
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; }
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        /* Estilos de maquetación limpia para la pizarra de TIC */
+        .net-table { border-collapse: collapse; text-align: center; color: #333333; font-family: monospace; font-size: 14px; width: 100%; margin: 10px 0; border: 1px solid #333333; }
+        .net-table th { background-color: #f2f2f2; padding: 6px; border: 1px solid #333333; }
+        .net-table td { padding: 6px; border: 1px solid #333333; }
+        .net-box { border: 2px dashed #333333; padding: 8px; font-family: monospace; background-color: #fcfcfc; margin: 5px 0; color: #333333; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title">Problema:</div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN EN PIZARRA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: #555555;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">05s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Según lo establecido en la sesión, ¿cuál es el objetivo primordial de la práctica de la ciberseguridad?", 
+                o: ["a) Duplicar el hardware de servidores locales", "b) Proteger sistemas, redes y programas de ataques digitales", "c) Restringir el uso de internet solo a computadores", "d) Evitar la compra de licencias de software comercial"], 
+                c: 1, 
+                r: "<b>[ CIBERSEGURIDAD ]</b><br><br>• Protección de 3 pilares clave:<br>&nbsp;&nbsp;&bull; Sistemas<br>&nbsp;&nbsp;&bull; Redes<br>&nbsp;&nbsp;&bull; Programas<br><br>• Evita el acceso, alteración o destrucción de datos." 
+            },
+            { 
+                t: "De acuerdo con Aguilera (2010), ¿cómo se define técnicamente una 'amenaza' en los sistemas de información?", 
+                o: ["a) La velocidad de descarga de un enlace de red", "b) Presencia de factores (personas, máquinas o sucesos) que dañan el sistema aprovechando su vulnerabilidad", "c) El proceso de actualización de parches de seguridad", "d) La encriptación por hardware de un disco duro"], 
+                c: 1, 
+                r: "<b>[ AMENAZA ]</b><br><br>• Factores externos o internos.<br>• Aprovechan vulnerabilidades del sistema.<br>• Objetivo: Producir daños reales." 
+            },
+            { 
+                t: "Si una amenaza informática tiene como único fin deshabilitar el acceso a la información del usuario, ¿en qué grupo se clasifica?", 
+                o: ["a) Amenaza de Interceptación", "b) Amenaza de Fabricación", "c) Amenaza de Interrupción", "d) Amenaza de Modificación"], 
+                c: 2, 
+                r: "<b>[ AMENAZAS GENERALES ]</b><br><br><table class='net-table'><tr><th>Tipo de Amenaza</th><th>Objetivo Operativo</th></tr><tr><td><b>De Interrupción</b></td><td><b>Deshabilitar el acceso a datos</b>.</td></tr><tr><td>De Interceptación</td><td>Acceso no autorizado / Captar datos.</td></tr></table>" 
+            },
+            { 
+                t: "Cuando personas o programas no autorizados acceden a un recurso del sistema y logran captar información confidencial, ¿en qué tipo se clasifica?", 
+                o: ["a) De Interrupción", "b) De Interceptación", "c) De Fabricación", "d) De Modificación"], 
+                c: 1, 
+                r: "<b>[ AMENAZAS GENERALES ]</b><br><br><table class='net-table'><tr><th>Tipo de Amenaza</th><th>Objetivo Operativo</th></tr><tr><td>De Interrupción</td><td>Deshabilitar el acceso a datos.</td></tr><tr><td><b>De Interceptación</b></td><td><b>Acceso no autorizado / Captar datos</b>.</td></tr></table>" 
+            },
+            { 
+                t: "El objetivo de una amenaza informática consiste en agregar información falsa en el conjunto de datos del sistema. ¿Cómo se clasifica?", 
+                o: ["a) Amenaza de Fabricación", "b) Amenaza de Interrupción", "c) Amenaza de Modificación", "d) Amenaza de Interceptación"], 
+                c: 0, 
+                r: "<b>[ AMENAZAS GENERALES ]</b><br><br><table class='net-table'><tr><th>Tipo de Amenaza</th><th>Objetivo Operativo</th></tr><tr><td>De Modificación</td><td>Alterar programas y datos existentes.</td></tr><tr><td><b>De Fabricación</b></td><td><b>Agregar información falsa al sistema</b>.</td></tr></table>" 
+            },
+            { 
+                t: "Un fallo crítico en el suministro de energía, incendios o un error humano pertenecen a las amenazas de origen:", 
+                o: ["a) Intencionales externas", "b) Intencionales internas", "c) Accidentales", "d) Hacking de sombrero negro"], 
+                c: 2, 
+                r: "<b>[ ORIGEN DE AMENAZAS ]</b><br><br>• <div class='net-box'>Accidentales</div><br>&nbsp;&nbsp;&bull; Clima / Incendios / Inundaciones.<br>&nbsp;&nbsp;&bull; Fallos en hardware, redes o software.<br>&nbsp;&nbsp;&bull; Errores humanos involuntarios." 
+            },
+            {                         
+                t: "La introducción de software malicioso, intrusiones informáticas o robos provocados por la acción humana deliberada se clasifican como amenazas:", 
+                o: ["a) Accidentales de red", "b) Intencionales", "c) Meteorológicas de sistemas", "d) Remotas de sombrero blanco"], 
+                c: 1, 
+                r: "<b>[ ORIGEN DE AMENAZAS ]</b><br><br>• <div class='net-box'>Intencionales</div><br>&nbsp;&nbsp;&bull; Acción humana deliberada.<br>&nbsp;&nbsp;&bull; Introducción de malware e intrusiones.<br>&nbsp;&nbsp;&bull; Origen externo o interno de la organización." 
+            },
+            { 
+                t: "¿Cómo se define el 'Phishing' según los tipos de amenazas revisados en el material de la sesión?", 
+                o: ["a) Software que detecta virus mediante patrones conocidos", "b) Actualizaciones automáticas del sistema de archivos", "c) Métodos o sitios que suplantan personas/empresas para robar contraseñas", "d) Herramientas de diagnóstico de ancho de banda local"], 
+                c: 2, 
+                r: "<b>[ PHISHING ]</b><br><br>• <b>Estrategia:</b> Suplantación de identidad.<br>• <b>Medio:</b> Sitios web o correos falsificados.<br>• <b>Fin:</b> Obtener contraseñas e información sensible." 
+            },
+            { 
+                t: "Dentro del Hacking, ¿cómo se denomina a las personas contratadas por empresas para detectar fallos o vulnerabilidades?", 
+                o: ["a) Hackers de sombrero negro", "b) Hackers de sombrero gris", "c) Hackers de sombrero blanco", "d) Hackers de sombrero azul"], 
+                c: 2, 
+                r: "<b>[ ROLES EN HACKING ]</b><br><br>• <b>Sombrero Blanco:</b> Detectan fallos contractualmente (Defensa).<br>• <b>Sombrero Gris:</b> Detectan fallos, informan, no se aprovechan.<br>• <b>Sombrero Negro:</b> Explotan fallos para beneficio propio." 
+            },
+            { 
+                t: "¿Qué dispositivo o programa monitoriza y controla el tráfico de red basándose en un conjunto definido de reglas de seguridad?", 
+                o: ["a) Antimalware de escritorio", "b) Parche de seguridad crítico", "c) Firewall (Cortafuegos)", "d) Clonador de discos duros"], 
+                c: 2, 
+                r: "<b>[ FIREWALLS ]</b><br><br>• Monitoriza/controla tráfico entrante y saliente.<br>• Trabaja según reglas de seguridad preestablecidas.<br>• Barrera entre redes internas seguras y externas." 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 5; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 5;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = `Problema ${index + 1}:`;
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            item.o.forEach((txt, i) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor"></div><div class="option-text">${txt}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${Math.round(pct)}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            nameBox.style.fontWeight = "bold";
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.setProperty('color', '#333333', 'important');
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.setProperty('color', '#0056b3', 'important');
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.setProperty('color', '#856404', 'important');
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.setProperty('color', '#383d41', 'important');
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.setProperty('color', '#721c24', 'important');
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>
