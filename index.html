@@ -463,6 +463,82 @@
         <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">5. Aplicación de Software</li>
     </ul>
 </div> <!-- Aquí cierra la tarjeta de Matemática II -->
+        </div>
+    </section>
+</main>
+
+</div> <!-- Cierre definitivo del contenedor 'wrapper-plataforma-aion' -->
+
+<!-- SCRIPT DE CONTROL DE PILOTOS (ESTILO MECH ARENA) -->
+<script>
+    let avatarSeleccionadoUrl = "";
+
+    // 1. Función para resaltar la tarjeta del Mecha elegido
+    function seleccionarAvatarMecha(elemento, urlImagen, nombreAvatar) {
+        document.querySelectorAll('.tarjeta-piloto-opcion').forEach(card => {
+            card.classList.remove('seleccionada');
+        });
+        elemento.classList.add('seleccionada');
+        avatarSeleccionadoUrl = urlImagen;
+    }
+
+    // 2. Función que procesa el botón "INICIAR OPERACIONES"
+    function confirmarDesplieguePiloto() {
+        const nicknameInput = document.getElementById("input-nickname-mecha").value.trim();
+
+        if (nicknameInput === "") {
+            alert("🚨 ¡Piloto! Ingrese un Nickname de combate para continuar.");
+            return;
+        }
+        if (avatarSeleccionadoUrl === "") {
+            alert("🚨 Seleccione un diseño de Mecha para su avatar de escuadrón.");
+            return;
+        }
+
+        // Generar un código único aleatorio de 4 dígitos (Ej: AION-7420)
+        const codigoAleatorio = `AION-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        const perfilPiloto = {
+            nombre: nicknameInput,
+            codigo: codigoAleatorio,
+            avatar: avatarSeleccionadoUrl
+        };
+
+        // Guardar de forma permanente en la memoria interna del teléfono
+        localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfilPiloto));
+
+        // Dar acceso inmediato a la plataforma
+        activarPlataformaAion(perfilPiloto);
+    }
+
+    // 3. Función para ocultar el registro y abrir la interfaz principal
+    function activarPlataformaAion(perfil) {
+        document.getElementById("pantalla-registro-mecha").style.display = "none";
+        document.getElementById("wrapper-plataforma-aion").style.display = "block";
+        
+        // Colocar automáticamente el nombre fijo en el input del chat
+        const inputNombreChat = document.getElementById("nombre-usuario-arena");
+        if (inputNombreChat) {
+            inputNombreChat.value = `${perfil.nombre} [${perfil.codigo}]`;
+        }
+    }
+
+    // 4. VERIFICACIÓN AUTOMÁTICA AL ABRIR LA APLICACIÓN
+    window.addEventListener("DOMContentLoaded", () => {
+        const cuentaExistente = localStorage.getItem("cuenta_aion_instalada");
+
+        if (cuentaExistente) {
+            const perfil = JSON.parse(cuentaExistente);
+            activarPlataformaAion(perfil);
+        } else {
+            document.getElementById("pantalla-registro-mecha").style.display = "flex";
+            document.getElementById("wrapper-plataforma-aion").style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>
 
               
        
