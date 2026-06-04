@@ -185,16 +185,13 @@
 
         /* Rejilla fija de 3 columnas estrictas para PC */
         .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+          display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            gap: 25px !important;
             margin-bottom: 40px;
         }
-        /* ◄ INYECTA ESTA REGLA JUSTO AQUÍ ABAJO DE .GRID-LAYOUT */
-        .grid-layout > ul {
-            grid-column: 1 / -1 !important; /* Hace que el menú flote a lo ancho sin ocupar columna */
-            display: block;
-            height: 0; }
+       
                 @media (max-width: 900px) {
             /* 1. Menú superior en vertical para celular */
             .top-navbar {
