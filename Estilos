@@ -90,7 +90,30 @@
 
 
 
+<!-- PANTALLA DE REGISTRO INICIAL (ESTILO MECH ARENA) -->
+<div id="pantalla-registro-mecha" class="modal-registro-mecha">
+  <div class="contenedor-registro-mecha">
+    <h2>CREACIÓN DE PILOTO</h2>
+    <p class="subtitulo-registro">Regístrate para acceder al Radar de Comunicación</p>
+    
+    <input type="text" id="input-nickname-mecha" class="input-mecha-piloto" placeholder="Introduce tu Nickname..." maxlength="12">
 
+    <h3 class="titulo-seleccion-mecha">Selecciona tu Piloto de Combate</h3>
+    
+    <div class="grid-pilotos-mecha">
+      <!-- Piloto 1: ALPHA -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'ALPHA')">
+        <img src="https://dicebear.com" alt="Alpha">
+        <div class="tag-nombre-avatar">ALPHA</div>
+      </div>
+      <!-- Piloto 2: NOVA -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'NOVA')">
+        <img src="https://dicebear.com" alt="Nova">
+        <div class="tag-nombre-avatar">NOVA</div>
+      </div>
+      <!-- Piloto 3: VORTEX -->
+      <div class="tarjeta-piloto-opcion" onclick="seleccionarAvatarMecha(this, 'https://dicebear.com', 'VORTEX')">
+        <img src="https://dicebear.com" alt="Vortex">
 
 <div class="tag-nombre-avatar">VORTEX</div>
       </div>
