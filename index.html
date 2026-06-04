@@ -381,40 +381,42 @@
         <section>
             <h2 class="section-title">📚 Repositorio de Soluciones Académicas</h2>
             <div class="grid-layout">
-                                <!-- Tarjeta 1: Tecnologías de la Información (TIC) -->
-                <div class="product-card" onclick="const d = document.getElementById('tic-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
-                    
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">💻 Introducción a las TIC</div>
-                        <p class="product-desc">Modelos de redes globales, infraestructura de servidores cloud, ciberseguridad avanzada y flujos de datos.</p>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: auto;">
-                        <span class="btn-action-card" style="flex: 1; text-align: center;">📚 Temas</span>
-                    </div>
-                
-                <!-- Lista Desplegable de TIC -->
-                        <ul id="tic-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; margin-top: 10px; width: 100%; padding: 0; position: absolute; left: 0; top: 100%; z-index: 50;">
-                            <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="tic1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Arquitectura de Redes (OSI y TCP/IP)</a></li>
-                        </ul>
+                         <!-- Tarjeta 1: Tecnologías de la Información (TIC) -->
+<div class="product-card" onclick="const d = document.getElementById('tic-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+    <div>
+        <span class="tag-category">Asignatura</span>
+        <div class="product-title">💻 Introducción a las TIC</div>
+        <p class="product-desc">Modelos de redes globales, infraestructura de servidores cloud...</p>
+    </div>
+    <div style="display: flex; gap: 10px; margin-top: auto; margin-bottom: 10px;">
+        <span class="btn-action-card" style="flex: 1; text-align: center;">📚 Temas</span>
+    </div>
 
-                                <!-- Tarjeta 2: Principios de Algoritmos -->
-                <div class="product-card" onclick="const d = document.getElementById('alg-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
-                    <div>
-                        <span class="tag-category">Asignatura</span>
-                        <div class="product-title">💻 Principios de Algoritmos</div>
-                        <p class="product-desc">Estructuras lógicas de control, pseudocódigo en PSeInt, diagramas de flujo y fundamentos de programación.</p>
-                    </div>
-                    <div style="display: flex; gap: 10px; margin-top: auto;">
-                        <span class="btn-action-card" style="flex: 1; text-align: center;">📚 Temas</span>
-                    </div>
-                </div>
-                <!-- Lista Desplegable de Algoritmos -->
-                <ul id="alg-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; margin-top: 10px; width: 100%; padding: 0; grid-column: span 1;">
-                    <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="alg1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Estructuras Condicionales Simples y Compuestas</a></li>
-                    <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">2. Estructuras Repetitivas (Para, Mientras)</li>
-                    <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">3. Vectores y Arreglos Bidimensionales</li>
-                </ul>
- 
+    <!-- ◄ METE EL UL AQUÍ ADENTRO (Elimínalo de afuera) -->
+    <ul id="tic-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; width: 100%; padding: 0;">
+        <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="tic1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Arquitectura de Redes (OSI y TCP/IP)</a></li>
+    </ul>
+</div> <!-- ◄ Aquí cierra la tarjeta con el menú bien guardado adentro -->
+
+                               <!-- Tarjeta 2: Principios de Algoritmos -->
+<div class="product-card" onclick="const d = document.getElementById('alg-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
+    <div>
+        <span class="tag-category">Asignatura</span>
+        <div class="product-title">💻 Principios de Algoritmos</div>
+        <p class="product-desc">Estructuras lógicas de control, pseudocódigo en PSeInt, diagramas de flujo y fundamentos de programación.</p>
+    </div>
+    <div style="display: flex; gap: 10px; margin-top: auto; margin-bottom: 10px;">
+        <span class="btn-action-card" style="flex: 1; text-align: center;">📚 Temas</span>
+    </div>
+
+    <!-- EL UL DE ALGORITMOS METIDO AQUÍ ADENTRO -->
+    <ul id="alg-dropdown" style="list-style: none; max-height: 0px; overflow: hidden; transition: max-height 0.3s ease; background-color: #1e1f22; border-radius: 6px; width: 100%; padding: 0;">
+        <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem;"><a href="alg1.html" style="text-decoration: none; color: #58a6ff; font-weight: bold; display: block; width: 100%;">1. Estructuras Condicionales Simples y Compuestas</a></li>
+        <li style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">2. Estructuras Repetitivas (Para, Mientras)</li>
+        <li style="padding: 12px; font-size: 0.9rem; color: #b9bbbe; opacity: 0.5;">3. Vectores y Arreglos Bidimensionales</li>
+    </ul>
+</div> <!-- Aquí cierra de forma definitiva la tarjeta de Algoritmos -->
+
         <!-- Tarjeta 2: Matemática II (Teoría y Práctica) -->
             <div class="product-card" onclick="const d = document.getElementById('mat2-dropdown'); d.style.maxHeight = d.style.maxHeight === '300px' ? '0px' : '300px';">
 
