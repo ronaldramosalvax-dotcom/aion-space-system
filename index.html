@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
         <!-- Conexión de la Aplicación Móvil (PWA) -->
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('AION SPACE SYSTEM: App lista'))
-                .catch(err => console.log('Error al cargar la App:', err));
-        }
-    </script>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script> 
 
     <style>
         /* Estilos Base Inspirados en la Interfaz de Discord */
