@@ -11,6 +11,9 @@ const firebaseConfig = {
     messagingSenderId: "247082868280",
     appId: "1:247082868280:web:c0aeeb2a62bc02c2f6d0cd"
 };
+// LISTA TÁCTICA DE CENSURA: Palabras prohibidas en el radar
+const PALABRAS_PROHIBIDAS = ["utp", "mierda", "carajo", "puto", "puta", "concha", "huevon"];
+
 
 // Inicializar base de datos
 const app = initializeApp(firebaseConfig);
@@ -51,12 +54,19 @@ window.enviarMensajeArena = function() {
         nombrePiloto = inputApodo.value.trim();
     }
     
-    // Subimos el paquete de datos blindado a Firebase sin alertas molestas
+    // --- FILTRO CUÁNTICO ACTIVO ---
+    let textoLimpio = texto;
+    PALABRAS_PROHIBIDAS.forEach(palabra => {
+        const regex = new RegExp(palabra, "gi");
+        textoLimpio = textoLimpio.replace(regex, "****");
+    });
+    
+    // Subimos el paquete de datos blindado a Firebase con el texto censurado
     push(mensajesRef, {
         usuario: nombrePiloto,
         codigo: codigoPiloto,
         avatar: avatarUrl,
-        texto: texto,
+        texto: textoLimpio,
         timestamp: Date.now()
     });
     
