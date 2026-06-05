@@ -3,13 +3,13 @@ import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, 
 
 // Credenciales oficiales de tu proyecto Aion
 const firebaseConfig = {
-    apiKey: "AIzaSyAj3xOG2R6C-fMqpByP0BBlR_8CgV8wH_g",
-    authDomain: "aion-chat-utp.firebaseapp.com",
-    databaseURL: "https://aion-chat-utp-default-rtdb.firebaseio.com",
-    projectId: "aion-chat-utp",
-    storageBucket: "aion-chat-utp.firebasestorage.app",
-    messagingSenderId: "744552027801",
-    appId: "1:744552027801:web:30a3b2f245eb145e1c4a08"
+    apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
+    authDomain: "://firebaseapp.com",
+    databaseURL: "https://firebaseio.com",
+    projectId: "aion-space-system",
+    storageBucket: "aion-space-system.firebasestorage.app",
+    messagingSenderId: "247082868280",
+    appId: "1:247082868280:web:c0aeeb2a62bc02c2f6d0cd"
 };
 
 // Inicializar base de datos
