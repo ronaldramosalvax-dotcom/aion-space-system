@@ -472,66 +472,63 @@
 
 </div> <!-- Cierre definitivo del contenedor 'wrapper-plataforma-aion' -->
 
+<!-- SISTEMA DE LOGIN CON GOOGLE (FIREBASE) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        
-<!-- SCRIPT DE CONTROL DE LOGUEO -->
-<script>
-    let avatarSeleccionadoUrl = "";
+   
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAj3xOG2R6C-fMqpByP0BBlR_8CgV8wH_g",
+  authDomain: "aion-chat-utp.firebaseapp.com",
+  databaseURL: "https://aion-chat-utp-default-rtdb.firebaseio.com",
+  projectId: "aion-chat-utp",
+  storageBucket: "aion-chat-utp.firebasestorage.app",
+  messagingSenderId: "744552027801",
+  appId: "1:744552027801:web:30a3b2f245eb145e1c4a08"
+};
 
-    function seleccionarAvatarMecha(elemento, urlImagen, nombreAvatar) {
-        document.querySelectorAll('.tarjeta-piloto-opcion').forEach(card => {
-            card.classList.remove('seleccionada');
-        });
-        elemento.classList.add('seleccionada');
-        avatarSeleccionadoUrl = urlImagen;
-    }
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-    function confirmarDesplieguePiloto() {
-        const nicknameInput = document.getElementById("input-nickname-mecha").value.trim();
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-        if (nicknameInput === "") {
-            alert("🚨 ¡Piloto! Ingrese un Nickname de combate para continuar.");
-            return;
-        }
-        if (avatarSeleccionadoUrl === "") {
-            alert("🚨 Seleccione un diseño de Piloto para su avatar.");
-            return;
-        }
-
-        const codigoAleatorio = `AION-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        const perfilPiloto = {
-            nombre: nicknameInput,
-            codigo: codigoAleatorio,
-            avatar: avatarSeleccionadoUrl
-        };
-
-        localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfilPiloto));
-        activarPlataformaAion(perfilPiloto);
-    }
-
-    function activarPlataformaAion(perfil) {
-        document.getElementById("pantalla-registro-mecha").style.display = "none";
-        document.getElementById("wrapper-plataforma-aion").style.display = "block";
-        
-        const inputNombreChat = document.getElementById("nombre-usuario-arena");
-        if (inputNombreChat) {
-            inputNombreChat.value = `${perfil.nombre} [${perfil.codigo}]`;
-        }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const cuentaExistente = localStorage.getItem("cuenta_aion_instalada");
-
-        if (cuentaExistente) {
-            const perfil = JSON.parse(cuentaExistente);
-            activarPlataformaAion(perfil);
-        } else {
-            document.getElementById("pantalla-registro-mecha").style.display = "flex";
-            document.getElementById("wrapper-plataforma-aion").style.display = "none";
-        }
+  document.addEventListener("DOMContentLoaded", () => {
+    const blocker = document.createElement("div");
+    blocker.id = "auth-blocker";
+    blocker.innerHTML = `
+      <div style="text-align:center; padding: 40px; background:#111622; border-radius:12px; border: 1px solid #00ff88; max-width:400px; width:90%; box-shadow: 0 0 20px rgba(0,255,136,0.3);">
+        <img src="logo.png" style="width:100px; height:100px; margin-bottom:20px; border-radius: 50%;">
+        <h2 style="color:#fff; font-family:sans-serif; margin-bottom:10px;">Aion Space System</h2>
+        <p style="color:#8a99ad; font-family:sans-serif; margin-bottom:30px;">Identifícate como humano para acceder al sistema.</p>
+        <button id="login-google-btn" style="background:#00ff88; color:#000; border:none; padding:14px 24px; font-weight:bold; border-radius:6px; cursor:pointer; font-size:16px; width:100%; font-family:sans-serif;">
+          Iniciar Sesión con Google
+        </button>
+      </div>
+    `;
+    
+    Object.assign(blocker.style, {
+      position: "fixed", top: "0", left: "0", width: "100vw", height: "100vh",
+      background: "#0a0e17", display: "none", justifyContent: "center", alignItems: "center", zIndex: "999999"
     });
+    document.body.appendChild(blocker);
+
+    document.getElementById("login-google-btn").addEventListener("click", () => {
+      signInWithPopup(auth, provider).catch(err => alert("Error: " + err.message));
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        blocker.style.display = "none";
+      } else {
+        blocker.style.display = "flex";
+      }
+    });
+  });
 </script>
+
 
 </body>
 </html>
