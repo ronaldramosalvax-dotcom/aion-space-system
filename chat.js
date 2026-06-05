@@ -23,23 +23,39 @@ const consultaUltimos40 = query(mensajesRef, orderByKey(), limitToLast(40));
 // FUNCION GLOBAL: Enviar mensaje a Firebase (Estilo Mech Arena)
 window.enviarMensajeArena = function() {
     const inputMensaje = document.getElementById('input-mensaje-arena');
+    const inputApodo = document.getElementById('nombre-usuario-arena'); // Casilla de la izquierda
     const texto = inputMensaje ? inputMensaje.value.trim() : "";
     
     if (texto === "") return;
 
-    // Recuperamos de forma segura la cuenta del celular
+    // Valores por defecto para evitar bloqueos en el radar
+    let nombrePiloto = "Piloto";
+    let codigoPiloto = "#AION-" + Math.floor(1000 + Math.random() * 9000);
+    let avatarUrl = `https://robohash.org{codigoPiloto}.png?set=set1`;
+
+    // 1. Intentar recuperar la cuenta de Google si existe
     const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
-    if (!cuentaLocal) {
-        alert("🚨 Error: No se encontró perfil de piloto en este dispositivo.");
-        return;
+    if (cuentaLocal) {
+        try {
+            const perfil = JSON.parse(cuentaLocal);
+            nombrePiloto = perfil.nombre || nombrePiloto;
+            codigoPiloto = perfil.codigo || codigoPiloto;
+            avatarUrl = perfil.avatar || avatarUrl;
+        } catch(e) {
+            console.log("Lectura de perfil alternativa activa.");
+        }
     }
-    const perfil = JSON.parse(cuentaLocal);
+
+    // 2. PRIORIDAD MÁXIMA: Si el piloto escribió un apodo manual, se usa ese nombre
+    if (inputApodo && inputApodo.value.trim() !== "") {
+        nombrePiloto = inputApodo.value.trim();
+    }
     
-    // Subimos el paquete de datos blindado a Firebase
+    // Subimos el paquete de datos blindado a Firebase sin alertas molestas
     push(mensajesRef, {
-        usuario: perfil.nombre,
-        codigo: perfil.codigo,
-        avatar: perfil.avatar, // Almacena la URL del Mecha
+        usuario: nombrePiloto,
+        codigo: codigoPiloto,
+        avatar: avatarUrl,
         texto: texto,
         timestamp: Date.now()
     });
