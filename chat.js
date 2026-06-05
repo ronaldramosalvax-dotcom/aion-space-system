@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+// Credenciales oficiales y unificadas de tu proyecto Aion Space System
 
-// Credenciales oficiales de tu proyecto Aion
 const firebaseConfig = {
     apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
     authDomain: "://firebaseapp.com",
