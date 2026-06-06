@@ -91,10 +91,11 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     // Validar datos por si existen mensajes antiguos guardados con la estructura vieja
     const nombrePiloto = data.usuario || "Anónimo";
     const codigoPiloto = data.codigo || "#0000";
-    const avatarUrl = data.avatar || `https://robohash.org{nombrePiloto}.png?set=set1`;
+    const avatarUrl = data.avatar || "https://robohash.org" + nombrePiloto + ".png?set=set1";
+
 
     // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
-        // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
+    
     caja.innerHTML += `
         <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; padding: 6px; background: rgba(255,255,255,0.01); border-radius: 6px; border-left: 2px solid rgba(64, 78, 237, 0.4);">
             <!-- Avatar del Piloto -->
