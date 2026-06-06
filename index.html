@@ -413,13 +413,12 @@
                     </div>
 
                     <!-- Consola Inferior de Comandos -->
-                    <div style="padding: 10px; display: flex; gap: 8px; background: #23272a; border-top: 1px solid #202225; align-items: center;">
-                        <input type="text" id="nombre-usuario-arena" placeholder="Apodo / Nick" style="width: 25%; background: #202225; border: 1px solid #4f545c; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
-                        <input type="text" id="input-mensaje-arena" placeholder="Transmitir al escuadrón..." onkeypress="detectarEnter(event)" style="width: 55%; background: #202225; border: 1px solid #404eed; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
+                                        <div style="padding: 10px; display: flex; gap: 8px; background: #23272a; border-top: 1px solid #202225; align-items: center;">
+                        <!-- Expandimos el ancho al 80% para escribir con total comodidad -->
+                        <input type="text" id="input-mensaje-arena" placeholder="Transmitir al escuadrón..." onkeypress="detectarEnter(event)" style="width: 80%; background: #202225; border: 1px solid #404eed; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
                         <button id="btn-enviar-arena" onclick="enviarMensajeArena()" style="width: 20%; background: #404eed; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; height: 33px;">Enviar</button>
                     </div>
                 </div>
-
             </div>
 
                         <!-- SCRIPT DE CONTROL MODAL Y CONEXIÓN CON CHAT.JS -->
