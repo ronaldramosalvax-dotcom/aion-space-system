@@ -94,6 +94,7 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     const avatarUrl = data.avatar || `https://robohash.org{nombrePiloto}.png?set=set1`;
 
     // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
+        // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
     caja.innerHTML += `
         <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; padding: 6px; background: rgba(255,255,255,0.01); border-radius: 6px; border-left: 2px solid rgba(64, 78, 237, 0.4);">
             <!-- Avatar del Piloto -->
@@ -105,7 +106,7 @@ onChildAdded(consultaUltimos40, (snapshot) => {
                     <div>
                         <!-- Al hacer clic sobre el nombre se detona el escáner del ID fijo eterno -->
                         <span onclick="alert('📡 VERIFICACIÓN DE FIRMA CUÁNTICA\\n---------------------------------\\nPiloto en red: ${nombrePiloto}\\nID Único Fijo: ${codigoPiloto}\\nEstado: AUTENTICADO DE FORMA SEGURA')" 
-                              style="color: #5765f2; font-weight: bold; font-size:11px; cursor: pointer; text-decoration: underline rgba(87,101,242,0.1);" 
+                              style="color: #5765f2; font-weight: bold; font-size:11px; cursor: pointer; text-decoration: underline rgba(87,101,242,0.1); user-select: none;" 
                               onmouseover="this.style.color='#00ff88'; this.style.textDecoration='underline'" 
                               onmouseout="this.style.color='#5765f2'; this.style.textDecoration='none'">
                             ${nombrePiloto}
@@ -117,7 +118,7 @@ onChildAdded(consultaUltimos40, (snapshot) => {
         </div>
     `;
 
-    
+
     caja.scrollTop = caja.scrollHeight; // Auto-scroll abajo
 
     // Contar los elementos cargados en la pantalla
