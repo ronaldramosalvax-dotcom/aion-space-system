@@ -5,7 +5,7 @@ import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, 
 const firebaseConfig = {
     apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
     authDomain: "aion-space-system.firebaseapp.com",
-    databaseURL: "https://aion-space-system.firebaseio.com",
+    databaseURL: "https://aion-space-system-default-rtdb.firebaseio.com",
     projectId: "aion-space-system",
     storageBucket: "aion-space-system.firebasestorage.app",
     messagingSenderId: "247082868280",
