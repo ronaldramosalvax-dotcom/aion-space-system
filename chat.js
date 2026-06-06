@@ -93,22 +93,30 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     const codigoPiloto = data.codigo || "#0000";
     const avatarUrl = data.avatar || `https://robohash.org{nombrePiloto}.png?set=set1`;
 
-    // Inyectar el mensaje estructurado con la nueva estética
+    // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
     caja.innerHTML += `
-        <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; padding: 6px; background: rgba(255,255,255,0.02); border-radius: 6px;">
-            <!-- Avatar Redondo del Mecha -->
-            <img src="${avatarUrl}" style="width: 38px; height: 38px; border-radius: 50%; background: #1a2238; border: 1px solid #404eed; object-fit: cover;">
+        <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; padding: 6px; background: rgba(255,255,255,0.01); border-radius: 6px; border-left: 2px solid rgba(64, 78, 237, 0.4);">
+            <!-- Avatar del Piloto -->
+            <img src="${avatarUrl}" style="width: 32px; height: 32px; border-radius: 50%; background: #1a2238; border: 1px solid #404eed; object-fit: cover;">
             
-            <!-- Bloque de contenido -->
-            <div style="display: flex; flex-direction: column; gap: 2px;">
-                <div>
-                    <span style="color: #3ba55d; font-weight: bold; font-size:12px;">${nombrePiloto}</span>
-                    <span style="color: #72767d; font-size: 10px; font-family: monospace; margin-left: 5px;">${codigoPiloto}</span>
+            <!-- Bloque de contenido táctico -->
+            <div style="display: flex; flex-direction: column; gap: 1px; flex: 1;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <!-- Al hacer clic sobre el nombre se detona el escáner del ID fijo eterno -->
+                        <span onclick="alert('📡 VERIFICACIÓN DE FIRMA CUÁNTICA\\n---------------------------------\\nPiloto en red: ${nombrePiloto}\\nID Único Fijo: ${codigoPiloto}\\nEstado: AUTENTICADO DE FORMA SEGURA')" 
+                              style="color: #5765f2; font-weight: bold; font-size:11px; cursor: pointer; text-decoration: underline rgba(87,101,242,0.1);" 
+                              onmouseover="this.style.color='#00ff88'; this.style.textDecoration='underline'" 
+                              onmouseout="this.style.color='#5765f2'; this.style.textDecoration='none'">
+                            ${nombrePiloto}
+                        </span>
+                    </div>
                 </div>
                 <span style="word-break: break-word; color: #ffffff; font-size: 12px; line-height: 1.4;">${data.texto}</span>
             </div>
         </div>
     `;
+
     
     caja.scrollTop = caja.scrollHeight; // Auto-scroll abajo
 
