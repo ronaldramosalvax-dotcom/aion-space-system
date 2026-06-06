@@ -422,7 +422,8 @@
 
             </div>
 
-            <!-- ENTRADA DE LÓGICA DE DETONACIÓN MODAL -->
+                        <!-- SCRIPT DE CONTROL MODAL Y CONEXIÓN CON CHAT.JS -->
+            <script type="module" src="chat.js"></script>
             <script>
                 window.abrirModalRadar = function() {
                     const modal = document.getElementById('modal-radar-contenedor');
@@ -430,8 +431,10 @@
                         modal.style.display = 'flex';
                         setTimeout(() => {
                             const caja = document.getElementById('caja-mensajes-arena');
+                            const inputMsg = document.getElementById('input-mensaje-arena');
                             if(caja) caja.scrollTop = caja.scrollHeight;
-                        }, 60);
+                            if(inputMsg) inputMsg.focus();
+                        }, 80);
                     }
                 }
                 window.cerrarModalRadar = function() {
@@ -439,6 +442,7 @@
                     if(modal) modal.style.display = 'none';
                 }
             </script>
+
 
 
         <!-- SECCIÓN 1: RECURSOS ACADÉMICOS -->
