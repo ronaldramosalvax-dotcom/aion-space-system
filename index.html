@@ -517,12 +517,22 @@
 
 </div> <!-- Cierre definitivo del contenedor 'wrapper-plataforma-aion' -->
 
+        <!-- VENTANA EMERGENTE TÁCTICA: REGISTRO DE PILOTO NUEVO -->
+    <div id="registro-piloto-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 14, 23, 0.95); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 100000;">
+        <div style="width: 90%; max-width: 400px; background: #202225; border: 2px solid #00ff88; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 0 30px rgba(0, 255, 136, 0.25);">
+            <h3 style="color: #00ff88; font-family: monospace; margin-top: 0; letter-spacing: 1px;">📡 ALTA DE PILOTO EN RED</h3>
+            <p style="color: #dcddde; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Tu firma cuántica ha sido validada con Google. Introduce tu apodo definitivo para congelar tu ID eterno en la base de datos central.</p>
+            <input type="text" id="registro-apodo-input" placeholder="Escribe tu Apodo / Alias..." style="width: 100%; background: #202225; border: 1px solid #4f545c; border-radius: 6px; padding: 10px; color: white; font-size: 14px; outline: none; margin-bottom: 20px; text-align: center;">
+            <button id="btn-guardar-registro" style="width: 100%; background: #00ff88; color: #101417; border: none; border-radius: 6px; padding: 12px; cursor: pointer; font-weight: bold; font-size: 13px; letter-spacing: 0.5px;">CONGELAR PERFIL</button>
+        </div>
+    </div>
+
 <!-- SISTEMA DE LOGIN CON GOOGLE (FIREBASE) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-   
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+ 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
@@ -563,39 +573,80 @@ const app = initializeApp(firebaseConfig);
     document.getElementById("login-google-btn").addEventListener("click", () => {
       signInWithPopup(auth, provider).catch(err => alert("Error: " + err.message));
     });
-    onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
       if (user) {
-        blocker.style.display = "none";
-        
-        // Separamos el nombre completo y nos quedamos únicamente con el primer nombre
-        const primerNombre = user.displayName ? user.displayName.split(" ") : "Piloto";
-        
-        // CÓDIGO FIJO INTEGRADO: Generamos tu ID único de 4 dígitos una sola vez y nunca más cambia
-        let codigoPiloto = localStorage.getItem("piloto_id_eterno");
-        if (!codigoPiloto) {
-            // Genera un número aleatorio puro de 4 dígitos (ej: #4821)
-            codigoPiloto = "#" + Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem("piloto_id_eterno", codigoPiloto);
+        // Limpiamos el correo de puntos para usarlo como ID único y seguro en Firebase
+        const cuentaIdClean = user.email.replace(/[^a-zA-Z0-9]/g, "");
+        const db = getDatabase();
+        const usuarioRef = ref(db, 'usuarios/' + cuentaIdClean);
+
+        try {
+          // Escaneamos tu Firebase central buscando si este piloto ya existe
+          const snapshot = await get(usuarioRef);
+
+          if (snapshot.exists()) {
+            // CASO A: El piloto ya se había registrado antes. Descargamos su perfil
+            const datosExistentes = snapshot.val();
+            
+            blocker.style.display = "none";
+            document.getElementById("registro-piloto-modal").style.display = "none";
+            
+            localStorage.setItem("cuenta_aion_instalada", JSON.stringify(datosExistentes));
+            window.dispatchEvent(new Event('authPilotoListo'));
+            
+          } else {
+            // CASO B: El piloto es completamente nuevo. Congelamos la pantalla
+            blocker.style.display = "none"; 
+            
+            const modalRegistro = document.getElementById("registro-piloto-modal");
+            const inputApodo = document.getElementById("registro-apodo-input");
+            const btnGuardar = document.getElementById("btn-guardar-registro");
+            
+            modalRegistro.style.display = "flex";
+            setTimeout(() => { if(inputApodo) inputApodo.focus(); }, 100);
+
+            // Guardamos cuando el piloto haga clic en el botón verde
+            btnGuardar.onclick = async () => {
+              const apodoDigitado = inputApodo.value.trim();
+              if (apodoDigitado === "" || apodoDigitado.length < 3) {
+                  alert("📡 ALERTA: Introduce un apodo válido (Mínimo 3 caracteres).");
+                  return;
+              }
+
+              // Asignamos su ID eterno de 4 dígitos puro amarrado a su cuenta
+              const nuevoId4Digitos = "#" + Math.floor(1000 + Math.random() * 9000);
+              const primerNombreGoogle = user.displayName ? user.displayName.split(" ") : "Piloto";
+
+              const nuevoPerfilSolido = {
+                  nombre: apodoDigitado, 
+                  nombreReal: primerNombreGoogle, 
+                  codigo: nuevoId4Digitos, 
+                  avatar: "https://robohash.org" + nuevoId4Digitos + ".png?set=set1",
+                  correo: user.email
+              };
+
+              // Subimos el perfil oficialmente al nodo 'usuarios/' de tu Firebase
+              await set(usuarioRef, nuevoPerfilSolido);
+
+              // Guardamos localmente y liberamos el radar flotante
+              localStorage.setItem("cuenta_aion_instalada", JSON.stringify(nuevoPerfilSolido));
+              modalRegistro.style.display = "none";
+              
+              window.dispatchEvent(new Event('authPilotoListo'));
+            };
+          }
+        } catch (error) {
+          console.error("Falla en el escáner centralizado:", error);
         }
-
-        // Estructuramos el paquete de datos del dispositivo
-        const datosPiloto = {
-            nombre: primerNombre,
-            codigo: codigoPiloto, // Tu ID de 4 dígitos eterno
-            avatar: user.photoURL || `https://robohash.org{primerNombre}.png?set=set1`
-        };
-
-        // Guardamos en la memoria local para que 'chat.js' lo lea sin problemas
-        localStorage.setItem("cuenta_aion_instalada", JSON.stringify(datosPiloto));
-
-        // Despachamos el evento personalizado para el inicio del radar
-        window.dispatchEvent(new Event('authPilotoListo'));
 
       } else {
         blocker.style.display = "flex";
+        document.getElementById("registro-piloto-modal").style.display = "none";
         localStorage.removeItem("cuenta_aion_instalada");
-              }
-             });
+      }
+    });
+  });
+
     
 </script>
 
