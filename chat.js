@@ -26,42 +26,37 @@ const consultaUltimos40 = query(mensajesRef, orderByKey(), limitToLast(40));
 // FUNCION GLOBAL: Enviar mensaje a Firebase (Estilo Mech Arena)
 window.enviarMensajeArena = function() {
     const inputMensaje = document.getElementById('input-mensaje-arena');
-    const inputApodo = document.getElementById('nombre-usuario-arena'); // Casilla de la izquierda
     const texto = inputMensaje ? inputMensaje.value.trim() : "";
     
     if (texto === "") return;
 
-    // Valores por defecto para evitar bloqueos en el radar
+    // 1. Valores por defecto por si ocurre un fallo en el radar
     let nombrePiloto = "Piloto";
-    let codigoPiloto = "#AION-" + Math.floor(1000 + Math.random() * 9000);
-    let avatarUrl = `https://robohash.org{codigoPiloto}.png?set=set1`;
+    let codigoPiloto = "#AION-0000";
+    let avatarUrl = "https://robohash.org";
 
-    // 1. Intentar recuperar la cuenta de Google si existe
+    // 2. EXTRAER DE FORMA AUTOMÁTICA EL PERFIL CENTRALIZADO CONGELADO
     const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
     if (cuentaLocal) {
         try {
             const perfil = JSON.parse(cuentaLocal);
+            // Si el piloto tiene un apodo registrado oficialmente, el radar lo usa de frente
             nombrePiloto = perfil.nombre || nombrePiloto;
             codigoPiloto = perfil.codigo || codigoPiloto;
             avatarUrl = perfil.avatar || avatarUrl;
         } catch(e) {
-            console.log("Lectura de perfil alternativa activa.");
+            console.error("Error leyendo la firma cuántica del piloto:", e);
         }
     }
-
-    // 2. PRIORIDAD MÁXIMA: Si el piloto escribió un apodo manual, se usa ese nombre
-    if (inputApodo && inputApodo.value.trim() !== "") {
-        nombrePiloto = inputApodo.value.trim();
-    }
     
-    // --- FILTRO CUÁNTICO ACTIVO ---
+    // 3. FILTRO CUÁNTICO ACTIVO (Censura táctica anti-insultos)
     let textoLimpio = texto;
     PALABRAS_PROHIBIDAS.forEach(palabra => {
         const regex = new RegExp(palabra, "gi");
         textoLimpio = textoLimpio.replace(regex, "****");
     });
     
-    // Subimos el paquete de datos blindado a Firebase con el texto censurado
+    // 4. Subimos el paquete de datos blindado a Firebase con tu identidad fija oficial
     push(mensajesRef, {
         usuario: nombrePiloto,
         codigo: codigoPiloto,
@@ -70,7 +65,7 @@ window.enviarMensajeArena = function() {
         timestamp: Date.now()
     });
     
-    if (inputMensaje) inputMensaje.value = ""; // Limpiar barra de texto
+    if (inputMensaje) inputMensaje.value = ""; // Limpiar barra de transmisiones
 }
 
 // FUNCION GLOBAL: Detectar el envío con la tecla Enter
