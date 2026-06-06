@@ -563,15 +563,41 @@ const app = initializeApp(firebaseConfig);
     document.getElementById("login-google-btn").addEventListener("click", () => {
       signInWithPopup(auth, provider).catch(err => alert("Error: " + err.message));
     });
-
     onAuthStateChanged(auth, (user) => {
       if (user) {
         blocker.style.display = "none";
+        
+        // Separamos el nombre completo y nos quedamos únicamente con el primer nombre
+        const primerNombre = user.displayName ? user.displayName.split(" ") : "Piloto";
+        
+        // CÓDIGO FIJO INTEGRADO: Generamos tu ID único de 4 dígitos una sola vez y nunca más cambia
+        let codigoPiloto = localStorage.getItem("piloto_id_eterno");
+        if (!codigoPiloto) {
+            // Genera un número aleatorio puro de 4 dígitos (ej: #4821)
+            codigoPiloto = "#" + Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem("piloto_id_eterno", codigoPiloto);
+        }
+
+        // Estructuramos el paquete de datos del dispositivo
+        const datosPiloto = {
+            nombre: primerNombre,
+            codigo: codigoPiloto, // Tu ID de 4 dígitos eterno
+            avatar: user.photoURL || `https://robohash.org{primerNombre}.png?set=set1`
+        };
+
+        // Guardamos en la memoria local para que 'chat.js' lo lea sin problemas
+        localStorage.setItem("cuenta_aion_instalada", JSON.stringify(datosPiloto));
+
+        // Despachamos el evento personalizado para el inicio del radar
+        window.dispatchEvent(new Event('authPilotoListo'));
+
       } else {
         blocker.style.display = "flex";
+        localStorage.removeItem("cuenta_aion_instalada");
       }
     });
-  });
+
+    
 </script>
 
 
