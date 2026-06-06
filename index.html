@@ -343,6 +343,26 @@
         .product-card:hover .btn-action-card {
             background-color: #404eed;
         }
+                /* --- ESTILIZACIÓN DE BARRAS DE SCROLL CUÁNTICAS --- */
+            #caja-mensajes-arena::-webkit-scrollbar,
+            .panel-pilotos::-webkit-scrollbar {
+                width: 5px; /* Ultra delgadas */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-track,
+            .panel-pilotos::-webkit-scrollbar-track {
+                background: rgba(35, 39, 42, 0.5); /* Fondo oscuro transparente */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-thumb,
+            .panel-pilotos::-webkit-scrollbar-thumb {
+                background: #404eed; /* Azul eléctrico base */
+                border-radius: 10px;
+                box-shadow: 0 0 10px #5765f2; /* Brillo neón táctico */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-thumb:hover,
+            .panel-pilotos::-webkit-scrollbar-thumb:hover {
+                background: #00ff88; /* Cambia a verde neón al pasar el mouse */
+            }
+    
     </style>
 </head>
 <body>
