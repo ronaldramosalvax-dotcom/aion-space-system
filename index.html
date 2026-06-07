@@ -289,10 +289,12 @@
                 gap: 20px !important;
                 padding: 0 10px !important;
             }
-                                      .btn-modo-ia {
-                margin: 25px auto 25px auto !important; /* Separa 25px arriba y abajo */
+                           .btn-modo-ia {
+                margin: 25px auto 25px auto !important; /* Separa 25px arriba y abajo en celulares */
                 display: flex !important;
+                flex-direction: row !important; /* Mantiene el texto alineado en móvil */
             }
+
         }
 
   
@@ -416,15 +418,22 @@
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
                    
-                <!-- Contenedor del Buscador Principal -->
-        <div class="search-bar-container">
-            <input type="text" class="search-input" id="input-buscador-principal" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
-        </div>
-        
-        <!-- Botón Modo IA externo (Para separarlo abajo en móviles) -->
-        <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
-            <span style="margin-right: 6px;">✨</span> Modo IA
-        </button>
+    
+                    <!-- Contenedor Flex Dinámico para PC y Celular -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 850px; margin: 0 auto; gap: 10px;">
+                
+                <!-- Caja Gris del Buscador -->
+                <div class="search-bar-container" style="flex: 1; min-width: 280px; margin: 0;">
+                    <input type="text" class="search-input" id="input-buscador-principal" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
+                </div>
+                
+                <!-- Botón de Modo IA con Redirección -->
+                <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
+                    <span style="margin-right: 5px;">✨</span> Modo IA
+                </button>
+                
+            </div>
+
 
 
             <!-- VENTANA MODAL FLOTANTE TÁCTICA (Activada desde la barra superior) -->
