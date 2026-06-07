@@ -412,12 +412,16 @@
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
                    
+                <!-- Contenedor del Buscador Principal -->
         <div class="search-bar-container">
             <input type="text" class="search-input" id="input-buscador-principal" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
-            <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
-                <span style="margin-right: 5px;">✨</span> Modo IA
-            </button>
         </div>
+        
+        <!-- Botón Modo IA externo (Para separarlo abajo en móviles) -->
+        <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
+            <span style="margin-right: 6px;">✨</span> Modo IA
+        </button>
+
 
             <!-- VENTANA MODAL FLOTANTE TÁCTICA (Activada desde la barra superior) -->
             <div id="modal-radar-contenedor" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 14, 23, 0.75); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: flex-start; padding-top: 15px; z-index: 99999;">
