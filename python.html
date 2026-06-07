@@ -8,8 +8,8 @@
         :root {
             --bg-color: #0d1117;
             --card-bg: #161b22;
-            --accent-color: #ffd43b; /* Amarillo Python */
-            --accent-blue: #306998;  /* Azul Python */
+            --accent-color: #ffd43b;
+            --accent-blue: #306998;
             --text-color: #c9d1d9;
             --terminal-bg: #05070a;
             --border-color: #30363d;
@@ -69,7 +69,7 @@
 
         textarea {
             width: 100%;
-            height: 240px;
+            height: 250px;
             background-color: var(--terminal-bg);
             color: #ffd43b;
             border: 1px solid var(--border-color);
@@ -159,27 +159,31 @@
     <div class="workspace">
         <div class="label-box">
             <span>Editor Python 3 (Sintaxis Real):</span>
-            <span style="color: #8b949e; font-size: 0.8rem;">Soporta: print, variables, if / else</span>
+            <span style="color: #8b949e; font-size: 0.8rem;">Soporta: print, variables, if / else (con sangrías)</span>
         </div>
         
-        <!-- Editor con el ejercicio listo para ejecutar -->
-        <textarea id="editor" spellcheck="false"># Sistema de Calificaciones en Python
-nota1 = 11
-nota2 = 13
-nota3 = 15
+        <textarea id="editor" spellcheck="false"># Sistema Avanzado de Seguridad de Claves
+print("--- INICIANDO PROTOCOLO DE CRIPTOGRAFÍA ---")
 
-# Calculo del promedio
-promedio = (nota1 + nota2 + nota3) / 3
+clave_original = 4500
+token_seguridad = 125
+factor_multiplicador = 4
 
-print("Calculando promedio final...")
-print("Promedio obtenido:")
-print(promedio)
+# Algoritmo de Encriptacion
+clave_encriptada = (clave_original * factor_multiplicador) + token_seguridad
+print("Generando firma digital encriptada...")
+print(clave_encriptada)
 
-# Evaluacion mediante condicional doble
-if promedio >= 12:
-    print("ESTADO: El alumno ha APROBADO la asignatura.")
+# Algoritmo de Desencriptacion
+clave_desencriptada = (clave_encriptada - token_seguridad) / factor_multiplicador
+print("Descifrando datos en el nodo central...")
+print(clave_desencriptada)
+
+# Validacion mediante condicional doble
+if clave_desencriptada == clave_original:
+    print("SISTEMA SEGURO: La clave es idéntica. Acceso concedido.")
 else:
-    print("ESTADO: El alumno ha DESAPROBADO la asignatura.")</textarea>
+    print("ALERTA DE INTRUSO: Los datos no coinciden. Bloqueando terminal.")</textarea>
 
         <div class="actions">
             <button onclick="ejecutarPython()">▶ Ejecutar Código</button>
@@ -216,12 +220,10 @@ else:
                 for (let i = 0; i < lines.length; i++) {
                     let line = lines[i].trim();
                     
-                    // Ignorar comentarios o líneas vacías
                     if (!line || line.startsWith('#')) {
                         continue;
                     }
 
-                    // Manejo del bloque else
                     if (line.startsWith('else:')) {
                         if (enBloqueIf && !saltarBloqueElse) {
                             saltarBloqueElse = true;
@@ -233,10 +235,10 @@ else:
 
                     if (saltarBloqueElse) continue;
 
-                    // Evaluar estructura IF de Python
                     if (line.startsWith('if ')) {
                         enBloqueIf = true;
                         let condicion = line.substring(3).replace(':', '').trim();
+                        condicion = condicion.replace(/==/g, '===');
                         
                         for (let v in variables) {
                             let regex = new RegExp('\\b' + v + '\\b', 'g');
@@ -251,38 +253,31 @@ else:
                                 saltarBloqueElse = true;
                             }
                         } catch(e) {
-                            saltarBloqueElse = false;
+                            saltarBloqueElse = true;
                         }
                         continue;
                     }
 
-                    // Evaluar comando print()
                     if (line.startsWith('print(') && line.endsWith(')')) {
                         let contenido = line.substring(6, line.length - 1).trim();
                         
-                        // Quitar el formateo .2f si existe para simplificar la lectura nativa
-                        if (contenido.includes(':.2f')) {
-                            contenido = contenido.split(':')[0].replace(/f['"]/g, '').replace(/\{/g, '').replace(/\}/g, '').trim();
-                        }
-
                         if ((contenido.startsWith('"') && contenido.endsWith('"')) || (contenido.startsWith("'") && contenido.endsWith("'"))) {
                             logs.push(contenido.slice(1, -1));
                         } else {
-                            if (variables.hasOwnProperty(contenido)) {
-                                logs.push(variables[contenido]);
-                            } else {
-                                try {
-                                    let res = eval(contenido);
-                                    logs.push(res !== undefined ? res : contenido);
-                                } catch(e) {
-                                    logs.push(contenido);
-                                }
+                            for (let v in variables) {
+                                let regex = new RegExp('\\b' + v + '\\b', 'g');
+                                contenido = contenido.replace(regex, variables[v]);
+                            }
+                            try {
+                                let res = eval(contenido);
+                                logs.push(res !== undefined ? res : contenido);
+                            } catch(e) {
+                                logs.push(contenido);
                             }
                         }
                         continue;
                     }
 
-                    // Asignación de variables tradicionales en Python (=)
                     if (line.includes('=')) {
                         let partes = line.split('=');
                         let varName = partes[0].trim();
@@ -296,4 +291,17 @@ else:
                         try {
                             variables[varName] = eval(expresion);
                         } catch (err) {
-                            throw new Error(`Error matemático en la línea ${i+1}`);
+                            throw new Error(`Error en la línea ${i+1}`);
+                        }
+                        continue;
+                    }
+                }
+
+                           outputDiv.textContent = logs.join('\n') || "Script ejecutado correctamente.";
+        } catch (error) {
+            outputDiv.textContent = `❌ Error de Sintaxis en el script de Python.`;
+        }
+    }
+</script>
+</body>
+</html>
