@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Simulador PSeInt Integrado</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-color: #00ffcc;
+            --text-color: #c9d1d9;
+            --terminal-bg: #05070a;
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Monaco, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        .subtitle {
+            color: #8b949e;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .workspace {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+        }
+
+        .label-box {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            background-color: var(--terminal-bg);
+            color: #00ff66;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+        .actions {
+            margin: 15px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #0d1117;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #00cc99;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 255, 204, 0.3);
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            color: #8b949e;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-clear:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: #ffffff;
+            box-shadow: none;
+        }
+
+        .console-output {
+            width: 100%;
+            height: 180px;
+            background-color: var(--terminal-bg);
+            color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            overflow-y: auto;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+        }
+
+        .nav-footer {
+            margin-top: 25px;
+        }
+
+        .back-link {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Simulador PSeInt Integrado</h1>
+        <p class="subtitle">AION SPACE SYSTEM • Entorno Universitario de Pruebas</p>
+    </header>
+
+    <div class="workspace">
+        <div class="label-box">
+            <span>Editor de Pseudocódigo (Español):</span>
+            <span style="color: #8b949e; font-size: 0.8rem;">Soporta: Algoritmo, Escribir, Variables</span>
+        </div>
+        
+        <!-- Editor con código precargado para que practiquen al entrar -->
+        <textarea id="editor" spellcheck="false">Algoritmo SimuladorAion
+    Escribir "¡Bienvenido al Centro de Control de AION SPACE SYSTEM!"
+    Escribir "Prueba modificando este texto o creando tus variables básicas."
+    
+    Definir nota1, nota2, promedio Como Real
+    nota1 <- 15
+    nota2 <- 18
+    promedio <- (nota1 + nota2) / 2
+    
+    Escribir "El promedio final de tus prácticas es:"
+    Escribir promedio
+FinAlgoritmo</textarea>
+
+        <div class="actions">
+            <button onclick="ejecutarPseudocodigo()">▶ Ejecutar Código</button>
+            <button class="btn-clear" onclick="limpiarConsola()">Limpiar Consola</button>
+        </div>
+
+        <div class="label-box">
+            <span>Pantalla de Salida (Consola):</span>
+        </div>
+        <div id="output" class="console-output">Haga clic en "Ejecutar Código" para ver los resultados aquí...</div>
+    </div>
+
+    <div class="nav-footer">
+        <a href="index.html" class="back-link">← Volver al Panel Principal de AION</a>
+    </div>
+
+    <script>
+        function limpiarConsola() {
+            document.getElementById('output').textContent = '';
+        }
+
+        function ejecutarPseudocodigo() {
+            const code = document.getElementById('editor').value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = ''; // Limpiar previo
+            
+            const lines = code.split('\n');
+            let variables = {};
+            let logs = [];
+
+            try {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    
+                    // Ignorar líneas vacías, comentarios o palabras clave estructurales iniciales/finales
+                    if (!line || line.startsWith('//') || line.toLowerCase().startsWith('algoritmo') || line.toLowerCase().startsWith('finalgoritmo')) {
+                        continue;
+                    }
+
+                    // 1. Procesar Comando ESCRIBIR
+                    if (line.toLowerCase().startsWith('escribir')) {
+                        let contenido = line.substring(8).trim();
+                        
+                        // Verificar si es una cadena de texto entre comillas
+                        if ((contenido.startsWith('"') && contenido.endsWith('"')) || (contenido.startsWith("'") && contenido.endsWith("'"))) {
+                            logs.push(contenido.slice(1, -1));
+                        } else {
+                            // Validar si es una variable registrada
+                            if (variables.hasOwnProperty(contenido)) {
+                                logs.push(variables[contenido]);
+                            } else {
+                                // Intento de evaluar expresión matemática simple directa
+                                try {
+                                    let res = eval(contenido.replace(/<-/g, '='));
+                                    logs.push(res !== undefined ? res : contenido);
+                                } catch(e) {
+                                    logs.push(contenido);
+                                }
+                            }
+                        }
+                        continue;
+                    }
+
+                    // 2. Procesar asignaciones tradicionales de PSeInt (<-)
+                    if (line.includes('<-')) {
+                        let partes = line.split('<-');
+                        let varName = partes[0].trim();
+                        let expresion = partes[1].trim();
+
+                        // Reemplazar nombres de variables por sus valores reales en la expresión matemática
+                        for (let v in variables) {
+                            let regex = new RegExp('\\b' + v + '\\b', 'g');
+                            expresion = expresion.replace(regex, variables[v]);
+                        }
+
+                        try {
+                            variables[varName] = eval(expresion);
+                        } catch (err) {
+                            throw new Error(`Error matemático en la línea ${i+1}: No se pudo evaluar "${partes[1].trim()}"`);
+                        }
+                        continue;
+                    }
+                    
+                    // 3. Ignorar declaración informativa de tipos por ahora para mantener flexibilidad
+                    if (line.toLowerCase().startsWith('definir')) {
+                        continue;
+                    }
+                }
+
+                outputDiv.textContent = logs.join('\n') || "El programa se ejecutó correctamente (sin salidas de texto).";
+            } catch (error) {
+                outputDiv.textContent = `❌ Error de Sintaxis en el Algoritmo:\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
