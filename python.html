@@ -31,7 +31,7 @@
             text-align: center;
             margin-bottom: 25px;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
         }
 
         h1 {
@@ -49,7 +49,7 @@
 
         .workspace {
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -61,7 +61,7 @@
         .label-box {
             font-size: 0.9rem;
             color: var(--accent-yellow);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -69,7 +69,7 @@
 
         .iframe-container {
             width: 100%;
-            height: 480px;
+            height: 520px;
             border-radius: 6px;
             overflow: hidden;
             border: 1px solid var(--border-color);
@@ -102,22 +102,23 @@
 
     <header>
         <h1>Simulador Python Integrado</h1>
-        <p class="subtitle">AION SPACE SYSTEM • Entorno Avanzado de Ejecución</p>
+        <p class="subtitle">Entorno Avanzado de Ejecución de Código</p>
     </header>
 
     <div class="workspace">
         <div class="label-box">
-            <span>Consola de Pruebas Interactiva (Python 3):</span>
-            <span style="color: var(--accent-color); font-weight: bold;">Listo para picar código</span>
+            <span>Consola Interactiva en la Nube (Python 3.x):</span>
+            <span style="color: var(--accent-yellow); font-weight: bold;">Establecido</span>
         </div>
         
         <div class="iframe-container">
-            <iframe src="https://trinket.io"></iframe>
+            <!-- Usamos la terminal embebida oficial de OnlineGDB optimizada para Python 3 -->
+            <iframe src="https://onlinegdb.com"></iframe>
         </div>
     </div>
 
     <div class="nav-footer">
-        <a href="index.html" class="back-link">← Volver al Panel Principal de AION</a>
+        <a href="pruebas.html" class="back-link">← Volver al Área de Pruebas</a>
     </div>
 
 </body>
