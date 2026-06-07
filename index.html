@@ -21,18 +21,20 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-     body {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ec/NGC_3190_Galaxy.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+   body {
+    /* 🌌 Nebulosa Cósmica: Combinación de Morado, Azul Profundo y Negro Espacial */
+    background: radial-gradient(circle at 50% 30%, #22143b 0%, #0a0d1a 50%, #04050a 100%) !important;
+    background-attachment: fixed !important;
     color: #ffffff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-x: hidden;
+    
+    /* 🛑 Bloqueo anti-franja blanca: Elimina cualquier desborde hacia los lados */
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
 }
 
 
