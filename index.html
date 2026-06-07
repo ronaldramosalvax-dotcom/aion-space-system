@@ -102,21 +102,24 @@
     max-width: 100%;
     width: 100%;
     padding: 40px 0px;
-    background: transparent !important; /* ◄ CAMBIA O AGREGA ESTA LÍNEA */
+    background: transparent !important; /* Fuerza a que sea transparente */
 }
 
         /* Centro de Control */
-        .search-section {
-            background-color: rgba(35, 39, 42, 0.7);
-            border-radius: 16px;
-            padding: 45px 30px;
-            text-align: center;
-            margin-bottom: 40px;
-            width: 100%;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+       .search-section {
+    background-color: rgba(35, 39, 42, 0.7); /* Tus tonos intactos */
+    border-radius: 16px;
+    padding: 45px 30px;
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 1100px; /* Al volver a 1100px, la galaxia se verá a los lados */
+    width: 90%; /* Se adapta a celulares */
+    margin-left: auto; /* Centra el cuadro */
+    margin-right: auto; /* Centra el cuadro */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
 
         .search-section h1 {
             font-size: 2.5rem;
