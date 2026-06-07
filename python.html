@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE SYSTEM - Simulador Python</title>
+    <title>AION SPACE SYSTEM - Simulador Python Integrado</title>
     <style>
         :root {
             --bg-color: #0d1117;
             --card-bg: #161b22;
-            --accent-color: #306998;
-            --accent-yellow: #ffd43b;
+            --accent-color: #ffd43b; /* Amarillo Python */
+            --accent-blue: #306998;  /* Azul Python */
             --text-color: #c9d1d9;
             --terminal-bg: #05070a;
             --border-color: #30363d;
@@ -31,14 +31,14 @@
             text-align: center;
             margin-bottom: 25px;
             width: 100%;
-            max-width: 950px;
+            max-width: 900px;
         }
 
         h1 {
             color: #ffffff;
             font-size: 2.2rem;
             margin: 0 0 5px 0;
-            text-shadow: 0 0 10px rgba(48, 105, 152, 0.3);
+            text-shadow: 0 0 10px rgba(255, 212, 59, 0.2);
         }
 
         .subtitle {
@@ -49,7 +49,7 @@
 
         .workspace {
             width: 100%;
-            max-width: 950px;
+            max-width: 900px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -60,26 +60,77 @@
 
         .label-box {
             font-size: 0.9rem;
-            color: var(--accent-yellow);
-            margin-bottom: 12px;
+            color: var(--accent-color);
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .iframe-container {
+        textarea {
             width: 100%;
-            height: 500px;
-            border-radius: 6px;
-            overflow: hidden;
+            height: 240px;
+            background-color: var(--terminal-bg);
+            color: #ffd43b;
             border: 1px solid var(--border-color);
-            background: var(--terminal-bg);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            line-height: 1.5;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
+        .actions {
+            margin: 15px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #0d1117;
             border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #ffe066;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 212, 59, 0.3);
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            color: #8b949e;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-clear:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+
+        .console-output {
+            width: 100%;
+            height: 180px;
+            background-color: var(--terminal-bg);
+            color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            overflow-y: auto;
+            box-sizing: border-box;
+            white-space: pre-wrap;
         }
 
         .nav-footer {
@@ -94,7 +145,7 @@
         }
 
         .back-link:hover {
-            color: var(--accent-yellow);
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -102,24 +153,147 @@
 
     <header>
         <h1>Simulador Python Integrado</h1>
-        <p class="subtitle">Entorno Avanzado de Ejecución de Código</p>
+        <p class="subtitle">Entorno Avanzado de Pruebas de Código</p>
     </header>
 
     <div class="workspace">
         <div class="label-box">
-            <span>Consola Interactiva (Python 3):</span>
-            <span style="color: var(--accent-yellow); font-weight: bold;">Establecido</span>
+            <span>Editor Python 3 (Sintaxis Real):</span>
+            <span style="color: #8b949e; font-size: 0.8rem;">Soporta: print, variables, if / else</span>
         </div>
         
-        <div class="iframe-container">
-            <!-- Servidor optimizado libre de bloqueos para GitHub Pages -->
-            <iframe src="https://trinket.io"></iframe>
+        <!-- Editor con el ejercicio listo para ejecutar -->
+        <textarea id="editor" spellcheck="false"># Sistema de Calificaciones en Python
+nota1 = 11
+nota2 = 13
+nota3 = 15
+
+# Calculo del promedio
+promedio = (nota1 + nota2 + nota3) / 3
+
+print("Calculando promedio final...")
+print("Promedio obtenido:")
+print(promedio)
+
+# Evaluacion mediante condicional doble
+if promedio >= 12:
+    print("ESTADO: El alumno ha APROBADO la asignatura.")
+else:
+    print("ESTADO: El alumno ha DESAPROBADO la asignatura.")</textarea>
+
+        <div class="actions">
+            <button onclick="ejecutarPython()">▶ Ejecutar Código</button>
+            <button class="btn-clear" onclick="limpiarConsola()">Limpiar Consola</button>
         </div>
+
+        <div class="label-box">
+            <span>Pantalla de Salida (Consola):</span>
+        </div>
+        <div id="output" class="console-output">Haga clic en "Ejecutar Código" para ver los resultados aquí...</div>
     </div>
 
     <div class="nav-footer">
         <a href="pruebas.html" class="back-link">← Volver al Área de Pruebas</a>
     </div>
 
-</body>
-</html>
+    <script>
+        function limpiarConsola() {
+            document.getElementById('output').textContent = '';
+        }
+
+        function ejecutarPython() {
+            const code = document.getElementById('editor').value;
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = ''; 
+            
+            const lines = code.split('\n');
+            let variables = {};
+            let logs = [];
+            let saltarBloqueElse = false;
+            let enBloqueIf = false;
+
+            try {
+                for (let i = 0; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    
+                    // Ignorar comentarios o líneas vacías
+                    if (!line || line.startsWith('#')) {
+                        continue;
+                    }
+
+                    // Manejo del bloque else
+                    if (line.startsWith('else:')) {
+                        if (enBloqueIf && !saltarBloqueElse) {
+                            saltarBloqueElse = true;
+                        } else if (enBloqueIf && saltarBloqueElse) {
+                            saltarBloqueElse = false;
+                        }
+                        continue;
+                    }
+
+                    if (saltarBloqueElse) continue;
+
+                    // Evaluar estructura IF de Python
+                    if (line.startsWith('if ')) {
+                        enBloqueIf = true;
+                        let condicion = line.substring(3).replace(':', '').trim();
+                        
+                        for (let v in variables) {
+                            let regex = new RegExp('\\b' + v + '\\b', 'g');
+                            condicion = condicion.replace(regex, variables[v]);
+                        }
+                        
+                        try {
+                            let resultadoCondicion = eval(condicion);
+                            if (resultadoCondicion) {
+                                saltarBloqueElse = false;
+                            } else {
+                                saltarBloqueElse = true;
+                            }
+                        } catch(e) {
+                            saltarBloqueElse = false;
+                        }
+                        continue;
+                    }
+
+                    // Evaluar comando print()
+                    if (line.startsWith('print(') && line.endsWith(')')) {
+                        let contenido = line.substring(6, line.length - 1).trim();
+                        
+                        // Quitar el formateo .2f si existe para simplificar la lectura nativa
+                        if (contenido.includes(':.2f')) {
+                            contenido = contenido.split(':')[0].replace(/f['"]/g, '').replace(/\{/g, '').replace(/\}/g, '').trim();
+                        }
+
+                        if ((contenido.startsWith('"') && contenido.endsWith('"')) || (contenido.startsWith("'") && contenido.endsWith("'"))) {
+                            logs.push(contenido.slice(1, -1));
+                        } else {
+                            if (variables.hasOwnProperty(contenido)) {
+                                logs.push(variables[contenido]);
+                            } else {
+                                try {
+                                    let res = eval(contenido);
+                                    logs.push(res !== undefined ? res : contenido);
+                                } catch(e) {
+                                    logs.push(contenido);
+                                }
+                            }
+                        }
+                        continue;
+                    }
+
+                    // Asignación de variables tradicionales en Python (=)
+                    if (line.includes('=')) {
+                        let partes = line.split('=');
+                        let varName = partes[0].trim();
+                        let expresion = partes[1].trim();
+
+                        for (let v in variables) {
+                            let regex = new RegExp('\\b' + v + '\\b', 'g');
+                            expresion = expresion.replace(regex, variables[v]);
+                        }
+
+                        try {
+                            variables[varName] = eval(expresion);
+                        } catch (err) {
+                            throw new Error(`Error matemático en la línea ${i+1}`);
