@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Área de Pruebas</title>
+    <style>
+        :root {
+            --bg-color: #060913;
+            --card-bg: #161b22;
+            --accent-color: #00ffcc;
+            --text-color: #ffffff;
+            --desc-color: #b9bbbe;
+            --border-color: #30363d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+
+        .subtitle {
+            color: var(--desc-color);
+            font-size: 1.1rem;
+        }
+
+        .grid-simuladores {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 850px;
+            width: 100%;
+        }
+
+        .card-sim {
+            background-color: #2f3136;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card-sim:hover {
+            transform: translateY(-5px);
+            background-color: #36393f;
+            border-color: var(--accent-color);
+            box-shadow: 0 12px 30px rgba(0, 255, 204, 0.15);
+        }
+
+        .lang-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .sim-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .sim-desc {
+            font-size: 0.95rem;
+            color: var(--desc-color);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-entrar {
+            width: 100%;
+            background-color: #4f545c;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .card-sim:hover .btn-entrar {
+            background-color: #404eed;
+        }
+
+        .back-container {
+            margin-top: 5px;
+        }
+
+        .back-link {
+            color: var(--desc-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 700px) {
+            .grid-simuladores {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚡ Área de Pruebas ⚡</h1>
+        <p class="subtitle">Entornos Interactivos de Simulación y Práctica de Código</p>
+    </header>
+
+    <div class="grid-simuladores">
+        <!-- Tarjeta PSeInt -->
+        <div class="card-sim">
+            <div>
+                <span class="lang-tag">Pseudocódigo</span>
+                <div class="sim-title">💻 Entorno PSeInt</div>
+                <p class="sim-desc">Práctica lógica algorítmica en español. Ideal para testear condicionales, asignaciones y estructuras repetitivas de forma nativa e integrada.</p>
+            </div>
+            <a href="pseint.html" class="btn-entrar">Iniciar Sandbox PSeInt</a>
+        </div>
+
+        <!-- Tarjeta Python -->
+        <div class="card-sim">
+            <div>
+                <span class="lang-tag">Python 3</span>
+                <div class="sim-title">🐍 Entorno Python</div>
+                <p class="sim-desc">Consola interactiva avanzada en la nube. Ejecuta scripts reales de Python directamente desde la plataforma sin instalaciones externas.</p>
+            </div>
+            <a href="python.html" class="btn-entrar">Iniciar Sandbox Python</a>
+        </div>
+    </div>
+
+    <div class="back-container">
+        <br><br>
+        <a href="index.html" class="back-link">← Regresar al Centro de Control</a>
+    </div>
+
+</body>
+</html>
