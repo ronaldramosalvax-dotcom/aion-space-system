@@ -44,7 +44,8 @@
         .top-navbar {
             width: 100%;
             background-color: rgba(35, 39, 42, 0.95);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid #f0a04b !important;
+            box-shadow: 0 4px 15px rgba(240, 160, 75, 0.3);
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -165,12 +166,11 @@
         .search-input::placeholder {
             color: #72767d;
         }
-
         
-        .btn-modo-ia {
-    background-color: rgba(0, 242, 254, 0.1);
-    color: #00f2fe;
-    border: 1px solid rgba(0, 242, 254, 0.4);
+.btn-modo-ia {
+    background-color: rgba(240, 160, 75, 0.1); /* Fondo translúcido dorado */
+    color: #f0a04b; /* Texto dorado atardecer */
+    border: 1px solid rgba(240, 160, 75, 0.4); /* Borde dorado */
     padding: 0 18px;
     font-size: 0.85rem;
     font-weight: 700;
@@ -181,15 +181,16 @@
     align-items: center;
     white-space: nowrap;
     transition: all 0.2s ease;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+    box-shadow: 0 0 10px rgba(240, 160, 75, 0.1); /* Resplandor sutil */
 }
 
 .btn-modo-ia:hover {
-    background-color: rgba(0, 242, 254, 0.25);
-    border-color: #00f2fe;
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    background-color: rgba(240, 160, 75, 0.25);
+    border-color: #f0a04b;
+    box-shadow: 0 0 15px rgba(240, 160, 75, 0.4); /* Neón dorado al pasar el mouse */
     transform: translateY(-1px);
 }
+
 
         /* Secciones de Contenido */
         .section-title {
