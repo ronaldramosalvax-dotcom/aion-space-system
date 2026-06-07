@@ -181,6 +181,29 @@
         .btn-search:hover {
             background-color: #5765f2;
         }
+        .btn-modo-ia {
+    background-color: rgba(0, 242, 254, 0.1);
+    color: #00f2fe;
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    padding: 0 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+}
+
+.btn-modo-ia:hover {
+    background-color: rgba(0, 242, 254, 0.25);
+    border-color: #00f2fe;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    transform: translateY(-1px);
+}
 
         /* Secciones de Contenido */
         .section-title {
@@ -406,11 +429,14 @@
         <section class="search-section">
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
-            <div class="search-bar-container">
-                <input type="text" class="search-input" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
-                <button class="btn-search">↑</button>
+                   <div class="search-bar-container">
+            <input type="text" class="search-input" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
+            <button class="btn-search">↑</button>
+            <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
+                <span style="margin-right: 5px;">✨</span> Modo IA
+            </button>
+        </div>
 
-            </div>
             <!-- VENTANA MODAL FLOTANTE TÁCTICA (Activada desde la barra superior) -->
             <div id="modal-radar-contenedor" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 14, 23, 0.75); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: flex-start; padding-top: 15px; z-index: 99999;">
 
