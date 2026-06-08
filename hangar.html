@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE - MATRIZ DE TEXTO FLUJO</title>
+    <title>AION SPACE SYSTEM | MI HANGAR CENTRAL</title>
     <style>
-        /* BASE OSCURA INTERFAZ */
+        /* BASE GENERAL ESPACIAL */
         body {
             background-color: #060913;
             color: #ffffff;
@@ -13,187 +13,246 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-        }
-
-        /* LIENZO MATEMÁTICO (34 x 52) */
-        .hoja-cuadriculada {
-            width: 680px; /* 34 columnas x 20px */
-            height: 1040px; /* 52 filas x 20px */
-            background-color: #fffdf0; /* Papel crema */
-            border: 4px solid #111424;
-            display: grid;
-            grid-template-columns: repeat(34, 20px);
-            grid-template-rows: repeat(52, 20px);
-            position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            
-            /* Rejilla milimetrada de fondo */
-            background-image: 
-                linear-gradient(rgba(218, 197, 161, 0.35) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(218, 197, 161, 0.35) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        /* FRANJAS DE CONTROL DE ANUNCIOS */
-        .franja-amarilla {
-            grid-column: 1 / span 34;
-            background-color: #f0a04b;
-            color: #060913;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            z-index: 1; /* Fondo de la cuadrícula */
-        }
-
-        /* 📝 LIENZO DE TEXTO CON SALTO AUTOMÁTICO (WORD-WRAP) */
-        .area-escritura-automatica {
-            grid-column: 1 / span 34; /* Ocupa todo el ancho */
-            grid-row: 2 / span 51;    /* Abarca desde la fila 2 hasta la 52 */
-            background: transparent;
-            color: #000000;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 14px;
-            
-            /* ALINEACIÓN CUÁNTICA CRÍTICA */
-            line-height: 20px;        /* Cada renglón mide exactamente 20px */
-            white-space: normal;      /* Fuerza el salto de línea automático */
-            word-break: break-word;   /* Rompe palabras largas al llegar al borde */
-            
-            padding: 0 10px;
-            box-sizing: border-box;
-            border: none;
-            outline: none;
-            z-index: 2; /* Flota sobre los fondos */
-            text-align: left;
-        }
-
-        /* Reset de márgenes internos para mantener la rejilla */
-        .area-escritura-automatica p, 
-        .area-escritura-automatica div {
+            padding: 30px;
             margin: 0;
-            padding: 0;
-            line-height: 20px;
         }
 
-        .indicador {
+        .header-hangar {
+            text-align: center;
+            margin-bottom: 30px;
             font-family: monospace;
-            margin-bottom: 15px;
+        }
+
+        .header-hangar h2 {
             color: #00ff88;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .header-hangar p {
+            color: #72767d;
             font-size: 12px;
+        }
+
+        /* 🪐 REJILLA DE 5 COLUMNAS STRICTAS (COMO TU WORD) */
+        .hangar-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        /* 📄 TARJETA UNIVERSAL EN BLANCO */
+        .bloque-hoja {
+            background-color: #ffffff;
+            border: 4px solid #111424;
+            border-radius: 4px;
+            aspect-ratio: 3 / 4; /* Proporción vertical tipo hoja */
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bloque-hoja:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+        }
+
+        /* 🟡 TARJETAS RESTRINGIDAS DE LA FILA INFERIOR */
+        .bloque-hoja.restringido {
+            background-color: #f0a04b; /* Amarillo táctico de tu boceto */
+            border-color: #b8732a;
+        }
+
+        .bloque-hoja.restringido:hover {
+            box-shadow: 0 10px 20px rgba(240, 160, 75, 0.3);
+            border-color: #111424;
+        }
+
+        /* CAPAS INTERNAS */
+        .info-sistema {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(16, 20, 30, 0.9);
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 10px;
+            padding: 6px;
+            box-sizing: border-box;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bloque-hoja.restringido .info-sistema {
+            background: #111424;
+            color: #f0a04b;
+        }
+
+        /* Contenedor de imagen interna (como tu dibujo Circulatorio) */
+        .preview-imagen {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .candado-visual {
+            margin: auto;
+            font-size: 32px;
+            color: #111424;
+        }
+
+        /* Botón de retorno flotante */
+        .btn-regresar {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #202225;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0,255,136,0.3);
+            z-index: 9999;
+            transition: all 0.2s ease;
+        }
+
+        .btn-regresar:hover {
+            background: #00ff88;
+            color: #060913;
+            box-shadow: 0 0 25px #00ff88;
+        }
+
+        /* RESPONSIVIDAD MÓVIL */
+        @media (max-width: 900px) {
+            .hangar-matrix-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columnas en celulares */
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="indicador">
-        📡 MÓDULO DE AJUSTE DE LÍNEA AUTOMÁTICO ACTIVO (34x52)
+    <div class="header-hangar">
+        <h2>SALA DE OPERACIONES - PORTAFOLIO GLOBAL</h2>
+        <p id="txt-rol">VALIDANDO CREDENCIALES DE ACCESO...</p>
     </div>
 
-    <div class="hoja-cuadriculada">
+    <!-- REJILLA MATRIZ PRINCIPAL (15 BLOQUES) -->
+    <div class="hangar-matrix-grid">
         
-        <!-- Fila 1: Título Fijo de Fondo -->
-        <div class="franja-amarilla" style="grid-row: 1;">
-            AION SPACE SYSTEM | MÓDULO DE APUNTES FLUIDOS
+        <!-- FILA 1: BLOQUES 1 AL 5 -->
+        <div class="bloque-hoja" onclick="abrirHoja(1)">
+            <!-- Aquí cargamos la imagen de muestra de tu aparato circulatorio -->
+            <img class="preview-imagen" src="https://unsplash.com" alt="Circulatorio">
+            <div class="info-sistema">BLOQUE 01: CIRCULATORIO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(2)">
+            <div class="info-sistema">BLOQUE 02: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(3)">
+            <div class="info-sistema">BLOQUE 03: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(4)">
+            <div class="info-sistema">BLOQUE 04: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(5)">
+            <div class="info-sistema">BLOQUE 05: VACÍO</div>
         </div>
 
-        <!-- Fila 15: Franja Amarilla Intermedia de Fondo -->
-        <div class="franja-amarilla" style="grid-row: 15;">
-            ÁREA DE COMENTARIOS ADICIONALES
+        <!-- FILA 2: BLOQUES 6 AL 10 -->
+        <div class="bloque-hoja" onclick="abrirHoja(6)">
+            <div class="info-sistema">BLOQUE 06: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(7)">
+            <div class="info-sistema">BLOQUE 07: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(8)">
+            <div class="info-sistema">BLOQUE 08: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(9)">
+            <div class="info-sistema">BLOQUE 09: VACÍO</div>
+        </div>
+        <div class="bloque-hoja" onclick="abrirHoja(10)">
+            <div class="info-sistema">BLOQUE 10: VACÍO</div>
         </div>
 
-        <!-- LIENZO UNIFICADO DE ESCRITURA -->
-        <div class="area-escritura-automatica" contenteditable="true">
-            <b>PROBLEMA 01: MATRICES SIMÉTRICAS</b><br>
-            Ejemplo 1: Si A es una matriz simétrica, calcula el valor final del sistema. Puedes pegar textos gigantes aquí adentro y verás cómo saltan al siguiente renglón automáticamente sin deformar las celdas matemáticas de fondo. Pruébalo ahora mismo instalando este código en tu archivo.
+        <!-- FILA 3: BLOQUES RESTRINGIDOS AMARILLOS (11 AL 15) -->
+        <div class="bloque-hoja restringido" id="card-11" onclick="abrirHojaRestringida(11)">
+            <div class="candado-visual">🔒</div>
+            <div class="info-sistema">BLOQUE 11: PRIVADO</div>
+        </div>
+        <div class="bloque-hoja restringido" id="card-12" onclick="abrirHojaRestringida(12)">
+            <div class="candado-visual">🔒</div>
+            <div class="info-sistema">BLOQUE 12: PRIVADO</div>
+        </div>
+        <div class="bloque-hoja restringido" id="card-13" onclick="abrirHojaRestringida(13)">
+            <div class="candado-visual">🔒</div>
+            <div class="info-sistema">BLOQUE 13: PRIVADO</div>
+        </div>
+        <div class="bloque-hoja restringido" id="card-14" onclick="abrirHojaRestringida(14)">
+            <div class="candado-visual">🔒</div>
+            <div class="info-sistema">BLOQUE 14: PRIVADO</div>
+        </div>
+        <div class="bloque-hoja restringido" id="card-15" onclick="abrirHojaRestringida(15)">
+            <div class="candado-visual">🔒</div>
+            <div class="info-sistema">BLOQUE 15: PRIVADO</div>
         </div>
 
     </div>
-<!-- MÓDULO SCRIPT DE SINCRONIZACIÓN CON FIREBASE RTDB -->
-<script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getDatabase, ref, set, onValue } from "https://gstatic.com";
 
-    // Credenciales oficiales de tu proyecto unificado
-    const firebaseConfig = {
-        apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
-        authDomain: "://firebaseapp.com",
-        databaseURL: "https://firebaseio.com",
-        projectId: "aion-space-system",
-        storageBucket: "aion-space-system.firebasestorage.app",
-        messagingSenderId: "247082868280",
-        appId: "1:247082868280:web:c0aeeb2a62bc02c2f6d0cd"
-    };
+    <!-- BOTÓN REGRESAR -->
+    <button class="btn-regresar" onclick="window.location.href='index.html'">
+        ⬅ VOLVER AL CENTRO DE CONTROL
+    </button>
 
-    // Inicializar conexión
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const hangarRef = ref(db, 'hangar/notas');
-
-    // Correo administrador único con permiso de edición
-    const CORREO_PROPIETARIO = "ronaldramosalvax@gmail.com"; // <--- CAMBIA ESTO POR TU CORREO DE GOOGLE
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const areaTexto = document.querySelector(".area-escritura-automatica");
-        const indicador = document.querySelector(".indicador");
-        
-        // 1. Verificar identidad localmente
-        const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+    <script>
+        const CORREO_PROPIETARIO = "ronaldramosalvax@gmail.com";
         let esDuenio = false;
 
-        if (cuentaLocal) {
-            const perfil = JSON.parse(cuentaLocal);
-            if (perfil.correo === CORREO_PROPIETARIO) {
-                esDuenio = true;
-            }
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const txtRol = document.getElementById("txt-rol");
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
 
-        // 2. Aplicar permisos rígidos de lectura/escritura
-        if (areaTexto) {
-            if (esDuenio) {
-                areaTexto.setAttribute("contenteditable", "true");
-                indicador.innerHTML = "📡 MÓDULO PROPIETARIO ACTIVO | GUARDANDO EN LA NUBE";
-                indicador.style.color = "#00ff88";
-
-                // Escuchar escritura para guardar automáticamente al dejar de escribir
-                let temporizador;
-                areaTexto.addEventListener("input", () => {
-                    indicador.innerHTML = "⚡ TRANSMITIENDO DATOS A LA RED...";
-                    indicador.style.color = "#f0a04b";
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                if (perfil.correo === CORREO_PROPIETARIO) {
+                    esDuenio = true;
+                    txtRol.innerHTML = `⚙️ MODO PROPIETARIO GENERAL | PILOTO: ${perfil.nombre.toUpperCase()}`;
+                    txtRol.style.color = "#00ff88";
                     
-                    clearTimeout(temporizador);
-                    temporizador = setTimeout(() => {
-                        set(hangarRef, {
-                            htmlContenido: areaTexto.innerHTML,
-                            ultimaActualizacion: Date.now()
-                        }).then(() => {
-                            indicador.innerHTML = "📡 DATOS CONGELADOS CON ÉXITO EN FIREBASE";
-                            indicador.style.color = "#00ff88";
-                        });
-                    }, 1000); // Guarda 1 segundo después de que dejas de escribir
-                });
-            } else {
-                areaTexto.setAttribute("contenteditable", "false");
-                indicador.innerHTML = "👁️ MODO OBSERVADOR INVITADO | SÓLO LECTURA PROTEGIDA";
-                indicador.style.color = "#5765f2";
-            }
-        }
-
-        // 3. Descargar y renderizar el contenido en tiempo real desde la nube
-        onValue(hangarRef, (snapshot) => {
-            const datos = snapshot.val();
-            if (datos && datos.htmlContenido && areaTexto) {
-                // Solo actualiza si el usuario no está escribiendo activamente
-                if (document.activeElement !== areaTexto) {
-                    areaTexto.innerHTML = datos.htmlContenido;
+                    // Quitar candados visuales si eres tú
+                    document.querySelectorAll(".candado-visual").forEach(c => c.innerHTML = "🔓");
+                } else {
+                    txtRol.innerHTML = `👁️ VISTA DE INVITADO | OBSERVADOR: ${perfil.nombre.toUpperCase()}`;
+                    txtRol.style.color = "#5765f2";
                 }
             }
         });
-    });
-</script>
 
+        function abrirHoja(id) {
+            alert(`Abriendo plantilla universal para el Bloque ${id}`);
+            // Aquí enlazaremos a tus hojas de apuntes individuales posteriormente
+        }
+
+        function abrirHojaRestringida(id) {
+            if (esDuenio) {
+                alert(`Abriendo bóveda privada del Bloque ${id}`);
+            } else {
+                alert("📡 ACCESO DENEGADO: Este bloque requiere firma cuántica del administrador.");
+            }
+        }
+    </script>
 </body>
 </html>
