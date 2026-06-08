@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE - MATRIZ DE TEXTO FLUJO</title>
+    <style>
+        /* BASE OSCURA INTERFAZ */
+        body {
+            background-color: #060913;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* LIENZO MATEMÁTICO (34 x 52) */
+        .hoja-cuadriculada {
+            width: 680px; /* 34 columnas x 20px */
+            height: 1040px; /* 52 filas x 20px */
+            background-color: #fffdf0; /* Papel crema */
+            border: 4px solid #111424;
+            display: grid;
+            grid-template-columns: repeat(34, 20px);
+            grid-template-rows: repeat(52, 20px);
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            
+            /* Rejilla milimetrada de fondo */
+            background-image: 
+                linear-gradient(rgba(218, 197, 161, 0.35) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(218, 197, 161, 0.35) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* FRANJAS DE CONTROL DE ANUNCIOS */
+        .franja-amarilla {
+            grid-column: 1 / span 34;
+            background-color: #f0a04b;
+            color: #060913;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            z-index: 1; /* Fondo de la cuadrícula */
+        }
+
+        /* 📝 LIENZO DE TEXTO CON SALTO AUTOMÁTICO (WORD-WRAP) */
+        .area-escritura-automatica {
+            grid-column: 1 / span 34; /* Ocupa todo el ancho */
+            grid-row: 2 / span 51;    /* Abarca desde la fila 2 hasta la 52 */
+            background: transparent;
+            color: #000000;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            
+            /* ALINEACIÓN CUÁNTICA CRÍTICA */
+            line-height: 20px;        /* Cada renglón mide exactamente 20px */
+            white-space: normal;      /* Fuerza el salto de línea automático */
+            word-break: break-word;   /* Rompe palabras largas al llegar al borde */
+            
+            padding: 0 10px;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            z-index: 2; /* Flota sobre los fondos */
+            text-align: left;
+        }
+
+        /* Reset de márgenes internos para mantener la rejilla */
+        .area-escritura-automatica p, 
+        .area-escritura-automatica div {
+            margin: 0;
+            padding: 0;
+            line-height: 20px;
+        }
+
+        .indicador {
+            font-family: monospace;
+            margin-bottom: 15px;
+            color: #00ff88;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="indicador">
+        📡 MÓDULO DE AJUSTE DE LÍNEA AUTOMÁTICO ACTIVO (34x52)
+    </div>
+
+    <div class="hoja-cuadriculada">
+        
+        <!-- Fila 1: Título Fijo de Fondo -->
+        <div class="franja-amarilla" style="grid-row: 1;">
+            AION SPACE SYSTEM | MÓDULO DE APUNTES FLUIDOS
+        </div>
+
+        <!-- Fila 15: Franja Amarilla Intermedia de Fondo -->
+        <div class="franja-amarilla" style="grid-row: 15;">
+            ÁREA DE COMENTARIOS ADICIONALES
+        </div>
+
+        <!-- LIENZO UNIFICADO DE ESCRITURA -->
+        <div class="area-escritura-automatica" contenteditable="true">
+            <b>PROBLEMA 01: MATRICES SIMÉTRICAS</b><br>
+            Ejemplo 1: Si A es una matriz simétrica, calcula el valor final del sistema. Puedes pegar textos gigantes aquí adentro y verás cómo saltan al siguiente renglón automáticamente sin deformar las celdas matemáticas de fondo. Pruébalo ahora mismo instalando este código en tu archivo.
+        </div>
+
+    </div>
+
+</body>
+</html>
