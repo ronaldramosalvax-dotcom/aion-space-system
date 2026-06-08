@@ -112,6 +112,88 @@
         </div>
 
     </div>
+<!-- MÓDULO SCRIPT DE SINCRONIZACIÓN CON FIREBASE RTDB -->
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getDatabase, ref, set, onValue } from "https://gstatic.com";
+
+    // Credenciales oficiales de tu proyecto unificado
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
+        authDomain: "://firebaseapp.com",
+        databaseURL: "https://firebaseio.com",
+        projectId: "aion-space-system",
+        storageBucket: "aion-space-system.firebasestorage.app",
+        messagingSenderId: "247082868280",
+        appId: "1:247082868280:web:c0aeeb2a62bc02c2f6d0cd"
+    };
+
+    // Inicializar conexión
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const hangarRef = ref(db, 'hangar/notas');
+
+    // Correo administrador único con permiso de edición
+    const CORREO_PROPIETARIO = "tu-correo@gmail.com"; // <--- CAMBIA ESTO POR TU CORREO DE GOOGLE
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const areaTexto = document.querySelector(".area-escritura-automatica");
+        const indicador = document.querySelector(".indicador");
+        
+        // 1. Verificar identidad localmente
+        const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+        let esDuenio = false;
+
+        if (cuentaLocal) {
+            const perfil = JSON.parse(cuentaLocal);
+            if (perfil.correo === CORREO_PROPIETARIO) {
+                esDuenio = true;
+            }
+        }
+
+        // 2. Aplicar permisos rígidos de lectura/escritura
+        if (areaTexto) {
+            if (esDuenio) {
+                areaTexto.setAttribute("contenteditable", "true");
+                indicador.innerHTML = "📡 MÓDULO PROPIETARIO ACTIVO | GUARDANDO EN LA NUBE";
+                indicador.style.color = "#00ff88";
+
+                // Escuchar escritura para guardar automáticamente al dejar de escribir
+                let temporizador;
+                areaTexto.addEventListener("input", () => {
+                    indicador.innerHTML = "⚡ TRANSMITIENDO DATOS A LA RED...";
+                    indicador.style.color = "#f0a04b";
+                    
+                    clearTimeout(temporizador);
+                    temporizador = setTimeout(() => {
+                        set(hangarRef, {
+                            htmlContenido: areaTexto.innerHTML,
+                            ultimaActualizacion: Date.now()
+                        }).then(() => {
+                            indicador.innerHTML = "📡 DATOS CONGELADOS CON ÉXITO EN FIREBASE";
+                            indicador.style.color = "#00ff88";
+                        });
+                    }, 1000); // Guarda 1 segundo después de que dejas de escribir
+                });
+            } else {
+                areaTexto.setAttribute("contenteditable", "false");
+                indicador.innerHTML = "👁️ MODO OBSERVADOR INVITADO | SÓLO LECTURA PROTEGIDA";
+                indicador.style.color = "#5765f2";
+            }
+        }
+
+        // 3. Descargar y renderizar el contenido en tiempo real desde la nube
+        onValue(hangarRef, (snapshot) => {
+            const datos = snapshot.val();
+            if (datos && datos.htmlContenido && areaTexto) {
+                // Solo actualiza si el usuario no está escribiendo activamente
+                if (document.activeElement !== areaTexto) {
+                    areaTexto.innerHTML = datos.htmlContenido;
+                }
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
