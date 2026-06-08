@@ -418,6 +418,8 @@
 
         <!-- Sección de Búsqueda -->
         <section class="search-section">
+            <img id="avatar-mando-principal" src="logo.png" onclick="window.location.href='hangar.html'" style="display: block; margin: 0 auto 20px auto; width: 85px; height: 85px; border-radius: 14px; border: 2px solid #00ff88; cursor: pointer; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); object-fit: cover;">
+
             <h1>El Centro de Control Tecnológico</h1>
             <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
                    
@@ -703,6 +705,16 @@ const app = initializeApp(firebaseConfig);
   });
 
     
+</script>
+<script>
+    window.addEventListener('authPilotoListo', () => {
+        const sesion = localStorage.getItem("cuenta_aion_instalada");
+        if (sesion) {
+            const perfil = JSON.parse(sesion);
+            const controlImg = document.getElementById("avatar-mando-principal");
+            if (controlImg) controlImg.src = perfil.avatar;
+        }
+    });
 </script>
 
 
