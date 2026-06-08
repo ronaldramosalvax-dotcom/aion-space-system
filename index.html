@@ -583,6 +583,17 @@
             <h3 style="color: #00ff88; font-family: monospace; margin-top: 0; letter-spacing: 1px;">📡 ALTA DE PILOTO EN RED</h3>
             <p style="color: #dcddde; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Tu firma cuántica ha sido validada con Google. Introduce tu apodo definitivo para congelar tu ID eterno en la base de datos central.</p>
             <input type="text" id="registro-apodo-input" placeholder="Escribe tu Apodo / Alias..." style="width: 100%; background: #202225; border: 1px solid #4f545c; border-radius: 6px; padding: 10px; color: white; font-size: 14px; outline: none; margin-bottom: 20px; text-align: center;">
+            <!-- REJILLA SELECCIÓN DE PILOTOS TÁCTICOS -->
+<div style="text-align: left; margin: 15px 0 5px 0;">
+    <label style="color: #72767d; font-family: monospace; font-size: 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">[ SELECCIONAR INTERFAZ DE PILOTO ]</label>
+</div>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px; border: 1px solid rgba(0, 255, 136, 0.2);">
+    <img src="https://robohash.org" class="avatar-opcion" data-avatar="https://robohash.org" style="width:100%; aspect-ratio:1; border-radius:6px; cursor:pointer; border:2px solid #00ff88; box-shadow:0 0 10px #00ff88; object-fit:cover;" onclick="seleccionarAvatarVisual(this)">
+    <img src="https://robohash.org" class="avatar-opcion" data-avatar="https://robohash.org" style="width:100%; aspect-ratio:1; border-radius:6px; cursor:pointer; border:2px solid transparent; object-fit:cover;" onclick="seleccionarAvatarVisual(this)">
+    <img src="https://robohash.org" class="avatar-opcion" data-avatar="https://robohash.org" style="width:100%; aspect-ratio:1; border-radius:6px; cursor:pointer; border:2px solid transparent; object-fit:cover;" onclick="seleccionarAvatarVisual(this)">
+    <img src="https://robohash.org" class="avatar-opcion" data-avatar="https://robohash.org" style="width:100%; aspect-ratio:1; border-radius:6px; cursor:pointer; border:2px solid transparent; object-fit:cover;" onclick="seleccionarAvatarVisual(this)">
+</div>
+
             <button id="btn-guardar-registro" style="width: 100%; background: #00ff88; color: #101417; border: none; border-radius: 6px; padding: 12px; cursor: pointer; font-weight: bold; font-size: 13px; letter-spacing: 0.5px;">CONGELAR PERFIL</button>
         </div>
     </div>
@@ -661,6 +672,16 @@ const app = initializeApp(firebaseConfig);
             const modalRegistro = document.getElementById("registro-piloto-modal");
             const inputApodo = document.getElementById("registro-apodo-input");
             const btnGuardar = document.getElementById("btn-guardar-registro");
+            window.avatarSeleccionadoAion = "https://robohash.org";
+window.seleccionarAvatarVisual = function(elemento) {
+    document.querySelectorAll('.avatar-opcion').forEach(img => {
+        img.style.borderColor = 'transparent';
+        img.style.boxShadow = 'none';
+    });
+    elemento.style.borderColor = '#00ff88';
+    elemento.style.boxShadow = '0 0 10px #00ff88';
+    window.avatarSeleccionadoAion = elemento.getAttribute('data-avatar');
+};  
             
             modalRegistro.style.display = "flex";
             setTimeout(() => { if(inputApodo) inputApodo.focus(); }, 100);
@@ -681,7 +702,7 @@ const app = initializeApp(firebaseConfig);
                   nombre: apodoDigitado, 
                   nombreReal: primerNombreGoogle, 
                   codigo: nuevoId4Digitos, 
-                  avatar: "https://robohash.org" + nuevoId4Digitos + ".png?set=set1",
+                  avatar: window.avatarSeleccionadoAion,
                   correo: user.email
               };
 
