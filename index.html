@@ -642,6 +642,13 @@ const app = initializeApp(firebaseConfig);
       if (user) {
         // Limpiamos el correo de puntos para usarlo como ID único y seguro en Firebase
         const cuentaIdClean = user.email.replace(/[^a-zA-Z0-9]/g, "");
+                const sesionPrevia = localStorage.getItem("cuenta_aion_instalada");
+        if (sesionPrevia) {
+            const perfilPrevio = JSON.parse(sesionPrevia);
+            const navImg = document.getElementById("avatar-nav-bar");
+            if (navImg && perfilPrevio.avatar) navImg.src = perfilPrevio.avatar;
+        }
+
         const db = getDatabase();
         const usuarioRef = ref(db, 'usuarios/' + cuentaIdClean);
 
