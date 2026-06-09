@@ -649,7 +649,7 @@ const app = initializeApp(firebaseConfig);
           // Escaneamos tu Firebase central buscando si este piloto ya existe
           const snapshot = await get(usuarioRef);
 
-          if (!snapshot.exists()) {
+          if (snapshot.exists()) {
 
             // CASO A: El piloto ya se había registrado antes. Descargamos su perfil
             const datosExistentes = snapshot.val();
