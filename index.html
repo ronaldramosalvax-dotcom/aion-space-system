@@ -740,7 +740,7 @@ window.seleccionarAvatarVisual = function(elemento) {
 
     
 </script>
-    <script>
+        <script>
         function cargarAvatarIndex() {
             const sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
@@ -752,10 +752,11 @@ window.seleccionarAvatarVisual = function(elemento) {
             }
         }
 
-        // Carga el pelirrojo inmediatamente al abrir la página
-        document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
+        // ◄ EJECUCIÓN INMEDIATA: Fuerza al navegador a pintar al pelirrojo antes de que Firebase parpadee
+        cargarAvatarIndex();
 
-        // También escucha por si acaso hay un cambio en vivo
+        // Respaldos de carga para asegurar que no se borre después
+        document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
         window.addEventListener('authPilotoListo', cargarAvatarIndex);
     </script>
 
