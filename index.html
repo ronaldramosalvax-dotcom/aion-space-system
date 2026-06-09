@@ -733,14 +733,14 @@ window.seleccionarAvatarVisual = function(elemento) {
       } else {
         blocker.style.display = "flex";
         document.getElementById("registro-piloto-modal").style.display = "none";
-        localStorage.removeItem("cuenta_aion_instalada");
+        // localStorage.removeItem("cuenta_aion_instalada");
       }
     });
   });
 
     
 </script>
-        <script>
+           <script>
         function cargarAvatarIndex() {
             const sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
@@ -752,14 +752,15 @@ window.seleccionarAvatarVisual = function(elemento) {
             }
         }
 
-        // ◄ EJECUCIÓN INMEDIATA: Fuerza al navegador a pintar al pelirrojo antes de que Firebase parpadee
+        // 1. Ejecución inmediata en el primer milisegundo de renderizado
         cargarAvatarIndex();
 
-        // Respaldos de carga para asegurar que no se borre después
+        // 2. Ejecución de respaldo al cargar todo el árbol HTML
         document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
+
+        // 3. Ejecución reactiva por si cambia la sesión en vivo
         window.addEventListener('authPilotoListo', cargarAvatarIndex);
     </script>
-
-
 </body>
 </html>
+
