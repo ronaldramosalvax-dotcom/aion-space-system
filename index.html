@@ -746,10 +746,17 @@ window.seleccionarAvatarVisual = function(elemento) {
     
 </script>
                <script>
-              function cargarAvatarIndex() {
-            const sesion = localStorage.getItem("cuenta_aion_instalada");
+                      function cargarAvatarIndex() {
+            let sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
-                const perfil = JSON.parse(sesion);
+                let perfil = JSON.parse(sesion);
+                
+                // ◄ DETECTOR DE FANTASMAS: Si la memoria dice [ROBOT], la obligamos a usar la chica
+                if (perfil.avatar === "[ROBOT]") {
+                    perfil.avatar = "piloto1.png"; // Asigna el archivo real de la chica
+                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
+                }
+                
                 const controlImg = document.getElementById("avatar-nav-bar");
                 if (controlImg && perfil.avatar) {
                     controlImg.src = perfil.avatar;
