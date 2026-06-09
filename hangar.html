@@ -49,65 +49,62 @@
             border-radius: 25px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none;
         }
         
-        .hangar-container { max-width: 950px; width: 90%; padding: 40px 0; text-align: center; }
+        .hangar-container { max-width: 950px; width: 90%; padding: 60px 0; text-align: center; }
+        .hangar-title { font-family: monospace; color: #404eed; font-size: 2.2rem; margin-bottom: 12px; letter-spacing: 2px; }
+        .hangar-subtitle { color: #72767d; font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
 
-        .avatar-grid { 
-            display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
-            grid-template-rows: repeat(3, 1fr);
-            gap: 15px; 
-            background: #000000;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* --- VENTANA EMERGENTE TÁCTICA DE TU WORD --- */
+        .modal-fondo-oscuro {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 14, 23, 0.85); backdrop-filter: blur(6px);
+            display: none; justify-content: center; align-items: center; z-index: 99999;
         }
-        @media (max-width: 800px) {
-            .avatar-grid { grid-template-columns: repeat(3, 1fr); }
+        /* El recuadro negro central de tu dibujo */
+        .modal-perfil-caja {
+            background: #000000; border: 2px solid #404eed; border-radius: 12px;
+            width: 90%; max-width: 650px; padding: 30px; display: flex;
+            flex-direction: column; align-items: center; gap: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(64, 78, 237, 0.2);
+            position: relative;
         }
-        
+        .btn-cerrar-modal {
+            position: absolute; top: 15px; right: 15px; color: #72767d;
+            cursor: pointer; font-family: monospace; font-size: 16px; transition: color 0.2s;
+        }
+        .btn-cerrar-modal:hover { color: #ff4757; }
+
+        /* El bloque grande de "Perfil" de arriba de tu dibujo */
+        .bloque-perfil-superior {
+            background: #111622; border: 2px solid #00ff88; border-radius: 8px;
+            width: 140px; height: 140px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 8px; padding: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.15);
+        }
+        .bloque-perfil-superior img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #00ff88; }
+        .bloque-perfil-superior span { font-family: monospace; font-size: 11px; font-weight: bold; color: #00ff88; }
+
+        /* La fila de 4 bloques de abajo de tu dibujo */
+        .fila-bloques-inferior {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%;
+        }
         .avatar-card {
-            background: transparent; 
-            border: 2px solid #ffffff; 
-            border-radius: 6px;
-            min-height: 145px;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            gap: 12px;
-            padding: 10px;
-            transition: all 0.2s ease;
+            background: #111622; border: 2px solid #ffffff; border-radius: 6px;
+            min-height: 125px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px; padding: 8px;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        
-        .avatar-card.revelada {
-            background: #111622;
-            border-color: rgba(64, 78, 237, 0.5);
-            cursor: pointer;
-        }
-        .avatar-card.revelada:hover {
-            border-color: #00ff88;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-        }
+        .avatar-card:hover { border-color: #404eed; transform: translateY(-2px); }
         .avatar-card.seleccionada {
-            border-color: #00ff88 !important;
-            background: #162032 !important;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4) !important;
+            border-color: #00ff88 !important; background: #162032 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3) !important;
         }
-        
-        .avatar-card img { 
-            width: 85px; height: 85px; border-radius: 50%; object-fit: cover; 
-            border: 2px solid #404eed; background: #1a2238; display: none; 
-        }
-        .avatar-card span { 
-            font-family: monospace; font-weight: bold; font-size: 10px; color: #ffffff; 
-            letter-spacing: 0.5px; display: none; 
-        }
+        .avatar-card img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #404eed; }
+        .avatar-card span { font-family: monospace; font-weight: bold; font-size: 9px; color: #ffffff; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior Unificada (Botones arriba de la línea) -->
+    <!-- Barra Superior -->
     <header class="top-navbar">
         <button class="btn-regresar-verde" onclick="window.location.href='index.html'">◀ VOLVER AL PANEL</button>
         
@@ -118,45 +115,46 @@
         </div>
     </header>
 
+    <!-- Fondo de Pantalla del Hangar Vacio -->
     <main class="hangar-container">
-        <!-- LA MATRIZ DE 15 RECUADROS RECTOS DE TU WORD -->
-        <div class="avatar-grid">
-            <!-- Fila 1 -->
-            <div id="slot-0" class="avatar-card" data-avatar="logo.png">
-                <img src="logo.png">
-                <span>SISTEMA AION</span>
-            </div>
-            <div id="slot-1" class="avatar-card" data-avatar="piloto1.png">
-                <img src="piloto1.png">
-                <span>PILOTO TÁCTICO 01</span>
-            </div>
-            <div id="slot-2" class="avatar-card" data-avatar="piloto2.png">
-                <img src="piloto2.png">
-                <span>PILOTO TÁCTICO 02</span>
-            </div>
-            <div id="slot-3" class="avatar-card" data-avatar="piloto3.png">
-                <img src="piloto3.png">
-                <span>PILOTO TÁCTICO 03</span>
-            </div>
-            <div class="avatar-card"></div>
-
-            <!-- Fila 2 -->
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-
-            <!-- Fila 3 -->
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-            <div class="avatar-card"></div>
-        </div>
+        <h1 class="hangar-title">📡 SISTEMA DE CONTROL DE IDENTIDAD</h1>
+        <p class="hangar-subtitle">Presiona el botón azul del menú superior para detonar el escáner cuántico y desplegar el panel emergente de personalización de firmas.</p>
     </main>
 
-    <!-- MOTOR LOGÍSTICO Y CONEXIÓN CON FIREBASE -->
+    <!-- VENTANA EMERGENTE DE TU WORD (Oculta por defecto) -->
+    <div id="modal-perfil-flotante" class="modal-fondo-oscuro">
+        <div class="modal-perfil-caja">
+            <span class="btn-cerrar-modal" onclick="document.getElementById('modal-perfil-flotante').style.display='none'">✖</span>
+            
+            <!-- BLOQUE DE ARRIBA: Tu "Perfil" actual -->
+            <div class="bloque-perfil-superior">
+                <img id="avatar-modal-perfil" src="logo.png">
+                <span>TU PERFIL</span>
+            </div>
+
+            <!-- FILA DE ABAJO: Tus 4 bloques para escoger -->
+            <div class="fila-bloques-inferior">
+                <div class="avatar-card" data-avatar="logo.png" onclick="procesarSeleccionFinalPiloto(this)">
+                    <img src="logo.png">
+                    <span>SISTEMA AION</span>
+                </div>
+                <div class="avatar-card" data-avatar="piloto1.png" onclick="procesarSeleccionFinalPiloto(this)">
+                    <img src="piloto1.png">
+                    <span>PILOTO 01</span>
+                </div>
+                <div class="avatar-card" data-avatar="piloto2.png" onclick="procesarSeleccionFinalPiloto(this)">
+                    <img src="piloto2.png">
+                    <span>PILOTO 02</span>
+                </div>
+                <div class="avatar-card" data-avatar="piloto3.png" onclick="procesarSeleccionFinalPiloto(this)">
+                    <img src="piloto3.png">
+                    <span>PILOTO 03</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOTOR DE FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
         import { getAuth, onAuthStateChanged } from "https://gstatic.com";
@@ -178,6 +176,7 @@
 
         let usuarioEmailLimpio = "";
 
+        // Sincronizar sesión activa de Google
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 usuarioEmailLimpio = user.email.replace(/[^a-zA-Z0-9]/g, "");
@@ -185,39 +184,22 @@
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
                     document.getElementById("avatar-nav-bar").src = perfil.avatar || "logo.png";
+                    document.getElementById("avatar-modal-perfil").src = perfil.avatar || "logo.png";
                 }
             } else {
                 window.location.href = "index.html";
             }
         });
 
-        // Activación forzada por ID del botón azul (Salta bloqueos de módulo)
+        // EL MOTOR DEL BOTÓN AZUL: Dispara la ventana flotante de tu Word
         document.getElementById("btn-disparar-escaner").onclick = function() {
-            const btn = document.getElementById("btn-disparar-escaner");
-            if (btn) {
-                btn.innerHTML = "⚡ ESCANEO COMPLETO";
-                btn.style.background = "#23272a";
-                btn.style.borderColor = "#00ff88";
-                btn.disabled = true;
-            }
-
-            for (let i = 0; i <= 3; i++) {
-                const celda = document.getElementById(`slot-${i}`);
-                if (celda) {
-                    celda.classList.add("revelada");
-                    const img = celda.querySelector("img");
-                    const span = celda.querySelector("span");
-                    if (img) img.style.display = "block";
-                    if (span) span.style.display = "block";
-                    
-                    celda.onclick = function() {
-                        procesarSeleccionFinalPiloto(celda);
-                    };
-                }
-            }
+            // Despliega la ventana flotante centrada en la pantalla
+            document.getElementById("modal-perfil-flotante").style.display = "flex";
         };
 
-        async function procesarSeleccionFinalPiloto(elemento) {
+        // Guardado directo en Firebase al presionar uno de los 4 bloques
+        window.procesarSeleccionFinalPiloto = async function(elemento) {
+            // Remueve selecciones anteriores y activa el borde verde neón en el bloque elegido
             document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
             elemento.classList.add('seleccionada');
 
@@ -227,8 +209,10 @@
             const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
 
             try {
+                // 1. Sube la actualización a tu Firebase Realtime Database
                 await update(usuarioRef, { avatar: archivoAvatar });
                 
+                // 2. Guarda localmente para mantener la sesión en el index.html
                 const sesion = localStorage.getItem("cuenta_aion_instalada");
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
@@ -236,37 +220,15 @@
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
 
+                // 3. Refresca al instante las fotos en el Navbar y en el bloque "Perfil" de tu modal
                 document.getElementById("avatar-nav-bar").src = archivoAvatar;
+                document.getElementById("avatar-modal-perfil").src = archivoAvatar;
+                
                 alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
             } catch (error) {
+                alert("Falla crítica en la subida: " + error.message);
+            }
         }
-        
-        // CÓDIGO FALTANTE: Activa el escáner al pulsar el Botón Azul
-        document.getElementById("btn-disparar-escaner").onclick = function() {
-            const btn = document.getElementById("btn-disparar-escaner");
-            if (btn) {
-                btn.innerHTML = "⚡ ESCANEO COMPLETO";
-                btn.style.background = "#23272a";
-                btn.style.borderColor = "#00ff88";
-                btn.disabled = true;
-            }
-
-            // Recorre tus 4 slots con imágenes y las muestra en la hoja cuadriculada
-            for (let i = 0; i <= 3; i++) {
-                const celda = document.getElementById(`slot-${i}`);
-                if (celda) {
-                    celda.classList.add("revelada");
-                    const img = celda.querySelector("img");
-                    const span = celda.querySelector("span");
-                    if (img) img.style.display = "block";
-                    if (span) span.style.display = "block";
-                    
-                    celda.onclick = function() {
-                        procesarSeleccionFinalPiloto(celda);
-                    };
-                }
-            }
-        };
     </script>
 </body>
 </html>
