@@ -695,7 +695,15 @@ window.seleccionarAvatarVisual = function(elemento) {
 
             // Guardamos cuando el piloto haga clic en el botón verde
             btnGuardar.onclick = async () => {
-              window.avatarSeleccionadoAion="[ROBOT]";window.seleccionarAvatarEmoji=function(elemento){document.querySelectorAll('.avatar-opcion').forEach(div=>{div.style.color='#ffffff';});elemento.style.color='#00ff88';window.avatarSeleccionadoAion=elemento.getAttribute('data-avatar');};
+             
+              if (!window.avatarSeleccionadoAion || window.avatarSeleccionadoAion === "[ROBOT]") {
+                  window.avatarSeleccionadoAion = "piloto1.png";
+              }
+              window.seleccionarAvatarEmoji = function(elemento) {
+                  document.querySelectorAll('.avatar-opcion').forEach(div => { div.style.color = '#ffffff'; });
+                  elemento.style.color = '#00ff88';
+                  window.avatarSeleccionadoAion = elemento.getAttribute('data-avatar');
+              };
 
 
                 const apodoDigitado = inputApodo.value.trim();
@@ -740,11 +748,19 @@ window.seleccionarAvatarVisual = function(elemento) {
 
     
 </script>
-           <script>
+               <script>
         function cargarAvatarIndex() {
+            // 1. Limpiamos la memoria del navegador si viene el robot defectuoso
             const sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
                 const perfil = JSON.parse(sesion);
+                
+                // SI DICE ROBOT, LO CAMBIAMOS A LA FUERZA POR EL PELIRROJO
+                if (!perfil.avatar || perfil.avatar === "[ROBOT]") {
+                    perfil.avatar = "piloto1.png";
+                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
+                }
+                
                 const controlImg = document.getElementById("avatar-nav-bar");
                 if (controlImg && perfil.avatar) {
                     controlImg.src = perfil.avatar;
@@ -752,15 +768,12 @@ window.seleccionarAvatarVisual = function(elemento) {
             }
         }
 
-        // 1. Ejecución inmediata en el primer milisegundo de renderizado
+        // Ejecución prolija en el arranque
         cargarAvatarIndex();
-
-        // 2. Ejecución de respaldo al cargar todo el árbol HTML
         document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
-
-        // 3. Ejecución reactiva por si cambia la sesión en vivo
         window.addEventListener('authPilotoListo', cargarAvatarIndex);
     </script>
+
 </body>
 </html>
 
