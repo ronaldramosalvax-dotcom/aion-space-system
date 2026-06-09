@@ -201,36 +201,36 @@
         document.getElementById("btn-sel-p2").onclick = function() { GuardarAvatarFinal(this); };
         document.getElementById("btn-sel-p3").onclick = function() { GuardarAvatarFinal(this); };
 
-        async function GuardarAvatarFinal(elemento) {
-            document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
-            elemento.classList.add('seleccionada');
+       async function GuardarAvatarFinal(elemento) {
+    document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
+    elemento.classList.add('seleccionada');
 
-            const archivoAvatar = elemento.getAttribute('data-avatar');
-            if (!usuarioEmailLimpio || !archivoAvatar) return;
+    const archivoAvatar = elemento.getAttribute('data-avatar');
+    if (!archivoAvatar) return;
 
-            const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
+    // 1. Cambio visual instantáneo en tu pantalla
+    document.getElementById("avatar-nav-bar").src = archivoAvatar;
+    document.getElementById("avatar-modal-perfil").src = archivoAvatar;
 
-            try {
-                // 1. Sube la actualización a tu Firebase Realtime Database
-                await update(usuarioRef, { avatar: archivoAvatar });
-                
-                // 2. Guarda localmente para mantener la sesión activa
-                const sesion = localStorage.getItem("cuenta_aion_instalada");
-                if (sesion) {
-                    const perfil = JSON.parse(sesion);
-                    perfil.avatar = archivoAvatar;
-                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
-                }
+    // 2. Guardado automático en el almacenamiento local
+    const sesion = localStorage.getItem("cuenta_aion_instalada");
+    let perfil = sesion ? JSON.parse(sesion) : { nombre: "Piloto", codigo: "#AION" };
+    perfil.avatar = archivoAvatar;
+    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
 
-                // 3. Refresca al instante las fotos en pantalla
-                document.getElementById("avatar-nav-bar").src = archivoAvatar;
-                document.getElementById("avatar-modal-perfil").src = archivoAvatar;
-                
-                alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
-            } catch (error) {
-                alert("Falla crítica en la subida: " + error.message);
-            }
+    // 3. Sincronización con la nube en segundo plano si hay sesión
+    if (usuarioEmailLimpio) {
+        const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
+        try {
+            await update(usuarioRef, { avatar: archivoAvatar });
+        } catch (error) {
+            console.error("Falla en la nube: " + error.message);
         }
+    }
+
+    alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
+}
+
     </script>
 </body>
 </html>
