@@ -31,19 +31,45 @@
             border-radius: 25px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none;
         }
         .hangar-container { max-width: 900px; width: 90%; padding: 40px 0; text-align: center; }
-        .hangar-title { font-family: monospace; color: #00ff88; font-size: 2rem; margin-bottom: 10px; letter-spacing: 2px; }
-        .hangar-subtitle { color: #b9bbbe; font-size: 1rem; margin-bottom: 40px; }
+        
+        /* Contenedor de la cabecera del Hangar con los botones de control de tu boceto */
+        .hangar-header-actions {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+        }
+        .btn-regresar-verde {
+            background: #00ff88; color: #060913; border: none; padding: 10px 20px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-family: monospace;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        /* El BOTÓN AZUL de confirmación de tu esquema de Word */
+        .btn-confirmar-azul {
+            background: #404eed; color: #ffffff; border: none; padding: 10px 25px;
+            border-radius: 6px; font-weight: bold; cursor: pointer; font-family: monospace;
+            box-shadow: 0 0 15px rgba(64, 78, 237, 0.4); transition: background 0.2s;
+        }
+        .btn-confirmar-azul:hover { background: #5765f2; }
+
         .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         @media (max-width: 768px) {
             .avatar-grid { grid-template-columns: repeat(2, 1fr); }
-            .top-navbar { flex-direction: column; gap: 10px; text-align: center; }
+            .hangar-header-actions { flex-direction: column; gap: 15px; }
         }
+        
         .avatar-card {
-            background: #111622; border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px;
+            background: #111622; border: 2px solid rgba(0, 255, 136, 0.1); border-radius: 12px;
             padding: 20px; cursor: pointer; transition: all 0.2s ease;
             display: flex; flex-direction: column; align-items: center; gap: 15px;
         }
-        .avatar-card:hover { transform: translateY(-5px); border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.25); }
+        /* Estado cuando pasas el mouse por encima */
+        .avatar-card:hover { transform: translateY(-3px); border-color: rgba(0, 255, 136, 0.5); }
+        
+        /* Clase especial que se activa al hacer clic (Borde verde neón activo) */
+        .avatar-card.seleccionada {
+            border-color: #00ff88 !important;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            background: #162032;
+        }
+        
         .avatar-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #404eed; background: #1a2238; }
         .avatar-card span { font-family: monospace; font-weight: bold; font-size: 12px; color: #ffffff; letter-spacing: 1px; }
     </style>
@@ -59,23 +85,27 @@
     </header>
 
     <main class="hangar-container">
-        <h1 class="hangar-title">📡 HANGAR DE PERSONALIZACIÓN</h1>
-        <p class="hangar-subtitle">Selecciona tu interfaz visual para actualizar tu firma cuántica en el radar global.</p>
+        
+        <!-- Bloque de acciones según tu esquema de Word -->
+        <div class="hangar-header-actions">
+            <button class="btn-regresar-verde" onclick="window.location.href='index.html'">◀ VOLVER AL CONTROL</button>
+            <button id="btn-guardar-avatar-azul" class="btn-confirmar-azul">💾 TRANSMITIR AVATAR</button>
+        </div>
 
         <div class="avatar-grid">
-            <div class="avatar-card" onclick="cambiarAvatarSistema('logo.png')">
+            <div class="avatar-card" data-avatar="logo.png" onclick="marcarSeleccionVisual(this)">
                 <img src="logo.png" onerror="this.src='https://placehold.co'">
                 <span>SISTEMA AION</span>
             </div>
-            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto1.png')">
+            <div class="avatar-card" data-avatar="piloto1.png" onclick="marcarSeleccionVisual(this)">
                 <img src="piloto1.png" onerror="this.src='https://placehold.co'">
                 <span>PILOTO TÁCTICO 01</span>
             </div>
-            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto2.png')">
+            <div class="avatar-card" data-avatar="piloto2.png" onclick="marcarSeleccionVisual(this)">
                 <img src="piloto2.png" onerror="this.src='https://placehold.co'">
                 <span>PILOTO TÁCTICO 02</span>
             </div>
-            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto3.png')">
+            <div class="avatar-card" data-avatar="piloto3.png" onclick="marcarSeleccionVisual(this)">
                 <img src="piloto3.png" onerror="this.src='https://placehold.co'">
                 <span>PILOTO TÁCTICO 03</span>
             </div>
@@ -102,7 +132,10 @@
         const db = getDatabase(app);
 
         let usuarioEmailLimpio = "";
+        // Variable temporal para guardar qué archivo seleccionó el piloto
+        let avatarTemporalSeleccionado = ""; 
 
+        // Sincronizar sesión con el Navbar
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 usuarioEmailLimpio = user.email.replace(/[^a-zA-Z0-9]/g, "");
@@ -116,21 +149,49 @@
             }
         });
 
-        window.cambiarAvatarSistema = async function(nombreArchivo) {
+        // PASO 1: Selección visual en la rejilla (Enciende el borde verde)
+        window.marcarSeleccionVisual = function(elemento) {
+            // Remueve la selección anterior de todas las tarjetas
+            document.querySelectorAll('.avatar-card').forEach(card => {
+                card.classList.remove('seleccionada');
+            });
+            // Añade el borde verde neón a la tarjeta presionada
+            elemento.classList.add('seleccionada');
+            
+            // Guarda el nombre del archivo en la variable temporal
+            avatarTemporalSeleccionado = elemento.getAttribute('data-avatar');
+            console.log("Pre-seleccionado:", avatarTemporalSeleccionado);
+        }
+
+        // PASO 2: Acción del BOTÓN AZUL (Sube oficialmente a Firebase)
+        document.getElementById("btn-guardar-avatar-azul").onclick = async function() {
             if (!usuarioEmailLimpio) return;
+            
+            if (avatarTemporalSeleccionado === "") {
+                alert("📡 ERROR DE OPERACIÓN: Primero debes seleccionar un piloto de la cuadrícula.");
+                return;
+            }
+
             const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
+
             try {
-                await update(usuarioRef, { avatar: nombreArchivo });
+                // Actualiza en el nodo correspondiente de Realtime Database
+                await update(usuarioRef, { avatar: avatarTemporalSeleccionado });
+
+                // Sincroniza la caché del navegador para el index
                 const sesion = localStorage.getItem("cuenta_aion_instalada");
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
-                    perfil.avatar = nombreArchivo;
+                    perfil.avatar = avatarTemporalSeleccionado;
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
-                document.getElementById("avatar-nav-bar").src = nombreArchivo;
-                alert(`📡 TRANSMISIÓN EXITOSA: Interfaz cambiada a [${nombreArchivo}]`);
+
+                // Refresca la foto del menú
+                document.getElementById("avatar-nav-bar").src = avatarTemporalSeleccionado;
+
+                alert(`📡 TRANSMISIÓN EXITOSA: Avatar congelado centralmente como [${avatarTemporalSeleccionado}]`);
             } catch (error) {
-                alert("Falla en el enlace cuántico: " + error.message);
+                alert("Falla crítica en el enlace del hangar: " + error.message);
             }
         }
     </script>
