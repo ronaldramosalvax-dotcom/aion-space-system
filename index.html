@@ -665,6 +665,11 @@ const app = initializeApp(firebaseConfig);
             document.getElementById("registro-piloto-modal").style.display = "none";
             
             localStorage.setItem("cuenta_aion_instalada", JSON.stringify(datosExistentes));
+                            if (datosExistentes.avatar) {
+                    const navImg = document.getElementById("avatar-nav-bar");
+                    if (navImg) navImg.src = datosExistentes.avatar;
+                }
+
             window.dispatchEvent(new Event('authPilotoListo'));
             
           } else {
