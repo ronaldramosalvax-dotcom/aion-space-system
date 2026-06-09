@@ -123,7 +123,7 @@
         <!-- Acciones del Hangar (Tus botones del esquema) -->
         <div class="hangar-header-actions">
             <button class="btn-regresar-verde" onclick="window.location.href='index.html'">◀ VOLVER AL PANEL</button>
-            <button id="btn-disparar-escaner" class="btn-escaneo-azul" onclick="ejecutarEscanerTactico()">📡 INICIAR ESCANEO</button>
+            <button id="btn-disparar-escaner" class="btn-escaneo-azul">📡 INICIAR ESCANEO</button>
         </div>
 
         <!-- LA MATRIZ DE 15 RECUADROS RECTOS DE TU WORD -->
@@ -198,27 +198,27 @@
             }
         });
 
-        // LA FUNCIÓN DEL BOTÓN AZUL: Enciende la cuadrícula y muestra tus personajes
-        window.ejecutarEscanerTactico = function() {
+              // Activación forzada por ID al presionar el Botón Azul
+        document.getElementById("btn-disparar-escaner").onclick = function() {
             const btn = document.getElementById("btn-disparar-escaner");
             btn.innerHTML = "⚡ ESCANEO COMPLETO";
             btn.style.background = "#23272a";
             btn.style.borderColor = "#00ff88";
             btn.disabled = true;
 
-            // Recorre únicamente las celdas que contienen datos de pilotos
+            // Recorre y enciende los 4 cuadrantes principales de tu hoja
             for (let i = 0; i <= 3; i++) {
                 const celda = document.getElementById(`slot-${i}`);
                 if (celda) {
                     celda.classList.add("revelada");
                     
-                    // Dispara la aparición visual con bloques inline
+                    // Revela la imagen del piloto y el texto
                     const img = celda.querySelector("img");
                     const span = celda.querySelector("span");
                     if (img) img.style.display = "block";
                     if (span) span.style.display = "block";
                     
-                    // Vincula el evento de clic de selección final tras ser revelados
+                    // Vincula la selección final en la base de datos al hacer clic
                     celda.onclick = function() {
                         procesarSeleccionFinalPiloto(celda);
                     };
@@ -226,11 +226,9 @@
             }
         };
 
-        // Guardado oficial en Firebase tras presionar el personaje revelado
+        // Guarda oficialmente el avatar seleccionado en Firebase Realtime Database
         async function procesarSeleccionFinalPiloto(elemento) {
-            // Remueve el borde verde de cualquier otra tarjeta seleccionada antes
             document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
-            // Enciende el borde verde neón en el piloto que acabas de presionar
             elemento.classList.add('seleccionada');
 
             const archivoAvatar = elemento.getAttribute('data-avatar');
@@ -239,10 +237,10 @@
             const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
 
             try {
-                // 1. Envía la actualización en caliente a tu Firebase Realtime Database
+                // Actualiza el nodo en la nube
                 await update(usuarioRef, { avatar: archivoAvatar });
                 
-                // 2. Sincroniza la caché local para que el index.html se entere del cambio
+                // Actualiza la sesión de tu index.html
                 const sesion = localStorage.getItem("cuenta_aion_instalada");
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
@@ -250,12 +248,11 @@
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
 
-                // 3. Refresca visualmente la foto pequeña de la esquina superior derecha
+                // Cambia el avatar del Navbar en vivo
                 document.getElementById("avatar-nav-bar").src = archivoAvatar;
-                
-                alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma cuántica en red ahora opera bajo la interfaz de [${archivoAvatar}]`);
+                alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
             } catch (error) {
-                alert("Falla crítica en el enlace del hangar: " + error.message);
+                alert("Falla crítica en la subida: " + error.message);
             }
         }
     </script>
