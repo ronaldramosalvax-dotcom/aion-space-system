@@ -20,36 +20,37 @@
             align-items: center;
         }
         .top-navbar {
-            width: 100%; background-color: rgba(35, 39, 42, 0.95); border-bottom: 2px solid #f0a04b;
-            box-shadow: 0 4px 15px rgba(240, 160, 75, 0.3); padding: 15px 30px;
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
-        }
-        .brand-logo { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; cursor: pointer; }
-        .btn-account {
-            background-color: #ffffff; color: #23272a; border: none; padding: 10px 24px;
-            border-radius: 25px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none;
-        }
-        
-        .hangar-container { max-width: 950px; width: 90%; padding: 40px 0; text-align: center; }
-        
-        .hangar-header-actions {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;
+            width: 100%;
+            background-color: rgba(35, 39, 42, 0.95);
+            border-bottom: 2px solid #f0a04b;
+            box-shadow: 0 4px 15px rgba(240, 160, 75, 0.3);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
         .btn-regresar-verde {
             background: #00ff88; color: #060913; border: none; padding: 12px 20px;
             border-radius: 6px; font-weight: bold; cursor: pointer; font-family: monospace;
             box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
-        /* EL BOTÓN AZUL QUE DISPARA EL ESCÁNER */
         .btn-escaneo-azul {
             background: #404eed; color: #ffffff; border: none; padding: 12px 25px;
             border-radius: 6px; font-weight: bold; cursor: pointer; font-family: monospace;
             box-shadow: 0 0 15px rgba(64, 78, 237, 0.4); font-size: 13px; letter-spacing: 1px;
         }
         .btn-escaneo-azul:hover { background: #5765f2; }
+        .btn-account {
+            background-color: #ffffff; color: #23272a; border: none; padding: 10px 24px;
+            border-radius: 25px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none;
+        }
+        
+        .hangar-container { max-width: 950px; width: 90%; padding: 40px 0; text-align: center; }
 
-        /* REJILLA ESTRICTA DE 5 COLUMNAS Y 3 FILAS SEGÚN TU ESQUEMA */
         .avatar-grid { 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
@@ -62,13 +63,11 @@
         }
         @media (max-width: 800px) {
             .avatar-grid { grid-template-columns: repeat(3, 1fr); }
-            .hangar-header-actions { flex-direction: column; gap: 15px; }
         }
         
-        /* CELDAS DE TU MATRIZ DE WORD */
         .avatar-card {
             background: transparent; 
-            border: 2px solid #ffffff; /* Líneas blancas de tu diseño original */
+            border: 2px solid #ffffff; 
             border-radius: 6px;
             min-height: 145px;
             display: flex; 
@@ -80,7 +79,6 @@
             transition: all 0.2s ease;
         }
         
-        /* Clase especial para cuando el piloto haga clic sobre un personaje revelado */
         .avatar-card.revelada {
             background: #111622;
             border-color: rgba(64, 78, 237, 0.5);
@@ -99,33 +97,28 @@
         
         .avatar-card img { 
             width: 85px; height: 85px; border-radius: 50%; object-fit: cover; 
-            border: 2px solid #404eed; background: #1a2238; display: none; /* OCULTAS POR DEFECTO */
+            border: 2px solid #404eed; background: #1a2238; display: none; 
         }
         .avatar-card span { 
             font-family: monospace; font-weight: bold; font-size: 10px; color: #ffffff; 
-            letter-spacing: 0.5px; display: none; /* OCULTAS POR DEFECTO */
+            letter-spacing: 0.5px; display: none; 
         }
     </style>
 </head>
 <body>
 
-        <!-- Barra Superior Unificada (Botones arriba de la línea) -->
+    <!-- Barra Superior Unificada (Botones arriba de la línea) -->
     <header class="top-navbar">
-        <!-- El Botón Verde ahora vive fijo a la izquierda -->
         <button class="btn-regresar-verde" onclick="window.location.href='index.html'">◀ VOLVER AL PANEL</button>
         
-        <!-- Bloque de la derecha con Discord, foto y el Botón Azul integrado -->
         <div style="display: flex; align-items: center; gap: 15px;">
-            <button id="btn-disparar-escaner" class="btn-escaneo-azul" onclick="ejecutarEscanerTactico()">📡 INICIAR ESCANEO</button>
+            <button id="btn-disparar-escaner" class="btn-escaneo-azul">📡 INICIAR ESCANEO</button>
             <a href="https://discord.gg" target="_blank" class="btn-account">Conectar Discord</a>
             <img id="avatar-nav-bar" src="logo.png" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #00ff88; object-fit: cover;">
         </div>
     </header>
-    
 
     <main class="hangar-container">
-
-
         <!-- LA MATRIZ DE 15 RECUADROS RECTOS DE TU WORD -->
         <div class="avatar-grid">
             <!-- Fila 1 -->
@@ -198,27 +191,25 @@
             }
         });
 
-              // Activación forzada por ID al presionar el Botón Azul
+        // Activación limpia por ID del botón azul (Evita bloqueos de módulo)
         document.getElementById("btn-disparar-escaner").onclick = function() {
             const btn = document.getElementById("btn-disparar-escaner");
-            btn.innerHTML = "⚡ ESCANEO COMPLETO";
-            btn.style.background = "#23272a";
-            btn.style.borderColor = "#00ff88";
-            btn.disabled = true;
+            if (btn) {
+                btn.innerHTML = "⚡ ESCANEO COMPLETO";
+                btn.style.background = "#23272a";
+                btn.style.borderColor = "#00ff88";
+                btn.disabled = true;
+            }
 
-            // Recorre y enciende los 4 cuadrantes principales de tu hoja
             for (let i = 0; i <= 3; i++) {
                 const celda = document.getElementById(`slot-${i}`);
                 if (celda) {
                     celda.classList.add("revelada");
-                    
-                    // Revela la imagen del piloto y el texto
                     const img = celda.querySelector("img");
                     const span = celda.querySelector("span");
                     if (img) img.style.display = "block";
                     if (span) span.style.display = "block";
                     
-                    // Vincula la selección final en la base de datos al hacer clic
                     celda.onclick = function() {
                         procesarSeleccionFinalPiloto(celda);
                     };
@@ -226,7 +217,6 @@
             }
         };
 
-        // Guarda oficialmente el avatar seleccionado en Firebase Realtime Database
         async function procesarSeleccionFinalPiloto(elemento) {
             document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
             elemento.classList.add('seleccionada');
@@ -237,10 +227,8 @@
             const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
 
             try {
-                // Actualiza el nodo en la nube
                 await update(usuarioRef, { avatar: archivoAvatar });
                 
-                // Actualiza la sesión de tu index.html
                 const sesion = localStorage.getItem("cuenta_aion_instalada");
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
@@ -248,12 +236,9 @@
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
 
-                // Cambia el avatar del Navbar en vivo
                 document.getElementById("avatar-nav-bar").src = archivoAvatar;
                 alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
             } catch (error) {
-                alert("Falla crítica en la subida: " + error.message);
-            }
         }
     </script>
 </body>
