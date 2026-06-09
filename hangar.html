@@ -3,254 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE SYSTEM | MI HANGAR CENTRAL</title>
+    <title>AION SPACE SYSTEM | Hangar de Pilotos</title>
     <style>
-        /* BASE GENERAL ESPACIAL */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
         body {
             background-color: #060913;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
             color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px;
-            margin: 0;
         }
-
-        .header-hangar {
-            text-align: center;
-            margin-bottom: 30px;
-            font-family: monospace;
+        .top-navbar {
+            width: 100%; background-color: rgba(35, 39, 42, 0.95); border-bottom: 2px solid #f0a04b;
+            box-shadow: 0 4px 15px rgba(240, 160, 75, 0.3); padding: 15px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
         }
-
-        .header-hangar h2 {
-            color: #00ff88;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+        .brand-logo { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+        .btn-account {
+            background-color: #ffffff; color: #23272a; border: none; padding: 10px 24px;
+            border-radius: 25px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: none;
         }
-
-        .header-hangar p {
-            color: #72767d;
-            font-size: 12px;
+        .hangar-container { max-width: 900px; width: 90%; padding: 40px 0; text-align: center; }
+        .hangar-title { font-family: monospace; color: #00ff88; font-size: 2rem; margin-bottom: 10px; letter-spacing: 2px; }
+        .hangar-subtitle { color: #b9bbbe; font-size: 1rem; margin-bottom: 40px; }
+        .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        @media (max-width: 768px) {
+            .avatar-grid { grid-template-columns: repeat(2, 1fr); }
+            .top-navbar { flex-direction: column; gap: 10px; text-align: center; }
         }
-
-        /* 🪐 REJILLA DE 5 COLUMNAS STRICTAS (COMO TU WORD) */
-        .hangar-matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            max-width: 1100px;
-            width: 100%;
+        .avatar-card {
+            background: #111622; border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px;
+            padding: 20px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
         }
-
-        /* 📄 TARJETA UNIVERSAL EN BLANCO */
-        .bloque-hoja {
-            background-color: #ffffff;
-            border: 4px solid #111424;
-            border-radius: 4px;
-            aspect-ratio: 3 / 4; /* Proporción vertical tipo hoja */
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .bloque-hoja:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
-            border-color: #00ff88;
-        }
-
-        /* 🟡 TARJETAS RESTRINGIDAS DE LA FILA INFERIOR */
-        .bloque-hoja.restringido {
-            background-color: #f0a04b; /* Amarillo táctico de tu boceto */
-            border-color: #b8732a;
-        }
-
-        .bloque-hoja.restringido:hover {
-            box-shadow: 0 10px 20px rgba(240, 160, 75, 0.3);
-            border-color: #111424;
-        }
-
-        /* CAPAS INTERNAS */
-        .info-sistema {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(16, 20, 30, 0.9);
-            color: #ffffff;
-            font-family: monospace;
-            font-size: 10px;
-            padding: 6px;
-            box-sizing: border-box;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .bloque-hoja.restringido .info-sistema {
-            background: #111424;
-            color: #f0a04b;
-        }
-
-        /* Contenedor de imagen interna (como tu dibujo Circulatorio) */
-        .preview-imagen {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .candado-visual {
-            margin: auto;
-            font-size: 32px;
-            color: #111424;
-        }
-
-        /* Botón de retorno flotante */
-        .btn-regresar {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #202225;
-            color: #00ff88;
-            border: 2px solid #00ff88;
-            padding: 12px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: monospace;
-            font-size: 11px;
-            letter-spacing: 1px;
-            box-shadow: 0 0 15px rgba(0,255,136,0.3);
-            z-index: 9999;
-            transition: all 0.2s ease;
-        }
-
-        .btn-regresar:hover {
-            background: #00ff88;
-            color: #060913;
-            box-shadow: 0 0 25px #00ff88;
-        }
-
-        /* RESPONSIVIDAD MÓVIL */
-        @media (max-width: 900px) {
-            .hangar-matrix-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columnas en celulares */
-            }
-        }
+        .avatar-card:hover { transform: translateY(-5px); border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.25); }
+        .avatar-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid #404eed; background: #1a2238; }
+        .avatar-card span { font-family: monospace; font-weight: bold; font-size: 12px; color: #ffffff; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <div class="header-hangar">
-        <h2>SALA DE OPERACIONES - PORTAFOLIO GLOBAL</h2>
-        <p id="txt-rol">VALIDANDO CREDENCIALES DE ACCESO...</p>
-    </div>
+    <header class="top-navbar">
+        <div class="brand-logo" onclick="window.location.href='index.html'">AION SPACE SYSTEM</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="https://discord.gg" target="_blank" class="btn-account">Conectar Discord</a>
+            <img id="avatar-nav-bar" src="logo.png" onclick="window.location.href='hangar.html'" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #00ff88; cursor: pointer; object-fit: cover;">
+        </div>
+    </header>
 
-    <!-- REJILLA MATRIZ PRINCIPAL (15 BLOQUES) -->
-    <div class="hangar-matrix-grid">
-        
-        <!-- FILA 1: BLOQUES 1 AL 5 -->
-        <div class="bloque-hoja" onclick="abrirHoja(1)">
-            <!-- Aquí cargamos la imagen de muestra de tu aparato circulatorio -->
-            <img class="preview-imagen" src="https://unsplash.com" alt="Circulatorio">
-            <div class="info-sistema">BLOQUE 01: CIRCULATORIO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(2)">
-            <div class="info-sistema">BLOQUE 02: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(3)">
-            <div class="info-sistema">BLOQUE 03: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(4)">
-            <div class="info-sistema">BLOQUE 04: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(5)">
-            <div class="info-sistema">BLOQUE 05: VACÍO</div>
-        </div>
+    <main class="hangar-container">
+        <h1 class="hangar-title">📡 HANGAR DE PERSONALIZACIÓN</h1>
+        <p class="hangar-subtitle">Selecciona tu interfaz visual para actualizar tu firma cuántica en el radar global.</p>
 
-        <!-- FILA 2: BLOQUES 6 AL 10 -->
-        <div class="bloque-hoja" onclick="abrirHoja(6)">
-            <div class="info-sistema">BLOQUE 06: VACÍO</div>
+        <div class="avatar-grid">
+            <div class="avatar-card" onclick="cambiarAvatarSistema('logo.png')">
+                <img src="logo.png" onerror="this.src='https://placehold.co'">
+                <span>SISTEMA AION</span>
+            </div>
+            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto1.png')">
+                <img src="piloto1.png" onerror="this.src='https://placehold.co'">
+                <span>PILOTO TÁCTICO 01</span>
+            </div>
+            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto2.png')">
+                <img src="piloto2.png" onerror="this.src='https://placehold.co'">
+                <span>PILOTO TÁCTICO 02</span>
+            </div>
+            <div class="avatar-card" onclick="cambiarAvatarSistema('piloto3.png')">
+                <img src="piloto3.png" onerror="this.src='https://placehold.co'">
+                <span>PILOTO TÁCTICO 03</span>
+            </div>
         </div>
-        <div class="bloque-hoja" onclick="abrirHoja(7)">
-            <div class="info-sistema">BLOQUE 07: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(8)">
-            <div class="info-sistema">BLOQUE 08: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(9)">
-            <div class="info-sistema">BLOQUE 09: VACÍO</div>
-        </div>
-        <div class="bloque-hoja" onclick="abrirHoja(10)">
-            <div class="info-sistema">BLOQUE 10: VACÍO</div>
-        </div>
+    </main>
 
-        <!-- FILA 3: BLOQUES RESTRINGIDOS AMARILLOS (11 AL 15) -->
-        <div class="bloque-hoja restringido" id="card-11" onclick="abrirHojaRestringida(11)">
-            <div class="candado-visual">🔒</div>
-            <div class="info-sistema">BLOQUE 11: PRIVADO</div>
-        </div>
-        <div class="bloque-hoja restringido" id="card-12" onclick="abrirHojaRestringida(12)">
-            <div class="candado-visual">🔒</div>
-            <div class="info-sistema">BLOQUE 12: PRIVADO</div>
-        </div>
-        <div class="bloque-hoja restringido" id="card-13" onclick="abrirHojaRestringida(13)">
-            <div class="candado-visual">🔒</div>
-            <div class="info-sistema">BLOQUE 13: PRIVADO</div>
-        </div>
-        <div class="bloque-hoja restringido" id="card-14" onclick="abrirHojaRestringida(14)">
-            <div class="candado-visual">🔒</div>
-            <div class="info-sistema">BLOQUE 14: PRIVADO</div>
-        </div>
-        <div class="bloque-hoja restringido" id="card-15" onclick="abrirHojaRestringida(15)">
-            <div class="candado-visual">🔒</div>
-            <div class="info-sistema">BLOQUE 15: PRIVADO</div>
-        </div>
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getAuth, onAuthStateChanged } from "https://gstatic.com";
+        import { getDatabase, ref, update } from "https://gstatic.com";
 
-    </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
+            authDomain: "://firebaseapp.com",
+            databaseURL: "https://firebaseio.com",
+            projectId: "aion-space-system",
+            storageBucket: "aion-space-system.firebasestorage.app",
+            messagingSenderId: "247082868280",
+            appId: "1:247082868280:web:c0aeeb2a62bc02c2f6d0cd"
+        };
 
-    <!-- BOTÓN REGRESAR -->
-    <button class="btn-regresar" onclick="window.location.href='index.html'">
-        ⬅ VOLVER AL CENTRO DE CONTROL
-    </button>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
 
-    <script>
-        const CORREO_PROPIETARIO = "ronaldramosalvax@gmail.com";
-        let esDuenio = false;
+        let usuarioEmailLimpio = "";
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const txtRol = document.getElementById("txt-rol");
-            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
-
-            if (cuentaLocal) {
-                const perfil = JSON.parse(cuentaLocal);
-                if (perfil.correo === CORREO_PROPIETARIO) {
-                    esDuenio = true;
-                    txtRol.innerHTML = `⚙️ MODO PROPIETARIO GENERAL | PILOTO: ${perfil.nombre.toUpperCase()}`;
-                    txtRol.style.color = "#00ff88";
-                    
-                    // Quitar candados visuales si eres tú
-                    document.querySelectorAll(".candado-visual").forEach(c => c.innerHTML = "🔓");
-                } else {
-                    txtRol.innerHTML = `👁️ VISTA DE INVITADO | OBSERVADOR: ${perfil.nombre.toUpperCase()}`;
-                    txtRol.style.color = "#5765f2";
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                usuarioEmailLimpio = user.email.replace(/[^a-zA-Z0-9]/g, "");
+                const sesion = localStorage.getItem("cuenta_aion_instalada");
+                if (sesion) {
+                    const perfil = JSON.parse(sesion);
+                    document.getElementById("avatar-nav-bar").src = perfil.avatar || "logo.png";
                 }
+            } else {
+                window.location.href = "index.html";
             }
         });
 
-        function abrirHoja(id) {
-            alert(`Abriendo plantilla universal para el Bloque ${id}`);
-            // Aquí enlazaremos a tus hojas de apuntes individuales posteriormente
-        }
-
-        function abrirHojaRestringida(id) {
-            if (esDuenio) {
-                alert(`Abriendo bóveda privada del Bloque ${id}`);
-            } else {
-                alert("📡 ACCESO DENEGADO: Este bloque requiere firma cuántica del administrador.");
+        window.cambiarAvatarSistema = async function(nombreArchivo) {
+            if (!usuarioEmailLimpio) return;
+            const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
+            try {
+                await update(usuarioRef, { avatar: nombreArchivo });
+                const sesion = localStorage.getItem("cuenta_aion_instalada");
+                if (sesion) {
+                    const perfil = JSON.parse(sesion);
+                    perfil.avatar = nombreArchivo;
+                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
+                }
+                document.getElementById("avatar-nav-bar").src = nombreArchivo;
+                alert(`📡 TRANSMISIÓN EXITOSA: Interfaz cambiada a [${nombreArchivo}]`);
+            } catch (error) {
+                alert("Falla en el enlace cuántico: " + error.message);
             }
         }
     </script>
