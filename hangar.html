@@ -170,6 +170,14 @@
         const db = getDatabase(app);
 
         let usuarioEmailLimpio = "";
+        const sesionInmediata = localStorage.getItem("cuenta_aion_instalada");
+        if (sesionInmediata) {
+            const perfilInmediato = JSON.parse(sesionInmediata);
+            if (perfilInmediato.avatar) {
+                document.getElementById("avatar-nav-bar").src = perfilInmediato.avatar;
+                document.getElementById("avatar-modal-perfil").src = perfilInmediato.avatar;
+            }
+        }
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
