@@ -33,7 +33,7 @@ window.enviarMensajeArena = function() {
     // 1. Valores por defecto por si ocurre un fallo en el radar
     let nombrePiloto = "Piloto";
     let codigoPiloto = "#AION-0000";
-    let avatarUrl = "https://robohash.org";
+    let avatarUrl = "logo.png";
 
     // 2. EXTRAER DE FORMA AUTOMÁTICA EL PERFIL CENTRALIZADO CONGELADO
     const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
@@ -86,7 +86,9 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     // Validar datos por si existen mensajes antiguos guardados con la estructura vieja
     const nombrePiloto = data.usuario || "Anónimo";
     const codigoPiloto = data.codigo || "#0000";
-    const avatarUrl = data.avatar || "https://robohash.org" + nombrePiloto + ".png?set=set1";
+    let avatarUrl = data.avatar || "logo.png";
+    if (avatarUrl.includes("robohash.org")) { avatarUrl = "logo.png"; }
+
 
 
     // Inyectar el mensaje estructurado con ID oculto antifraude (Activable con un clic)
@@ -94,8 +96,8 @@ onChildAdded(consultaUltimos40, (snapshot) => {
     caja.innerHTML += `
         <div id="msg-${key}" class="contenedor-msg" style="display: flex; align-items: flex-start; gap: 10px; padding: 6px; background: rgba(255,255,255,0.01); border-radius: 6px; border-left: 2px solid rgba(64, 78, 237, 0.4);">
             <!-- Avatar del Piloto -->
-            <img src="${avatarUrl}" style="width: 32px; height: 32px; border-radius: 50%; background: #1a2238; border: 1px solid #404eed; object-fit: cover;">
-            
+            <img src="${avatarUrl}" style="width: 32px; height: 32px; border-radius: 50%; background: #1a2238; border: 1px solid #404eed; object-fit: cover;" onerror="this.src='logo.png';">
+
             <!-- Bloque de contenido táctico -->
             <div style="display: flex; flex-direction: column; gap: 1px; flex: 1;">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
