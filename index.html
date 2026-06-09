@@ -649,7 +649,7 @@ const app = initializeApp(firebaseConfig);
             if (navImg && perfilPrevio.avatar) navImg.src = perfilPrevio.avatar;
         }
 
-        const db = getDatabase();
+        const db = getDatabase(app);
         const usuarioRef = ref(db, 'usuarios/' + cuentaIdClean);
 
         try {
@@ -695,10 +695,6 @@ window.seleccionarAvatarVisual = function(elemento) {
 
             // Guardamos cuando el piloto haga clic en el botón verde
             btnGuardar.onclick = async () => {
-             
-              if (!window.avatarSeleccionadoAion || window.avatarSeleccionadoAion === "[ROBOT]") {
-                  window.avatarSeleccionadoAion = "piloto1.png";
-              }
               window.seleccionarAvatarEmoji = function(elemento) {
                   document.querySelectorAll('.avatar-opcion').forEach(div => { div.style.color = '#ffffff'; });
                   elemento.style.color = '#00ff88';
