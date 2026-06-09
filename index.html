@@ -728,16 +728,24 @@ window.seleccionarAvatarVisual = function(elemento) {
 
     
 </script>
-<script>
-    window.addEventListener('authPilotoListo', () => {
-        const sesion = localStorage.getItem("cuenta_aion_instalada");
-        if (sesion) {
-            const perfil = JSON.parse(sesion);
-            const controlImg = document.getElementById("avatar-mando-principal");
-            if (controlImg) controlImg.src = perfil.avatar;
+    <script>
+        function cargarAvatarIndex() {
+            const sesion = localStorage.getItem("cuenta_aion_instalada");
+            if (sesion) {
+                const perfil = JSON.parse(sesion);
+                const controlImg = document.getElementById("avatar-nav-bar");
+                if (controlImg && perfil.avatar) {
+                    controlImg.src = perfil.avatar;
+                }
+            }
         }
-    });
-</script>
+
+        // Carga el pelirrojo inmediatamente al abrir la página
+        document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
+
+        // También escucha por si acaso hay un cambio en vivo
+        window.addEventListener('authPilotoListo', cargarAvatarIndex);
+    </script>
 
 
 </body>
