@@ -749,15 +749,14 @@ window.seleccionarAvatarVisual = function(elemento) {
     
 </script>
                <script>
-        function cargarAvatarIndex() {
-            // 1. Limpiamos la memoria del navegador si viene el robot defectuoso
+              function cargarAvatarIndex() {
             const sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
                 const perfil = JSON.parse(sesion);
                 
-                // SI DICE ROBOT, LO CAMBIAMOS A LA FUERZA POR EL PELIRROJO
-                if (!perfil.avatar || perfil.avatar === "[ROBOT]") {
-                    perfil.avatar = "piloto1.png";
+                // CORRECCIÓN CENTRAL: Solo reescribe si el dato es literalmente la palabra rota del robot
+                if (perfil.avatar === "[ROBOT]") {
+                    perfil.avatar = "piloto1.png"; // Rescate inicial
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
                 
@@ -767,6 +766,7 @@ window.seleccionarAvatarVisual = function(elemento) {
                 }
             }
         }
+
 
         // Ejecución prolija en el arranque
         cargarAvatarIndex();
