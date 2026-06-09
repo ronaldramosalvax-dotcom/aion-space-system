@@ -226,11 +226,15 @@
     perfil.avatar = archivoAvatar;
     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
 
-    // 3. Sincronización con la nube en segundo plano si hay sesión
+      // 3. Sincronización con la nube en segundo plano si hay sesión
     if (usuarioEmailLimpio) {
+        // CORRECCIÓN CENTRAL: Pasamos la variable 'db' oficial
         const usuarioRef = ref(db, 'usuarios/' + usuarioEmailLimpio);
         try {
             await update(usuarioRef, { avatar: archivoAvatar });
+            
+            // Avisamos al sistema global que el piloto cambió de identidad
+            window.dispatchEvent(new Event('authPilotoListo'));
         } catch (error) {
             console.error("Falla en la nube: " + error.message);
         }
