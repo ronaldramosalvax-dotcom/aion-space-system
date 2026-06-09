@@ -59,7 +59,6 @@
             background: rgba(10, 14, 23, 0.85); backdrop-filter: blur(6px);
             display: none; justify-content: center; align-items: center; z-index: 99999;
         }
-        /* El recuadro negro central de tu dibujo */
         .modal-perfil-caja {
             background: #000000; border: 2px solid #404eed; border-radius: 12px;
             width: 90%; max-width: 650px; padding: 30px; display: flex;
@@ -73,7 +72,6 @@
         }
         .btn-cerrar-modal:hover { color: #ff4757; }
 
-        /* El bloque grande de "Perfil" de arriba de tu dibujo */
         .bloque-perfil-superior {
             background: #111622; border: 2px solid #00ff88; border-radius: 8px;
             width: 140px; height: 140px; display: flex; flex-direction: column;
@@ -83,7 +81,6 @@
         .bloque-perfil-superior img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #00ff88; }
         .bloque-perfil-superior span { font-family: monospace; font-size: 11px; font-weight: bold; color: #00ff88; }
 
-        /* La fila de 4 bloques de abajo de tu dibujo */
         .fila-bloques-inferior {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%;
         }
@@ -115,38 +112,36 @@
         </div>
     </header>
 
-    <!-- Fondo de Pantalla del Hangar Vacio -->
+    <!-- Fondo de Pantalla -->
     <main class="hangar-container">
         <h1 class="hangar-title">📡 SISTEMA DE CONTROL DE IDENTIDAD</h1>
         <p class="hangar-subtitle">Presiona el botón azul del menú superior para detonar el escáner cuántico y desplegar el panel emergente de personalización de firmas.</p>
     </main>
 
-    <!-- VENTANA EMERGENTE DE TU WORD (Oculta por defecto) -->
+    <!-- VENTANA EMERGENTE DE TU WORD -->
     <div id="modal-perfil-flotante" class="modal-fondo-oscuro">
         <div class="modal-perfil-caja">
-            <span class="btn-cerrar-modal" onclick="document.getElementById('modal-perfil-flotante').style.display='none'">✖</span>
+            <span id="btn-cerrar-x" class="btn-cerrar-modal">✖</span>
             
-            <!-- BLOQUE DE ARRIBA: Tu "Perfil" actual -->
             <div class="bloque-perfil-superior">
                 <img id="avatar-modal-perfil" src="logo.png">
                 <span>TU PERFIL</span>
             </div>
 
-            <!-- FILA DE ABAJO: Tus 4 bloques para escoger -->
             <div class="fila-bloques-inferior">
-                <div class="avatar-card" data-avatar="logo.png" onclick="procesarSeleccionFinalPiloto(this)">
+                <div class="avatar-card" data-avatar="logo.png" id="btn-sel-logo">
                     <img src="logo.png">
                     <span>SISTEMA AION</span>
                 </div>
-                <div class="avatar-card" data-avatar="piloto1.png" onclick="procesarSeleccionFinalPiloto(this)">
+                <div class="avatar-card" data-avatar="piloto1.png" id="btn-sel-p1">
                     <img src="piloto1.png">
                     <span>PILOTO 01</span>
                 </div>
-                <div class="avatar-card" data-avatar="piloto2.png" onclick="procesarSeleccionFinalPiloto(this)">
+                <div class="avatar-card" data-avatar="piloto2.png" id="btn-sel-p2">
                     <img src="piloto2.png">
                     <span>PILOTO 02</span>
                 </div>
-                <div class="avatar-card" data-avatar="piloto3.png" onclick="procesarSeleccionFinalPiloto(this)">
+                <div class="avatar-card" data-avatar="piloto3.png" id="btn-sel-p3">
                     <img src="piloto3.png">
                     <span>PILOTO 03</span>
                 </div>
@@ -154,11 +149,11 @@
         </div>
     </div>
 
-    <!-- MOTOR DE FIREBASE -->
+    <!-- MOTOR DE FIREBASE CON SEGUROS DE INYECCIÓN POR ID -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { getDatabase, ref, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+        import { initializeApp } from "https://gstatic.com";
+        import { getAuth, onAuthStateChanged } from "https://gstatic.com";
+        import { getDatabase, ref, update } from "https://gstatic.com";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCAb9jQGpTgP_rSWPczHoZYHGxfj5NReYI",
@@ -176,7 +171,6 @@
 
         let usuarioEmailLimpio = "";
 
-        // Sincronizar sesión activa de Google
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 usuarioEmailLimpio = user.email.replace(/[^a-zA-Z0-9]/g, "");
@@ -191,15 +185,23 @@
             }
         });
 
-        // EL MOTOR DEL BOTÓN AZUL: Dispara la ventana flotante de tu Word
+        // AMARRE DIRECTO POR ID: Abre el modal sin depender del HTML
         document.getElementById("btn-disparar-escaner").onclick = function() {
-            // Despliega la ventana flotante centrada en la pantalla
             document.getElementById("modal-perfil-flotante").style.display = "flex";
         };
 
-        // Guardado directo en Firebase al presionar uno de los 4 bloques
-        window.procesarSeleccionFinalPiloto = async function(elemento) {
-            // Remueve selecciones anteriores y activa el borde verde neón en el bloque elegido
+        // Cierre de la ventana con la X
+        document.getElementById("btn-cerrar-x").onclick = function() {
+            document.getElementById("modal-perfil-flotante").style.display = "none";
+        };
+
+        // Escuchadores de clics independientes de los 4 bloques
+        document.getElementById("btn-sel-logo").onclick = function() { GuardarAvatarFinal(this); };
+        document.getElementById("btn-sel-p1").onclick = function() { GuardarAvatarFinal(this); };
+        document.getElementById("btn-sel-p2").onclick = function() { GuardarAvatarFinal(this); };
+        document.getElementById("btn-sel-p3").onclick = function() { GuardarAvatarFinal(this); };
+
+        async function GuardarAvatarFinal(elemento) {
             document.querySelectorAll('.avatar-card').forEach(card => card.classList.remove('seleccionada'));
             elemento.classList.add('seleccionada');
 
@@ -212,7 +214,7 @@
                 // 1. Sube la actualización a tu Firebase Realtime Database
                 await update(usuarioRef, { avatar: archivoAvatar });
                 
-                // 2. Guarda localmente para mantener la sesión en el index.html
+                // 2. Guarda localmente para mantener la sesión activa
                 const sesion = localStorage.getItem("cuenta_aion_instalada");
                 if (sesion) {
                     const perfil = JSON.parse(sesion);
@@ -220,7 +222,7 @@
                     localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
                 }
 
-                // 3. Refresca al instante las fotos en el Navbar y en el bloque "Perfil" de tu modal
+                // 3. Refresca al instante las fotos en pantalla
                 document.getElementById("avatar-nav-bar").src = archivoAvatar;
                 document.getElementById("avatar-modal-perfil").src = archivoAvatar;
                 
