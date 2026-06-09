@@ -753,13 +753,6 @@ window.seleccionarAvatarVisual = function(elemento) {
             const sesion = localStorage.getItem("cuenta_aion_instalada");
             if (sesion) {
                 const perfil = JSON.parse(sesion);
-                
-                // CORRECCIÓN CENTRAL: Solo reescribe si el dato es literalmente la palabra rota del robot
-                if (perfil.avatar === "[ROBOT]") {
-                    perfil.avatar = "piloto1.png"; // Rescate inicial
-                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
-                }
-                
                 const controlImg = document.getElementById("avatar-nav-bar");
                 if (controlImg && perfil.avatar) {
                     controlImg.src = perfil.avatar;
