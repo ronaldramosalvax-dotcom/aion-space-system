@@ -191,7 +191,7 @@
             }
         });
 
-        // Activación limpia por ID del botón azul (Evita bloqueos de módulo)
+        // Activación forzada por ID del botón azul (Salta bloqueos de módulo)
         document.getElementById("btn-disparar-escaner").onclick = function() {
             const btn = document.getElementById("btn-disparar-escaner");
             if (btn) {
@@ -240,6 +240,33 @@
                 alert(`📡 TRANSMISIÓN CENTRAL EXITOSA:\nTu firma en red ahora opera bajo el avatar [${archivoAvatar}]`);
             } catch (error) {
         }
+        
+        // CÓDIGO FALTANTE: Activa el escáner al pulsar el Botón Azul
+        document.getElementById("btn-disparar-escaner").onclick = function() {
+            const btn = document.getElementById("btn-disparar-escaner");
+            if (btn) {
+                btn.innerHTML = "⚡ ESCANEO COMPLETO";
+                btn.style.background = "#23272a";
+                btn.style.borderColor = "#00ff88";
+                btn.disabled = true;
+            }
+
+            // Recorre tus 4 slots con imágenes y las muestra en la hoja cuadriculada
+            for (let i = 0; i <= 3; i++) {
+                const celda = document.getElementById(`slot-${i}`);
+                if (celda) {
+                    celda.classList.add("revelada");
+                    const img = celda.querySelector("img");
+                    const span = celda.querySelector("span");
+                    if (img) img.style.display = "block";
+                    if (span) span.style.display = "block";
+                    
+                    celda.onclick = function() {
+                        procesarSeleccionFinalPiloto(celda);
+                    };
+                }
+            }
+        };
     </script>
 </body>
 </html>
