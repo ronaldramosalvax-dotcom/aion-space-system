@@ -103,23 +103,16 @@
     #scroll-box-aion::-webkit-scrollbar-thumb { background: #dddddd; border: 3px solid #555555; border-radius: 2px; }
 
     /* Celdas idénticas al boceto: Fondo blanco puro, texto negro en Courier */
-    .matrix-cell-white { 
-        width: 26px; 
-        height: 15px; 
+        .matrix-cell-white { 
+        width: 26px !important; 
+        height: 15px !important; 
         background-color: #ffffff; 
         border: none; 
-        color: #000000; 
-        text-align: center; 
-        font-family: 'Courier New', Courier, monospace; 
-        font-size: 16px; 
-        font-weight: bold; 
-        padding: 0; 
-        box-sizing: border-box; 
+        cursor: pointer; /* Transforma el cursor en una mano de clic */
+        transition: background-color 0.15s ease;
     }
-    .matrix-cell-white:focus { 
-        outline: 2px solid #3b82f6; 
-        background-color: #e0f2fe; 
-        z-index: 10; 
+    .matrix-cell-white:hover { 
+        background-color: #00ff88; /* Se ilumina en verde neón al pasar el mouse */
     }
  
     </style>
@@ -280,7 +273,7 @@
 }
 
     </script>
-    <script>
+        <script>
         const matrixContainer = document.getElementById('matrix');
         const ROWS = 52;
         const COLS = 34;
@@ -289,48 +282,37 @@
         function construirMatrizDibujo() {
             matrixContainer.innerHTML = '';
             const fragment = document.createDocumentFragment();
+            
             for (let i = 0; i < totalCells; i++) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.maxLength = 1;
-                input.className = 'matrix-cell-white';
-                input.dataset.index = i;
-                fragment.appendChild(input);
+                // Creamos DIVs interactivos en lugar de cajas de texto
+                const pestaña = document.createElement('div');
+                pestaña.className = 'matrix-cell-white';
+                pestaña.dataset.index = i;
+                
+                // Evento al hacer clic en cada hoja/pestaña
+                pestaña.onclick = function() {
+                    const numeroHoja = parseInt(this.dataset.index, 10) + 1;
+                    
+                    // Aquí puedes mapear las primeras hojas a tus archivos reales:
+                    if (numeroHoja === 1) {
+                        window.location.href = 'index.html';
+                    } else if (numeroHoja === 2) {
+                        window.location.href = 'ia.html';
+                    } else if (numeroHoja === 3) {
+                        window.location.href = 'sistemas.html';
+                    } else {
+                        alert(`📡 NAVEGACIÓN AION:\nCargando la Hoja / Pestaña de trabajo N° ${numeroHoja}`);
+                    }
+                };
+
+                fragment.appendChild(pestaña);
             }
             matrixContainer.appendChild(fragment);
         }
 
-        matrixContainer.addEventListener('input', (e) => {
-            if (!e.target.classList.contains('matrix-cell-white')) return;
-            const currentIndex = parseInt(e.target.dataset.index, 10);
-            if (e.target.value.length === 1 && currentIndex < totalCells - 1) {
-                const nextCell = matrixContainer.children[currentIndex + 1];
-                nextCell.focus();
-                nextCell.select();
-            }
-        });
-
-        matrixContainer.addEventListener('keydown', (e) => {
-            if (!e.target.classList.contains('matrix-cell-white')) return;
-            const currentIndex = parseInt(e.target.dataset.index, 10);
-            if (e.key === 'Backspace' && e.target.value.length === 0 && currentIndex > 0) {
-                const prevCell = matrixContainer.children[currentIndex - 1];
-                prevCell.focus();
-                prevCell.value = '';
-                e.preventDefault();
-            } else if (e.key === 'ArrowRight' && currentIndex < totalCells - 1) {
-                matrixContainer.children[currentIndex + 1].focus();
-            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                matrixContainer.children[currentIndex - 1].focus();
-            } else if (e.key === 'ArrowDown' && currentIndex + COLS < totalCells) {
-                matrixContainer.children[currentIndex + COLS].focus();
-            } else if (e.key === 'ArrowUp' && currentIndex - COLS >= 0) {
-                matrixContainer.children[currentIndex - COLS].focus();
-            }
-        });
-
+        // Inicializar el monitor de pestañas
         construirMatrizDibujo();
     </script>
-
 </body>
 </html>
+
