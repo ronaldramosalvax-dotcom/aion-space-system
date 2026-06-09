@@ -109,13 +109,19 @@
 </head>
 <body>
 
-    <!-- Barra de Control Superior -->
+        <!-- Barra Superior Unificada (Botones arriba de la línea) -->
     <header class="top-navbar">
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <!-- El Botón Verde ahora vive fijo a la izquierda -->
+        <button class="btn-regresar-verde" onclick="window.location.href='index.html'">◀ VOLVER AL PANEL</button>
+        
+        <!-- Bloque de la derecha con Discord, foto y el Botón Azul integrado -->
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="btn-disparar-escaner" class="btn-escaneo-azul" onclick="ejecutarEscanerTactico()">📡 INICIAR ESCANEO</button>
             <a href="https://discord.gg" target="_blank" class="btn-account">Conectar Discord</a>
             <img id="avatar-nav-bar" src="logo.png" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #00ff88; object-fit: cover;">
         </div>
     </header>
+    
 
     <main class="hangar-container">
         
