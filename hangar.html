@@ -253,10 +253,14 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getDatabase(app);
-
+        
         let usuarioEmailLimpio = "";
+
+        // 🛡️ GUARDIÁN INSTANTÁNEO: Si no hay registro local, rebota de inmediato SIN parpadear
         const sesionInmediata = localStorage.getItem("cuenta_aion_instalada");
-        if (sesionInmediata) {
+        if (!sesionInmediata) {
+            window.location.href = "index.html";
+        } else {
             const perfilInmediato = JSON.parse(sesionInmediata);
             if (perfilInmediato.avatar) {
                 document.getElementById("avatar-nav-bar").src = perfilInmediato.avatar;
@@ -264,6 +268,7 @@
             }
         }
 
+        // 📡 VERIFICACIÓN ASÍNCRONA: Valida el estado real en los servidores de Firebase
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 usuarioEmailLimpio = user.email.replace(/[^a-zA-Z0-9]/g, "");
@@ -274,9 +279,14 @@
                     document.getElementById("avatar-modal-perfil").src = perfil.avatar || "logo.png";
                 }
             } else {
+                // Si Firebase confirma al 100% que no hay sesión, limpia y redirige
+                localStorage.removeItem("cuenta_aion_instalada");
                 window.location.href = "index.html";
             }
         });
+
+        
+       
 
         // AMARRE DIRECTO POR ID: Abre el modal sin depender del HTML
         document.getElementById("btn-disparar-escaner").onclick = function() {
