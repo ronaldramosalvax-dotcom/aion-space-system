@@ -349,17 +349,18 @@ if (cuerpoTabla && cuerpoTabla.children.length === 0) {
         
         celdaTD.style = "min-height: 20px; height: 20px; line-height: 20px; font-size: 13px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; white-space: normal; word-break: break-word;";
 
-        celdaTD.oninput = function() {
+               celdaTD.oninput = function() {
+            // 1. Limpiamos cualquier salto de línea residual que intente deformar el renglón
+            if (celdaTD.innerHTML.includes('<br>') || celdaTD.innerHTML.includes('<p>')) {
+                celdaTD.innerHTML = celdaTD.innerText;
+            }
+            
+            // 2. Si llega de forma exacta al límite de la esquina, salta limpio abajo
             if (celdaTD.innerText.length >= MAX_CARACTERES_RENGON) {
                 saltarRenglon(f, true);
             }
         };
 
-        celdaTD.onkeydown = function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                saltarRenglon(f, true);
-            }
             
             // INTELIGENCIA DE RETORNO AVANZADA: Sube el texto al borrar al inicio
             if (e.key === 'Backspace') {
