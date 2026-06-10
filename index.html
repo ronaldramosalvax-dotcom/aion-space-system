@@ -695,15 +695,9 @@ window.seleccionarAvatarVisual = function(elemento) {
             setTimeout(() => { if(inputApodo) inputApodo.focus(); }, 100);
 
             // Guardamos cuando el piloto haga clic en el botón verde
+                        // Guardamos cuando el piloto haga clic en el botón verde
             btnGuardar.onclick = async () => {
-              window.seleccionarAvatarEmoji = function(elemento) {
-                  document.querySelectorAll('.avatar-opcion').forEach(div => { div.style.color = '#ffffff'; });
-                  elemento.style.color = '#00ff88';
-                  window.avatarSeleccionadoAion = elemento.getAttribute('data-avatar');
-              };
-
-
-                const apodoDigitado = inputApodo.value.trim();
+              const apodoDigitado = inputApodo.value.trim();
               if (apodoDigitado === "" || apodoDigitado.length < 3) {
                   alert("📡 ALERTA: Introduce un apodo válido (Mínimo 3 caracteres).");
                   return;
@@ -711,7 +705,7 @@ window.seleccionarAvatarVisual = function(elemento) {
 
               // Asignamos su ID eterno de 4 dígitos puro amarrado a su cuenta
               const nuevoId4Digitos = "#" + Math.floor(1000 + Math.random() * 9000);
-              const primerNombreGoogle = user.displayName ? user.displayName.split(" ") : "Piloto";
+              const primerNombreGoogle = user.displayName ? user.displayName.split(" ")[0] : "Piloto";
 
               const nuevoPerfilSolido = {
                   nombre: apodoDigitado, 
@@ -721,14 +715,22 @@ window.seleccionarAvatarVisual = function(elemento) {
                   correo: user.email
               };
 
-              // Subimos el perfil oficialmente al nodo 'usuarios/' de tu Firebase
-              await set(usuarioRef, nuevoPerfilSolido);
+              try {
+                // Subimos el perfil oficialmente al nodo 'usuarios/' de tu Firebase
+                await set(usuarioRef, nuevoPerfilSolido);
 
-              // Guardamos localmente y liberamos el radar flotante
-              localStorage.setItem("cuenta_aion_instalada", JSON.stringify(nuevoPerfilSolido));
-              modalRegistro.style.display = "none";
-              
-              window.dispatchEvent(new Event('authPilotoListo'));
+                // Guardamos localmente y liberamos el radar flotante
+                localStorage.setItem("cuenta_aion_instalada", JSON.stringify(nuevoPerfilSolido));
+                
+                const navImg = document.getElementById("avatar-nav-bar");
+                if (navImg && nuevoPerfilSolido.avatar) navImg.src = nuevoPerfilSolido.avatar;
+
+                modalRegistro.style.display = "none";
+                window.dispatchEvent(new Event('authPilotoListo'));
+                console.log("Nuevo piloto registrado con éxito.");
+              } catch (e) {
+                alert("Error al registrar perfil en la base de datos: " + e.message);
+              }
             };
           }
         } catch (error) {
@@ -742,34 +744,32 @@ window.seleccionarAvatarVisual = function(elemento) {
       }
     });
   });
-
-    
 </script>
-               <script>
-                      function cargarAvatarIndex() {
-            let sesion = localStorage.getItem("cuenta_aion_instalada");
-            if (sesion) {
-                let perfil = JSON.parse(sesion);
-                
-                // ◄ DETECTOR DE FANTASMAS: Si la memoria dice [ROBOT], la obligamos a usar la chica
-                if (perfil.avatar === "[ROBOT]") {
-                    perfil.avatar = "piloto1.png"; // Asigna el archivo real de la chica
-                    localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
-                }
-                
-                const controlImg = document.getElementById("avatar-nav-bar");
-                if (controlImg && perfil.avatar) {
-                    controlImg.src = perfil.avatar;
-                }
-            }
-        }
 
+<script>
+  function cargarAvatarIndex() {
+      let sesion = localStorage.getItem("cuenta_aion_instalada");
+      if (sesion) {
+          let perfil = JSON.parse(sesion);
+          
+          // ◄ DETECTOR DE FANTASMAS: Si la memoria dice [ROBOT], la obligamos a usar la chica
+          if (perfil.avatar === "[ROBOT]") {
+              perfil.avatar = "piloto1.png"; // Asigna el archivo real de la chica
+              localStorage.setItem("cuenta_aion_instalada", JSON.stringify(perfil));
+          }
+          
+          const controlImg = document.getElementById("avatar-nav-bar");
+          if (controlImg && perfil.avatar) {
+              controlImg.src = perfil.avatar;
+          }
+      }
+  }
 
-        // Ejecución prolija en el arranque
-        cargarAvatarIndex();
-        document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
-        window.addEventListener('authPilotoListo', cargarAvatarIndex);
-    </script>
+  // Ejecución prolija en el arranque
+  cargarAvatarIndex();
+  document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
+  window.addEventListener('authPilotoListo', cargarAvatarIndex);
+</script>
 
 </body>
 </html>
