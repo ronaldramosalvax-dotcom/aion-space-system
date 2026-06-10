@@ -342,12 +342,11 @@ const cuerpoTabla = document.getElementById('cuerpo-tabla-aion');
 if (cuerpoTabla && cuerpoTabla.children.length === 0) {
     for (let f = 1; f <= TOTAL_RENGI; f++) {
         const filaTR = document.createElement('tr');
-        const celdaTD = document.createElement('td');
+                       const celdaTD = document.createElement('td');
         
         celdaTD.id = `linea-u-${f}`;
         celdaTD.setAttribute('contenteditable', 'true');
         
-        // CORRECCIÓN FINAL: Alto de 20px para calzar con el fondo y white-space normal para texto corrido
         celdaTD.style = "min-height: 20px; height: 20px; line-height: 20px; font-size: 13px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; white-space: normal; word-break: break-word;";
 
         celdaTD.oninput = function() {
@@ -361,9 +360,17 @@ if (cuerpoTabla && cuerpoTabla.children.length === 0) {
                 e.preventDefault();
                 saltarRenglon(f, true);
             }
-            if (e.key === 'Backspace' && celdaTD.innerText.length === 0) {
-                e.preventDefault();
-                saltarRenglon(f, false);
+            
+            // INTELIGENCIA DE RETORNO AVANZADA: Sube el texto al borrar al inicio
+            if (e.key === 'Backspace') {
+                const seleccion = window.getSelection();
+                if (seleccion.rangeCount > 0) {
+                    const rangoActual = seleccion.getRangeAt(0);
+                    if (rangoActual.startOffset === 0 && rangoActual.endOffset === 0) {
+                        e.preventDefault();
+                        unirRenglonesHaciaArriba(f);
+                    }
+                }
             }
         };
 
@@ -371,6 +378,54 @@ if (cuerpoTabla && cuerpoTabla.children.length === 0) {
         cuerpoTabla.appendChild(filaTR);
     }
 }
+
+function unirRenglonesHaciaArriba(filaActual) {
+    if (filaActual > 1) {
+        const renglonSuperior = document.getElementById(`linea-u-${filaActual - 1}`);
+        const renglonActual = document.getElementById(`linea-u-${filaActual}`);
+        
+        if (renglonSuperior && renglonActual) {
+            const textoActual = renglonActual.innerText;
+            const posicionFocoInicio = renglonSuperior.innerText.length;
+            
+            if (textoActual) {
+                renglonSuperior.innerText += textoActual;
+                renglonActual.innerText = '';
+            }
+            
+            renglonSuperior.focus();
+            
+            const rango = document.createRange();
+            const seleccion = window.getSelection();
+            if (renglonSuperior.firstChild) {
+                rango.setStart(renglonSuperior.firstChild, posicionFocoInicio);
+                rango.setEnd(renglonSuperior.firstChild, posicionFocoInicio);
+            } else {
+                rango.selectNodeContents(renglonSuperior);
+                rango.collapse(false);
+            }
+            seleccion.removeAllRanges();
+            seleccion.addRange(rango);
+        }
+    }
+}
+
+function saltarRenglon(filaActual, haciaAbajo) {
+    const destinoFila = haciaAbajo ? filaActual + 1 : filaActual - 1;
+    if (destinoFila >= 1 && destinoFila <= TOTAL_RENGI) {
+        const siguiente = document.getElementById(`linea-u-${destinoFila}`);
+        if (siguiente) {
+            siguiente.focus();
+            const rango = document.createRange();
+            const seleccion = window.getSelection();
+            rango.selectNodeContents(siguiente);
+            rango.collapse(!haciaAbajo);
+            seleccion.removeAllRanges();
+            seleccion.addRange(rango);
+        }
+    }
+}
+
 
 function saltarRenglon(filaActual, haciaAbajo) {
     const destinoFila = haciaAbajo ? filaActual + 1 : filaActual - 1;
