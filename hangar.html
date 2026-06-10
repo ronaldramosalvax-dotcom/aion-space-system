@@ -103,37 +103,35 @@
     #scroll-box-aion::-webkit-scrollbar-thumb { background: #dddddd; border: 3px solid #555555; border-radius: 2px; }
 
        /* Estilo de tus mini-hojas grandes (Formato Estante del Word) */
-            /* --- ESTILO FLOTANTE TRANSPARENTE (SIN CUADROS) --- */
-        .mini-hoja-apunte { 
-            width: 110px !important; 
-            height: 170px !important; 
-            background: transparent !important; /* Totalmente transparente */
-            border: 2px solid transparent !important; /* Sin bordes visibles por defecto */
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 12px;
-            box-sizing: border-box;
-            transition: all 0.2s ease;
-        }
-        .mini-hoja-apunte:hover { 
-            transform: translateY(-4px);
-            background: rgba(0, 255, 136, 0.05) !important; /* Sutil destello verde al pasar el mouse */
-            border-color: #00ff88 !important; /* Solo se enciende el borde al apuntarlo */
-        }
-        /* Comportamiento con el buscador Ctrl+F */
-        .mini-hoja-apunte.coincide {
-            border-color: #00ff88 !important;
-            background: rgba(0, 255, 136, 0.08) !important;
-            opacity: 1 !important;
-        }
-        .mini-hoja-apunte.ocultar {
-            opacity: 0.1; /* Se desvanece casi por completo si no coincide */
-        }
-
+    .mini-hoja-apunte { 
+        width: 110px !important; 
+        height: 170px !important; 
+        background-color: #ffffff !important; 
+        border: 2px solid #000000 !important; /* Bordes negros nítidos */
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 12px;
+        box-sizing: border-box;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .mini-hoja-apunte:hover { 
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+        border-color: #3b82f6 !important;
+    }
+    .titulo-hoja-mini {
+        color: #000000 !important;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        line-height: 1.3;
+    }  
      /* Estilo del scroll interno de la hoja Word blanca */
     #visor-hoja-word::-webkit-scrollbar { width: 10px; }
     #visor-hoja-word::-webkit-scrollbar-track { background: #f1f1f1; }
