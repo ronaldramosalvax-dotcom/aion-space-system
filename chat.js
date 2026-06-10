@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getDatabase, ref, push, onChildAdded, remove, orderByKey, limitToLast, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 // Credenciales oficiales y unificadas de tu proyecto Aion Space System
 
@@ -17,6 +18,8 @@ const PALABRAS_PROHIBIDAS = ["utp", "mierda", "carajo", "puto", "puta", "concha"
 
 // Inicializar base de datos
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 const db = getDatabase(app);
 const mensajesRef = ref(db, 'mensajes');
 
