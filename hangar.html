@@ -188,17 +188,14 @@
                 <!-- Aquí se inyectan tus apuntes -->
             </div>
 
-            <!-- LA HOJA EN BLANCO EDITABLE ESTILO WORD -->
-            <div id="visor-hoja-word" style="display: none; background-color: #ffffff; color: #000000; width: 100%; max-width: 750px; min-height: 60vh; max-height: 60vh; overflow-y: auto; border: 1px solid #ccc; padding: 40px; box-sizing: border-box; text-align: left; font-family: 'Segoe UI', sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-                <!-- Atributo contenteditable activado para tipear en vivo -->
-                <div id="contenido-documento-dinamico" contenteditable="true" style="outline: none; min-height: 100%; font-family: 'Courier New', Courier, monospace; font-size: 15px; line-height: 24px; text-align: left; padding: 20px; color: #000000; background-image: linear-gradient(rgba(106, 90, 205, 0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(106, 90, 205, 0.25) 1px, transparent 1px); background-size: 24px 24px; background-position: 0 -3px; background-attachment: local;">
+          <!-- LA INTERFAZ UNIVERSAL: 52 RENGLONES DE ANCHO COMPLETO -->
+<div id="visor-hoja-word" style="display: none; background-color: #ffffff; color: #000000; width: 100%; max-width: 850px; min-height: 60vh; max-height: 60vh; overflow-y: auto; border: 1px solid #ccc; padding: 2cm 1cm; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+    <div id="contenedor-lineas-universales" style="display: flex; flex-direction: column; width: 100%;">
+        <!-- JavaScript inyectará aquí los 52 renglones indestructibles -->
+    </div>
+</div>
 
-
-                    <!-- Aquí se tipeará el texto libremente -->
-                </div>
-            </div>
-
-        </div>
+            
 
 
     <!-- VENTANA EMERGENTE DE TU WORD -->
@@ -333,6 +330,50 @@
         const barraHerramientas = document.getElementById('barra-herramientas-word');
         const contenidoDinamico = document.getElementById('contenido-documento-dinamico');
         const btnCerrarDoc = document.getElementById('btn-cerrar-documento');
+        const TOTAL_RENGI = 52;
+const MAX_CARACTERES_RENGON = 80;
+const contenedorLineas = document.getElementById('contenedor-lineas-universales');
+
+if (contenedorLineas && contenedorLineas.children.length === 0) {
+    for (let f = 1; f <= TOTAL_RENGI; f++) {
+        const renglon = document.createElement('div');
+        renglon.setAttribute('contenteditable', 'true');
+        renglon.id = `linea-u-${f}`;
+        
+        renglon.style = "width: 100%; height: 24px; line-height: 24px; font-size: 14px; color: #000000; outline: none; border-bottom: 1px solid rgba(106, 90, 205, 0.25); white-space: nowrap; overflow: hidden; background-image: linear-gradient(90deg, rgba(106, 90, 205, 0.25) 1px, transparent 1px); background-size: 24px 100%; padding: 0 5px; box-sizing: border-box;";
+
+        renglon.oninput = function() {
+            if (renglon.innerText.length >= MAX_CARACTERES_RENGON) {
+                saltarAlRenglonSiguiente(f);
+            }
+        };
+
+        renglon.onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saltarAlRenglonSiguiente(f);
+            }
+        };
+
+        contenedorLineas.appendChild(renglon);
+    }
+}
+
+function saltarAlRenglonSiguiente(filaActual) {
+    if (filaActual < TOTAL_RENGI) {
+        const siguiente = document.getElementById(`linea-u-${filaActual + 1}`);
+        if (siguiente) {
+            siguiente.focus();
+            const rango = document.createRange();
+            const seleccion = window.getSelection();
+            rango.selectNodeContents(siguiente);
+            rango.collapse(true);
+            seleccion.removeAllRanges();
+            seleccion.addRange(rango);
+        }
+    }
+}
+            
         
         const TOTAL_APUNTES = 30;
 
@@ -378,8 +419,19 @@
                     barraHerramientas.style.display = 'flex'; 
                     visorHojaWord.style.display = 'block';    
                     
-                    contenidoDinamico.innerHTML = baseDatosApuntes[i] || `<h2>${nombreTexto}</h2><p>Haz clic aquí para empezar a redactar tu apunte o problema matemático...</p>`;
-                    contenidoDinamico.focus();
+                    for (let f = 1; f <= TOTAL_RENGI; f++) {
+    document.getElementById(`linea-u-${f}`).innerText = '';
+}
+const datosGuardados = baseDatosApuntes[i];
+if (datosGuardados && typeof datosGuardados === 'object') {
+    Object.keys(datosGuardados).forEach(idLinea => {
+        const el = document.getElementById(idLinea);
+        if (el) el.innerText = datosGuardados[idLinea];
+    });
+}
+const primeraLinea = document.getElementById('linea-u-1');
+if (primeraLinea) primeraLinea.focus();
+
                 };
 
                 fragment.appendChild(hoja);
@@ -388,15 +440,22 @@
         }
 
         // Lógica de guardado al presionar el botón rojo
-        btnCerrarDoc.onclick = function() {
+               btnCerrarDoc.onclick = function() {
             if (apunteActivoId) {
-                baseDatosApuntes[apunteActivoId] = contenidoDinamico.innerHTML;
+                const datosRenglones = {};
+                for (let f = 1; f <= TOTAL_RENGI; f++) {
+                    const elRenglon = document.getElementById(`linea-u-${f}`);
+                    if (elRenglon) {
+                        const texto = elRenglon.innerText;
+                        if (texto) datosRenglones[`linea-u-${f}`] = texto;
+                    }
+                }
+                baseDatosApuntes[apunteActivoId] = datosRenglones;
                 localStorage.setItem('aion_word_notes', JSON.stringify(baseDatosApuntes));
             }
             contenedorApuntes.style.display = 'grid';
             barraHerramientas.style.display = 'none';
             visorHojaWord.style.display = 'none';
-            contenidoDinamico.innerHTML = '';
             apunteActivoId = null;
         };
 
