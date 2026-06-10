@@ -316,11 +316,22 @@
 }
 
     </script>
-            <script>
+                <script>
         const contenedorApuntes = document.getElementById('contenedor-apuntes-hangar');
+        const visorHojaWord = document.getElementById('visor-hoja-word');
+        const barraHerramientas = document.getElementById('barra-herramientas-word');
+        const contenidoDinamico = document.getElementById('contenido-documento-dinamico');
+        const btnCerrarDoc = document.getElementById('btn-cerrar-documento');
+        
         const TOTAL_APUNTES = 30;
 
-        // Tus apuntes oficiales ordenados por estante
+        // Base de datos local para almacenar tus textos editados en vivo
+        let baseDatosApuntes = JSON.parse(localStorage.getItem('aion_word_notes')) || {
+            3: `<h2>Problema 1: Sistemas Lineales</h2><p>Una papelería registró las ventas de cuadernos, lapiceros y borradores durante dos días. La matriz de ventas es:</p><p><b>V = [ 10 &nbsp; 15 &nbsp; 8 ]</b></p>`
+        };
+
+        let apunteActivoId = null;
+
         const nombresApuntes = {
             1: "💻 Menú Principal",
             2: "✨ Modo IA Asistente",
@@ -334,7 +345,7 @@
             10: "🧠 Estructuras Lógicas"
         };
 
-                function generarEstante() {
+        function generarEstante() {
             if (!contenedorApuntes) return;
             contenedorApuntes.innerHTML = '';
             const fragment = document.createDocumentFragment();
@@ -347,17 +358,15 @@
                 hoja.innerHTML = `<span class="titulo-hoja-mini">${nombreTexto}</span>`;
                 
                 hoja.onclick = function() {
-                    // Navegación directa para carpetas especiales
                     if (i === 1) { window.location.href = 'index.html'; return; }
                     if (i === 2) { window.location.href = 'ia.html'; return; }
 
-                    // ACTIVACIÓN DEL ENTORNO DE EDICIÓN EN VIVO
+                    // Activar el entorno estilo Microsoft Word editable
                     apunteActivoId = i;
-                    contenedorApuntes.style.display = 'none'; // Esconde tus carpetas
-                    barraHerramientas.style.display = 'flex'; // Muestra barra de negrita/cursiva
-                    visorHojaWord.style.display = 'block';    // Muestra la hoja en blanco estilo Word
+                    contenedorApuntes.style.display = 'none'; 
+                    barraHerramientas.style.display = 'flex'; 
+                    visorHojaWord.style.display = 'block';    
                     
-                    // Inyecta el texto guardado o una plantilla en blanco limpia para redactar
                     contenidoDinamico.innerHTML = baseDatosApuntes[i] || `<h2>${nombreTexto}</h2><p>Haz clic aquí para empezar a redactar tu apunte o problema matemático...</p>`;
                     contenidoDinamico.focus();
                 };
@@ -367,15 +376,12 @@
             contenedorApuntes.appendChild(fragment);
         }
 
-        // Evento definitivo para Guardar y regresar a ver tus 30 cuadernos
+        // Lógica de guardado al presionar el botón rojo
         btnCerrarDoc.onclick = function() {
             if (apunteActivoId) {
-                // Guarda lo tipeado por el usuario en la base de datos local
                 baseDatosApuntes[apunteActivoId] = contenidoDinamico.innerHTML;
                 localStorage.setItem('aion_word_notes', JSON.stringify(baseDatosApuntes));
             }
-
-            // Restablece la interfaz del estante
             contenedorApuntes.style.display = 'grid';
             barraHerramientas.style.display = 'none';
             visorHojaWord.style.display = 'none';
@@ -383,7 +389,6 @@
             apunteActivoId = null;
         };
 
-        // Arrancar el estante digital
         generarEstante();
     </script>
 </body>
