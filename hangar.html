@@ -190,15 +190,16 @@
 
 <!-- LA INTERFAZ UNIVERSAL: TABLA INDESTRUCTIBLE DE 34 COLUMNAS -->
 <div id="visor-hoja-word" style="display: none; background-color: #ffffff; color: #000000; width: 100%; max-width: 1000px; min-height: 60vh; max-height: 60vh; overflow-y: auto; border: 1px solid #ccc; padding: 2cm 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-    <!-- Un solo contenedor editable para permitir la selección corrida y borrado nativo -->
-    <div id="contenedor-lineas-universales" contenteditable="true" style="outline: none; width: 100%; max-width: 816px; margin: 0 auto;">
-        <table style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+    <!-- El contenedor plano ahora solo sirve de carril de ancho completo -->
+    <div id="contenedor-lineas-universales" style="outline: none; width: 100%; max-width: 820px; margin: 0 auto;">
+        <table contenteditable="true" style="width: 100%; border-collapse: collapse; table-layout: fixed; outline: none;">
             <tbody id="cuerpo-tabla-aion">
                 <!-- JavaScript inyectará aquí los 52 renglones en formato de tabla -->
             </tbody>
         </table>
     </div>
 </div>
+
 
 
 
