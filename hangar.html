@@ -188,13 +188,13 @@
                 <!-- Aquí se inyectan tus apuntes -->
             </div>
 
-<!-- LA INTERFAZ UNIVERSAL: TABLA INDESTRUCTIBLE DE 34 COLUMNAS -->
-<div id="visor-hoja-word" style="display: none; background-color: #ffffff; color: #000000; width: 100%; max-width: 1000px; min-height: 60vh; max-height: 60vh; overflow-y: auto; border: 1px solid #ccc; padding: 2cm 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-    <!-- El contenedor ahora se estira a 900px para que entren las 34 columnas completas de 24px -->
-    <div id="contenedor-lineas-universales" style="outline: none; width: 100%; max-width: 900px; margin: 0 auto; background-image: linear-gradient(rgba(106, 90, 205, 0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(106, 90, 205, 0.25) 1px, transparent 1px); background-size: 24px 24px; background-attachment: local;">
+<!-- LA INTERFAZ UNIVERSAL: 34 COLUMNAS COMPLETA PARA LAPTOP -->
+<div id="visor-hoja-word" style="display: none; background-color: #ffffff; color: #000000; width: 100%; max-width: 950px; min-height: 60vh; max-height: 60vh; overflow-y: auto; border: 1px solid #ccc; padding: 2cm 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+    <!-- El fondo ahora usa cuadritos perfectos de 20px x 20px para que entren las 34 columnas completas -->
+    <div id="contenedor-lineas-universales" style="outline: none; width: 100%; max-width: 680px; margin: 0 auto; background-image: linear-gradient(rgba(106, 90, 205, 0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(106, 90, 205, 0.25) 1px, transparent 1px); background-size: 20px 20px; background-attachment: local;">
         <table style="width: 100%; border-collapse: collapse; table-layout: fixed; outline: none;">
             <tbody id="cuerpo-tabla-aion">
-                <!-- JavaScript inyectará aquí los 52 renglones transparentes -->
+                <!-- El script inyectará aquí los renglones correspondientes -->
             </tbody>
         </table>
     </div>
@@ -347,8 +347,8 @@ if (cuerpoTabla && cuerpoTabla.children.length === 0) {
         celdaTD.id = `linea-u-${f}`;
         celdaTD.setAttribute('contenteditable', 'true');
         
-        // Renglón transparente adaptado para que se vean las 34 columnas de fondo
-        celdaTD.style = "height: 24px; line-height: 24px; font-size: 14px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; overflow: hidden; white-space: nowrap;";
+        // CORRECCIÓN FINAL: Alto de 20px para calzar con el fondo y white-space normal para texto corrido
+        celdaTD.style = "min-height: 20px; height: 20px; line-height: 20px; font-size: 13px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; white-space: normal; word-break: break-word;";
 
         celdaTD.oninput = function() {
             if (celdaTD.innerText.length >= MAX_CARACTERES_RENGON) {
