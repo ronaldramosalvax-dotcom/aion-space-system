@@ -342,14 +342,14 @@ const cuerpoTabla = document.getElementById('cuerpo-tabla-aion');
 if (cuerpoTabla && cuerpoTabla.children.length === 0) {
     for (let f = 1; f <= TOTAL_RENGI; f++) {
         const filaTR = document.createElement('tr');
-        
         const celdaTD = document.createElement('td');
-        celdaTD.id = `linea-u-${f}`;
         
-        // Cuadrícula azul-morada de adorno perfecta (Aparecen las 34 columnas exactas en los 816px de ancho)
-        celdaTD.style = "height: 24px; line-height: 24px; font-size: 14px; color: #000000; outline: none; border-bottom: 1px solid rgba(106, 90, 205, 0.25); white-space: nowrap; overflow: hidden; background-image: linear-gradient(90deg, rgba(106, 90, 205, 0.25) 1px, transparent 1px); background-size: 24px 100%; padding: 0 5px; box-sizing: border-box;";
+        celdaTD.id = `linea-u-${f}`;
+        celdaTD.setAttribute('contenteditable', 'true');
+        
+        // Renglón transparente adaptado para que se vean las 34 columnas de fondo
+        celdaTD.style = "height: 24px; line-height: 24px; font-size: 14px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; overflow: hidden; white-space: nowrap;";
 
-        // Control de flujo horizontal al llenarse o presionar Enter
         celdaTD.oninput = function() {
             if (celdaTD.innerText.length >= MAX_CARACTERES_RENGON) {
                 saltarRenglon(f, true);
@@ -361,7 +361,6 @@ if (cuerpoTabla && cuerpoTabla.children.length === 0) {
                 e.preventDefault();
                 saltarRenglon(f, true);
             }
-            // INTELIGENCIA DE RETORNO: Si presiona borrar al inicio, sube de renglón
             if (e.key === 'Backspace' && celdaTD.innerText.length === 0) {
                 e.preventDefault();
                 saltarRenglon(f, false);
@@ -382,7 +381,7 @@ function saltarRenglon(filaActual, haciaAbajo) {
             const rango = document.createRange();
             const seleccion = window.getSelection();
             rango.selectNodeContents(siguiente);
-            rango.collapse(!haciaAbajo); // Coloca el cursor al final si sube, o al inicio si baja
+            rango.collapse(!haciaAbajo);
             seleccion.removeAllRanges();
             seleccion.addRange(rango);
         }
