@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM | Plataforma de Servicios y Recursos</title>
+        <!-- Conexión de la Aplicación Móvil (PWA) -->
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script> 
+
+    <style>
+        /* Estilos Base Inspirados en la Interfaz de Discord */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+   body {
+    /* Fondo base negro azulado profundo */
+    background-color: #060913;
+    /* Rejilla digital de alta tecnología usando gradientes lineales */
+    background-image: 
+        linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px; /* Tamaño de los cuadrantes */
+    background-attachment: fixed !important;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+     
+
+        /* Barra de Navegación Estilo Discord */
+        .top-navbar {
+            width: 100%;
+            background-color: rgba(35, 39, 42, 0.95);
+            border-bottom: 2px solid #f0a04b !important;
+            box-shadow: 0 4px 15px rgba(240, 160, 75, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .nav-links li {
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-links li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #5765f2;
+            cursor: pointer;
+        }
+
+        .btn-account {
+            background-color: #ffffff;
+            color: #23272a;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-account:hover {
+            background-color: #f6f6f6;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+       /* Contenedor Principal */
+.main-container {
+    max-width: 100%;
+    width: 100%;
+    padding: 40px 0px;
+    background: transparent !important; /* Fuerza a que sea transparente */
+}
+
+       /* Centro de Control Holográfico */
+.search-section {
+    background-color: rgba(10, 15, 30, 0.85); /* Tono oscuro integrado */
+    border-radius: 12px; /* Bordes más rectos estilo militar */
+    padding: 45px 30px;
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 100% !important;
+    width: 100% !important;
+    backdrop-filter: blur(12px);
+    /* Borde cian con sombra de neón externa e interna */
+    border: 1px solid #060913 !important; /* Cambiado a negro para que se fusione con el fondo */
+    box-shadow: none !important; /* Eliminamos el resplandor azul */
+
+}
+
+        .search-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .search-section p {
+            font-size: 1.05rem;
+            color: #b9bbbe;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+
+        .search-bar-container {
+            display: flex;
+            max-width: 650px;
+            margin: 0 auto;
+            border-radius: 30px;
+            overflow: hidden;
+            background-color: #2f3136;
+            padding: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            outline: none;
+            color: #ffffff;
+            background-color: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #72767d;
+        }
+        
+.btn-modo-ia {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo translúcido sutil */
+    color: #ffffff; /* Texto blanco brillante */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde blanco translúcido */
+    padding: 0 18px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05); /* Resplandor blanco sutil */
+}
+
+.btn-modo-ia:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.25); /* Resplandor más fuerte al pasar el mouse */
+    transform: translateY(-1px);
+}
+
+        /* Secciones de Contenido */
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Rejilla fija de 3 columnas estrictas para PC */
+        .grid-layout {        
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 25px !important;
+            margin-bottom: 40px;
+            align-items: start !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+
+        .grid-layout ul {
+            position: absolute !important;
+            width: 100% !important;
+            z-index: 9999 !important;
+            background-color: #1e1f22 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+            margin-top: 10px !important;
+        }
+
+            @media (max-width: 900px) {
+            /* 1. Menú superior compacto en celulares */
+            .top-navbar {
+                flex-direction: column !important;
+                gap: 10px !important;
+                padding: 12px !important;
+                text-align: center !important;
+                height: auto !important;
+            }
+            
+            .brand-logo {
+                font-size: 1.1rem !important;
+                text-align: center !important;
+                margin-bottom: 4px;
+            }
+
+            .nav-links {
+                justify-content: center !important;
+                gap: 8px !important;
+                font-size: 0.75rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            .btn-account {
+                padding: 6px 14px !important;
+                font-size: 0.75rem !important;
+                width: auto !important;
+                margin-top: 5px;
+            }
+
+            /* 2. Reducir el título para que quepa entero en pantallas chicas */
+            .search-section h1 {
+                font-size: 1.7rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* 3. Rompe la cápsula en el celular para expulsar el botón abajo por separado */
+            .search-bar-container {
+                display: flex !important;
+                flex-direction: column !important; /* Los apila uno abajo del otro */
+                background-color: transparent !important; /* Evita que la caja gris se deforme completa */
+                box-shadow: none !important;
+                width: 100% !important;
+                gap: 15px !important; /* Espacio elegante de separación estilo Google */
+            }
+
+            .search-input {
+                width: 100% !important;
+                background-color: #2f3136 !important; /* Mantiene la barra de texto gris redonda */
+                border-radius: 30px !important;
+                padding: 12px 20px !important;
+                text-align: center !important;
+            }
+
+            .btn-modo-ia {
+                display: inline-flex !important;
+                width: auto !important;
+                min-width: 130px !important; /* Tamaño ovalado idéntico a tu captura de Chrome */
+                justify-content: center !important;
+                margin: 0 auto !important; /* Lo centra horizontalmente abajo */
+                padding: 10px 18px !important;
+                background-color: rgba(255, 255, 255, 0.05) !important;
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                border-radius: 20px !important;
+                color: #ffffff !important;
+            }
+
+            /* 4. Rejilla de tarjetas en una sola columna */
+            .grid-layout {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+                padding: 0 10px !important;
+            }
+        }
+
+       
+                     
+  
+        .product-card {
+            background-color: #2f3136;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                position: relative !important;
+                height: 100% !important;
+
+.grid-layout ul {
+    position: absolute !important;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    z-index: 9999;
+    margin-top: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            background-color: #36393f;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .tag-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #404eed;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            font-size: 0.9rem;
+            color: #b9bbbe;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .btn-action-card {
+            background-color: #4f545c;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .product-card:hover .btn-action-card {
+            background-color: #404eed;
+        }
+                /* --- ESTILIZACIÓN DE BARRAS DE SCROLL CUÁNTICAS --- */
+            #caja-mensajes-arena::-webkit-scrollbar,
+            .panel-pilotos::-webkit-scrollbar {
+                width: 5px; /* Ultra delgadas */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-track,
+            .panel-pilotos::-webkit-scrollbar-track {
+                background: rgba(35, 39, 42, 0.5); /* Fondo oscuro transparente */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-thumb,
+            .panel-pilotos::-webkit-scrollbar-thumb {
+                background: #404eed; /* Azul eléctrico base */
+                border-radius: 10px;
+                box-shadow: 0 0 10px #5765f2; /* Brillo neón táctico */
+            }
+            #caja-mensajes-arena::-webkit-scrollbar-thumb:hover,
+            .panel-pilotos::-webkit-scrollbar-thumb:hover {
+                background: #00ff88; /* Cambia a verde neón al pasar el mouse */
+            }
+    
+    </style>
+</head>
+<body>
+
+
+<!-- ENVOLTORIO QUE ENCAPSULA TODA LA PLATAFORMA ORIGINAL -->
+<div id="wrapper-plataforma-aion" style="display: block; width: 100%;">
+
+
+    <!-- Barra Superior -->
+    <header class="top-navbar">
+        <div class="brand-logo">AION SPACE SYSTEM</div>
+        <ul class="nav-links">
+            
+            <li onclick="abrirModalRadar()" style="color: #00ff88; font-weight: bold; border: 1px solid rgba(0,255,136,0.2); background: rgba(0,255,136,0.05);">📡 Radar Chat</li>
+            <li>Universidad</li>
+            <li onclick="window.location.href='pruebas.html'" style="color: #00ffcc; font-weight: bold;">🚀 Área de Pruebas</li>
+
+        </ul>
+       <div style="display: flex; align-items: center; gap: 12px; justify-content: center; margin-top: 5px;">
+    <a href="https://discord.gg/37kUZthe" target="_blank" class="btn-account" style="margin: 0 !important;">Conectar Discord</a>
+    <img id="avatar-nav-bar" src="https://robohash.org" onclick="window.location.href='hangar.html'" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #00ff88; cursor: pointer; box-shadow: 0 0 12px rgba(0, 255, 136, 0.5); object-fit: cover;">
+</div>
+
+
+    </header>
+
+    <main class="main-container">
+
+        <!-- Sección de Búsqueda -->
+        <section class="search-section">
+            
+            <h1>El Centro de Control Tecnológico</h1>
+            <p>Encuentra recursos educativos verificados de la UTP y explora flujos de automatización industrial en red.</p>
+                   
+             
+                    <!-- Contenedor del Buscador Principal -->
+        <div class="search-bar-container">
+            <input type="text" class="search-input" id="input-buscador-principal" placeholder="Buscar guías, prácticas, soluciones, asistentes de IA...">
+            
+            <!-- El botón metido adentro de la cápsula gris -->
+            <button class="btn-modo-ia" onclick="window.location.href='ia.html'">
+                <span style="margin-right: 5px;">✨</span> Modo IA
+            </button>
+        </div>
+
+
+            <!-- VENTANA MODAL FLOTANTE TÁCTICA (Activada desde la barra superior) -->
+            <div id="modal-radar-contenedor" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 14, 23, 0.75); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: flex-start; padding-top: 15px; z-index: 99999;">
+
+                
+                <!-- Estructura del Visor del Radar -->
+                <div id="panel-chat-arena" style="width: 92%; max-width: 650px; background: #202225; border: 1px solid #404eed; border-radius: 12px; display: flex; flex-direction: column; height: 380px; overflow: hidden; text-align: left; box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 35px rgba(64, 78, 237, 0.25);">
+                    
+                    <!-- Cabecera de Operaciones con Botón de Cierre -->
+                    <div style="background: #23272a; padding: 12px 15px; border-bottom: 1px solid #404eed; font-family: monospace; font-size: 11px; color: #5765f2; font-weight: bold; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>📡 RADAR DE COMUNICACIÓN GLOBAL</span>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span id="estado-radar" style="color: #3ba55d; font-size: 10px;">[ENLACE ACTIVO]</span>
+                            <!-- Botón de Cerrar Táctico [✖] -->
+                            <span onclick="cerrarModalRadar()" style="color: #ff4757; cursor: pointer; font-size: 14px; font-family: sans-serif; padding: 2px 7px; background: rgba(255,71,87,0.1); border-radius: 4px; user-select: none;" onmouseover="this.style.background='rgba(255,71,87,0.25)'" onmouseout="this.style.background='rgba(255,71,87,0.1)'">✖</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Cuerpo del Visor Dividido (Mensajes + Pilotos) -->
+                    <div style="display: flex; flex: 1; overflow: hidden; background: #2f3136;">
+                        
+                        <!-- Pantalla Izquierda: Visor de Mensajes -->
+                        <div id="caja-mensajes-arena" style="flex: 1; padding: 12px; overflow-y: auto; font-size: 12px; color: #dcddde; display: flex; flex-direction: column; gap: 8px;">
+                            <p class="msg-sistema" style="color: #3ba55d; font-family: monospace; font-size: 10px; margin: 0; padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05);">[SISTEMA]: Canal cuántico establecido. Historial fijado en 40 transmisiones.</p>
+                        </div>
+
+                        <!-- Panel Derecho: Pilotos Conectados en Red -->
+                        <div class="panel-pilotos" style="width: 140px; background: rgba(35, 39, 42, 0.8); border-left: 1px solid rgba(64, 78, 237, 0.3); display: flex; flex-direction: column; padding: 8px; overflow-y: auto;">
+                            <div style="font-family: monospace; font-size: 9px; color: #72767d; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Pilotos en Red</div>
+                            <div id="lista-pilotos-red" style="display: flex; flex-direction: column; gap: 6px;">
+                                <!-- Inyección dinámica desde chat.js -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Consola Inferior de Comandos -->
+                                        <div style="padding: 10px; display: flex; gap: 8px; background: #23272a; border-top: 1px solid #202225; align-items: center;">
+                        <!-- Expandimos el ancho al 80% para escribir con total comodidad -->
+                        <input type="text" id="input-mensaje-arena" placeholder="Transmitir al escuadrón..." onkeypress="detectarEnter(event)" style="width: 80%; background: #202225; border: 1px solid #404eed; border-radius: 6px; padding: 8px; color: white; font-size: 12px; outline: none;">
+                        <button id="btn-enviar-arena" onclick="enviarMensajeArena()" style="width: 20%; background: #404eed; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; height: 33px;">Enviar</button>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- SCRIPT DE CONTROL MODAL Y CONEXIÓN CON CHAT.JS -->
+            <script type="module" src="chat.js"></script>
+            <script>
+                window.abrirModalRadar = function() {
+                    const modal = document.getElementById('modal-radar-contenedor');
+                    if(modal) {
+                        modal.style.display = 'flex';
+                        setTimeout(() => {
+                            const caja = document.getElementById('c
