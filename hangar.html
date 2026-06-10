@@ -336,33 +336,35 @@
         const contenidoDinamico = document.getElementById('contenido-documento-dinamico');
         const btnCerrarDoc = document.getElementById('btn-cerrar-documento');
 const TOTAL_RENGI = 52;
-const MAX_CARACTERES_RENGON = 120;
+const MAX_CARACTERES_RENGON = 78;
 const cuerpoTabla = document.getElementById('cuerpo-tabla-aion');
 
 if (cuerpoTabla && cuerpoTabla.children.length === 0) {
     for (let f = 1; f <= TOTAL_RENGI; f++) {
         const filaTR = document.createElement('tr');
-                       const celdaTD = document.createElement('td');
+        const celdaTD = document.createElement('td');
         
         celdaTD.id = `linea-u-${f}`;
         celdaTD.setAttribute('contenteditable', 'true');
         
-        celdaTD.style = "min-height: 20px; height: 20px; line-height: 20px; font-size: 13px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; white-space: normal; word-break: break-word;";
+        // Estilo compacto y limpio que llena las 34 columnas sin saltarse renglones en blanco
+        celdaTD.style = "min-height: 20px; height: 20px; line-height: 20px; font-family: 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #000000; outline: none; padding: 0 5px; box-sizing: border-box; white-space: normal; word-break: break-all;";
 
-               celdaTD.oninput = function() {
-            // 1. Limpiamos cualquier salto de línea residual que intente deformar el renglón
+        celdaTD.oninput = function() {
+            // Elimina etiquetas basura automáticas del navegador para evitar renglones en blanco vacíos
             if (celdaTD.innerHTML.includes('<br>') || celdaTD.innerHTML.includes('<p>')) {
                 celdaTD.innerHTML = celdaTD.innerText;
             }
-            
-            // 2. Si llega de forma exacta al límite de la esquina, salta limpio abajo
             if (celdaTD.innerText.length >= MAX_CARACTERES_RENGON) {
                 saltarRenglon(f, true);
             }
         };
 
-            
-            // INTELIGENCIA DE RETORNO AVANZADA: Sube el texto al borrar al inicio
+        celdaTD.onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saltarRenglon(f, true);
+            }
             if (e.key === 'Backspace') {
                 const seleccion = window.getSelection();
                 if (seleccion.rangeCount > 0) {
@@ -410,23 +412,6 @@ function unirRenglonesHaciaArriba(filaActual) {
         }
     }
 }
-
-function saltarRenglon(filaActual, haciaAbajo) {
-    const destinoFila = haciaAbajo ? filaActual + 1 : filaActual - 1;
-    if (destinoFila >= 1 && destinoFila <= TOTAL_RENGI) {
-        const siguiente = document.getElementById(`linea-u-${destinoFila}`);
-        if (siguiente) {
-            siguiente.focus();
-            const rango = document.createRange();
-            const seleccion = window.getSelection();
-            rango.selectNodeContents(siguiente);
-            rango.collapse(!haciaAbajo);
-            seleccion.removeAllRanges();
-            seleccion.addRange(rango);
-        }
-    }
-}
-
 
 function saltarRenglon(filaActual, haciaAbajo) {
     const destinoFila = haciaAbajo ? filaActual + 1 : filaActual - 1;
