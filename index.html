@@ -614,7 +614,7 @@ const firebaseConfig = {
     
 // Initialize Firebase
   // Control antifraude: Reutiliza la conexión activa si chat.js ya se conectó antes
-   const app = initializeApp(firebaseConfig);
+  const app = (typeof window !== "undefined" && window.firebase && window.firebase.apps && window.firebase.apps.length) ? window.firebase.apps[0] : initializeApp(firebaseConfig);
 
 
   const auth = getAuth(app);
