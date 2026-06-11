@@ -613,7 +613,10 @@ const firebaseConfig = {
 };
     
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+  // Control antifraude: Reutiliza la conexión activa si chat.js ya se conectó antes
+  import { getApps } from "https://www.gstatic.com/firebase/12.14.0/firebase-app.js";
+  const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+
 
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
