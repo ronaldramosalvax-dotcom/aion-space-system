@@ -125,7 +125,7 @@
     </div>
 
     <!-- Integración con la API Central de Gemini -->
-       <script src="https://unpkg.com"></script>
+       
           <script>
         const chatStream = document.getElementById('chat-stream');
         const promptInput = document.getElementById('prompt-input');
@@ -174,7 +174,8 @@
                 const data = await response.json();
                 
                 // CORRECCIÓN AQUÍ: Estructura exacta con índices para la API de Gemini
-                const textoRespuesta = data.candidates[0].content.parts[0].text;
+                const textoRespuesta = data.candidates[0].content.text || data.candidates[0].content.parts[0].text;
+
 
                 // Inyectamos la respuesta final procesada
                 document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${textoRespuesta}`;
