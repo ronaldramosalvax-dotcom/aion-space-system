@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM | Inteligencia Artificial</title>
+    <style>
+        /* Estilos Integrados con el Ecosistema de AION */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background-color: #060913;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .ai-container {
+            width: 100%;
+            max-width: 750px;
+            background-color: rgba(10, 15, 30, 0.85);
+            border: 1px solid #404eed;
+            border-radius: 12px;
+            box-shadow: 0 0 35px rgba(64, 78, 237, 0.25);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+        .ai-header {
+            background-color: #23272a;
+            padding: 15px 20px;
+            border-bottom: 1px solid #404eed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #5765f2;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+        /* Barras de scroll idénticas a tu index.html */
+        .chat-box::-webkit-scrollbar { width: 5px; }
+        .chat-box::-webkit-scrollbar-track { background: rgba(35, 39, 42, 0.5); }
+        .chat-box::-webkit-scrollbar-thumb { background: #404eed; border-radius: 10px; box-shadow: 0 0 10px #5765f2; }
+        .chat-box::-webkit-scrollbar-thumb:hover { background: #00ff88; }
+        
+        .msg { padding: 12px 16px; border-radius: 8px; max-width: 85%; line-height: 1.5; }
+        .msg-user { background-color: #404eed; color: #ffffff; align-self: flex-end; border-bottom-right-radius: 0; }
+        .msg-ai { background-color: #2f3136; color: #dcddde; align-self: flex-start; border-bottom-left-radius: 0; border: 1px solid rgba(255,255,255,0.05); }
+        .ai-input-area {
+            padding: 15px;
+            background-color: #23272a;
+            border-top: 1px solid #202225;
+            display: flex;
+            gap: 10px;
+        }
+        .ai-input {
+            flex: 1;
+            background-color: #202225;
+            border: 1px solid #404eed;
+            border-radius: 6px;
+            padding: 12px;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .btn-send {
+            background-color: #404eed;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .btn-send:hover { background-color: #5765f2; }
+        .btn-back {
+            color: #b9bbbe;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 5px 12px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.02);
+            font-weight: bold;
+        }
+        .btn-back:hover { color: white; background: rgba(255,255,255,0.08); border-color: #404eed; }
+    </style>
+</head>
+<body>
+
+    <div class="ai-container">
+        <div class="ai-header">
+            <span>✨ CONSOLA DE INTELIGENCIA ARTIFICIAL</span>
+            <a href="index.html" class="btn-back">⬅ Volver al Panel</a>
+        </div>
+        
+        <div class="chat-box" id="chat-stream">
+            <div class="msg msg-ai">
+                <b id="ai-greeting">AION IA:</b> ¡Saludos, piloto! Sistema cuántico en línea. Estoy conectado a tus registros centrales de usuario. ¿Qué duda académica o de infraestructura en red de la UTP resolveremos hoy?
+            </div>
+        </div>
+
+        <div class="ai-input-area">
+            <input type="text" id="prompt-input" class="ai-input" placeholder="Pregúntame sobre algoritmos, matrices, redes, etc...">
+            <button id="send-prompt" class="btn-send">Transmitir</button>
+        </div>
+    </div>
+
+    <!-- Integración con la API Central de Gemini -->
+    <script type="module">
+        import { GoogleGenAI } from 'https://esm.run';
+
+        // Introduce tu API Key gratuita generada en Google AI Studio
+        const ai = new GoogleGenAI({ apiKey: 'AIzaSyBKYsZ9n66btcAAwnv0KEIttAqIwNnc9FU' });
+        
+        const chatStream = document.getElementById('chat-stream');
+        const promptInput = document.getElementById('prompt-input');
+        const sendPrompt = document.getElementById('send-prompt');
+        const aiGreeting = document.getElementById('ai-greeting');
+
+        // Extraemos el perfil guardado en el index para personalizar el saludo
+        let sesion = localStorage.getItem("cuenta_aion_instalada");
+        if (sesion) {
+            let perfil = JSON.parse(sesion);
+            if (perfil.nombre) {
+                aiGreeting.innerHTML = `AION IA: ¡Saludos, piloto <b>${perfil.nombre} ${perfil.codigo || ''}</b>! Sistema cuántico en línea. ¿Qué duda académica de la UTP resolveremos hoy?`;
+            }
+        }
+
+        async function transmitirMensaje() {
+            const query = promptInput.value.trim();
+            if (!query) return;
+
+            // Mostrar el mensaje ingresado por el alumno
+            chatStream.innerHTML += `<div class="msg msg-user"><b>Tú:</b> ${query}</div>`;
+            promptInput.value = '';
+            chatStream.scrollTop = chatStream.scrollHeight;
+
+            // Contenedor dinámico de espera
+            const aiResponseId = 'ai-' + Date.now();
+            chatStream.innerHTML += `<div class="msg msg-ai" id="${aiResponseId}"><b>AION IA:</b> Decodificando transmisión...</div>`;
+            chatStream.scrollTop = chatStream.scrollHeight;
+
+            try {
+                const response = await ai.models.generateContent({
+                    model: 'gemini-2.5-flash',
+                    contents: query,
+                    config: {
+                        systemInstruction: "Eres el asistente de IA oficial de la plataforma educativa AION SPACE SYSTEM para alumnos de la UTP. Te especializas en guiar y explicar temas de Introducción a las TIC, Principios de Algoritmos (PSeInt, pseudocódigo) y Matemática II (Matrices, cálculo integral y sistemas de ecuaciones lineales). Responde siempre usando un tono amigable, claro, didáctico y con léxico tecnológico/espacial alineado a la interfaz de la plataforma."
+                    }
+                });
+
+                // Inyectamos la respuesta final procesada
+                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${response.text}`;
+                chatStream.scrollTop = chatStream.scrollHeight;
+
+            } catch (error) {
+                console.error("Falla en el canal de datos de la IA:", error);
+                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> [ERROR]: Interrupción en el enlace cuántico. Por favor, reintente la transmisión.`;
+            }
+        }
+
+        sendPrompt.onclick = transmitirMensaje;
+        promptInput.onkeypress = (e) => { if(e.key === 'Enter') transmitirMensaje(); };
+    </script>
+</body>
+</html>
