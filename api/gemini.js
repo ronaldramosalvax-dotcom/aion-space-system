@@ -21,7 +21,9 @@ export default async function handler(req, res) {
         }); // <-- AQUÍ SE CERRABA EL fetch
 
         const data = await googleResponse.json();
-        return res.status(200).json(data);
+        const textoLimpio = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error al decodificar la transmisión en el servidor.";
+        return res.status(200).json({ text: textoLimpio });
+
         
     } catch (error) {
         console.error("Error en backend:", error);
