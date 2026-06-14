@@ -62,7 +62,7 @@
         <div class="sidebar" id="side-bar">
             <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
             <div class="timer-controls">
-                <div class="timer-display" id="t-display">05s</div>
+                <div class="timer-display" id="t-display">03s</div>
                 <button class="btn-stop" id="s-button">STOP</button>
             </div>
         </div>
@@ -140,7 +140,7 @@
             }
         ];
 
-        let index = 0; let score = 0; let clock = null; let count = 5; let paused = false; let viewRes = false;
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
 
         const pTitle = document.getElementById('p-title');
         const pText = document.getElementById('p-text');
@@ -152,7 +152,7 @@
         const sButton = document.getElementById('s-button');
 
         function render() {
-            paused = false; viewRes = false; count = 5;
+            paused = false; viewRes = false; count = 3;
             clearInterval(clock);
             resBox.style.display = 'none';
             tDisplay.style.visibility = 'hidden';
