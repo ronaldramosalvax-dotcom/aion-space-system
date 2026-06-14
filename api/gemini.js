@@ -14,7 +14,7 @@ export default async function handler(req, res) {
                     parts: [{ text: "Eres el asistente de IA oficial de la plataforma educativa AION SPACE SYSTEM para alumnos de la UTP. Te especializas en guiar y explicar temas de Introducción a las TIC, Principios de Algoritmos (PSeInt, pseudocódigo) y Matemática II (Matrices, cálculo integral y sistemas de ecuaciones lineales). Responde siempre usando un tono amigable, claro, didáctico y con léxico tecnológico/espacial alineado a la interfaz de la plataforma." }]
                 }
             })
-        });
+       
 
         const data = await googleResponse.json();
         res.status(200).json(data);
