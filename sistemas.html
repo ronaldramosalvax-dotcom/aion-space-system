@@ -15,7 +15,8 @@
         .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
         .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
         .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
-        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
         .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
         .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
         .option-text { font-size: 16px; color: #333333; }
@@ -168,15 +169,19 @@
             pText.textContent = item.t;
             resText.innerHTML = item.r;
 
-            optionsBox.innerHTML = '';
-            item.o.forEach((txt, i) => {
+                        optionsBox.innerHTML = '';
+                item.o.forEach((txt, i) => {
+                const partes = txt.split(') '); 
+                const letra = partes[0] ? partes[0].replace('(', '').trim() : ''; 
+                const formula = partes[1] ? partes[1].trim() : txt; 
+
+
                 const li = document.createElement('li');
                 li.className = 'option-item';
-                li.innerHTML = `<div class="checkbox-anchor"></div><div class="option-text">${txt}</div>`;
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
                 li.onclick = () => evaluate(i, item.c);
                 optionsBox.appendChild(li);
             });
-        }
 
         function evaluate(chosen, correct) {
             optionsBox.classList.add('disabled');
