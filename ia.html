@@ -181,7 +181,15 @@
 
 
                 // Inyectamos la respuesta final procesada
-                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${textoRespuesta}`;
+
+                            // Formateador dinámico: Convierte saltos de línea y negritas de Markdown a HTML limpio
+            let textoFormateado = textoRespuesta
+                .replace(/\n/g, "<br>")
+                .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+                .replace(/`(.*?)`/g, "<code style='background: #202225; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #00ff88;'>$1</code>");
+                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${textoFormateado}`;
+
+
                 chatStream.scrollTop = chatStream.scrollHeight;
                 if (window.MathJax) { window.MathJax.typesetPromise(); }
 
