@@ -169,12 +169,12 @@
             pText.textContent = item.t;
             resText.innerHTML = item.r;
 
-                        optionsBox.innerHTML = '';
+                optionsBox.innerHTML = '';
+            
                 item.o.forEach((txt, i) => {
                 const partes = txt.split(') '); 
-                const letra = partes[0] ? partes[0].replace('(', '').trim() : ''; 
+                const letra = partes[0] ? partes[0].trim() : ''; 
                 const formula = partes[1] ? partes[1].trim() : txt; 
-
 
                 const li = document.createElement('li');
                 li.className = 'option-item';
