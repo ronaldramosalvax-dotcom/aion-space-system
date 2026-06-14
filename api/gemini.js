@@ -20,8 +20,13 @@ export default async function handler(req, res) {
             }) // <-- AQUÍ SE CERRABA EL JSON.stringify
         }); // <-- AQUÍ SE CERRABA EL fetch
 
-        const data = await googleResponse.json();
-        const textoLimpio = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error al decodificar la transmisión en el servidor.";
+               const data = await googleResponse.json();
+        
+        if (data.error) {
+            return res.status(200).json({ text: `🚨 Error de Gemini API: ${data.error.message}` });
+        }
+        
+        const textoLimpio = data.candidates?.[0]?.content?.parts?.[0]?.text || "Error: Estructura de respuesta desconocida.";
         return res.status(200).json({ text: textoLimpio });
 
         
