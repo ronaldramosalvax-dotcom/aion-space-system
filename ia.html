@@ -125,16 +125,20 @@
     </div>
 
     <!-- Integración con la API Central de Gemini -->
-    <script type="module">
-        import { GoogleGenAI } from 'https://esm.run';
-
-        // Introduce tu API Key gratuita generada en Google AI Studio
-        const ai = new GoogleGenAI({ apiKey: 'AIzaSyBKYsZ9n66btcAAwnv0KEIttAqIwNnc9FU' });
-        
+       <script src="https://unpkg.com"></script>
+    <script>
         const chatStream = document.getElementById('chat-stream');
         const promptInput = document.getElementById('prompt-input');
         const sendPrompt = document.getElementById('send-prompt');
         const aiGreeting = document.getElementById('ai-greeting');
+
+        // Configuración oficial con la librería clásica
+        const aiFactory = window.GenerativeAI;
+        const aiConfig = aiFactory.initialize({ apiKey: 'AIzaSyBKYsZ9n66btcAAwnv0KEIttAqIwNnc9FU' });
+        const model = aiConfig.getGenerativeModel({ 
+            model: 'gemini-pro',
+            systemInstruction: "Eres el asistente de IA oficial de la plataforma educativa AION SPACE SYSTEM para alumnos de la UTP. Te especializas en guiar y explicar temas de Introducción a las TIC, Principios de Algoritmos (PSeInt, pseudocódigo) y Matemática II (Matrices, cálculo integral y sistemas de ecuaciones lineales). Responde siempre usando un tono amigable, claro, didáctico y con léxico tecnológico/espacial alineado a la interfaz de la plataforma."
+        });
 
         // Extraemos el perfil guardado en el index para personalizar el saludo
         let sesion = localStorage.getItem("cuenta_aion_instalada");
@@ -160,16 +164,12 @@
             chatStream.scrollTop = chatStream.scrollHeight;
 
             try {
-                const response = await ai.models.generateContent({
-                    model: 'gemini-2.5-flash',
-                    contents: query,
-                    config: {
-                        systemInstruction: "Eres el asistente de IA oficial de la plataforma educativa AION SPACE SYSTEM para alumnos de la UTP. Te especializas en guiar y explicar temas de Introducción a las TIC, Principios de Algoritmos (PSeInt, pseudocódigo) y Matemática II (Matrices, cálculo integral y sistemas de ecuaciones lineales). Responde siempre usando un tono amigable, claro, didáctico y con léxico tecnológico/espacial alineado a la interfaz de la plataforma."
-                    }
-                });
+                // Llamada clásica de generación de contenido
+                const result = await model.generateContent(query);
+                const response = await result.response;
 
                 // Inyectamos la respuesta final procesada
-                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${response.text}`;
+                document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${response.text()}`;
                 chatStream.scrollTop = chatStream.scrollHeight;
 
             } catch (error) {
