@@ -103,6 +103,9 @@
         }
         .btn-back:hover { color: white; background: rgba(255,255,255,0.08); border-color: #404eed; }
     </style>
+        <script src="https://polyfill.io"></script>
+    <script id="MathJax-script" async src="https://jsdelivr.net"></script>
+
 </head>
 <body>
 
@@ -180,6 +183,8 @@
                 // Inyectamos la respuesta final procesada
                 document.getElementById(aiResponseId).innerHTML = `<b>AION IA:</b> ${textoRespuesta}`;
                 chatStream.scrollTop = chatStream.scrollHeight;
+                if (window.MathJax) { window.MathJax.typesetPromise(); }
+
 
             } catch (error) {
                 console.error("Falla en el canal de datos de la IA:", error);
