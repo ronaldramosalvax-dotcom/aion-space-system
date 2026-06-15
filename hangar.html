@@ -695,7 +695,10 @@ const BASE_DATOS_RETO = {
                 el.style = "display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;";
             });
 
-            posicionScriptY = document.getElementById("aion-consola-desplazable").clientHeight - 40;
+                        // 🎯 El código ahora inicia exactamente en la mitad de la pantalla
+            const alturaConsola = document.getElementById("aion-consola-desplazable").clientHeight;
+            posicionScriptY = (alturaConsola / 2) - 50;
+
             
             document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | DESAFÍO Lvl ${nivelMaximoAlcanzado}`;
             document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ | PUNTOS: 0`;
