@@ -481,7 +481,32 @@ if (primeraLinea) primeraLinea.focus();
         // =========================================================================
         
         const marcoGrisMonitor = document.getElementById("contenedor-apuntes-hangar").parentElement;
-        
+                // 🛰️ INTERFAZ FLOTANTE: Cartel de Resultados Tácticos (Victoria/Derrota)
+        const divCartelResultado = document.createElement("div");
+        divCartelResultado.id = "aion-cartel-resultado";
+        divCartelResultado.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; background: #000000; border: 3px solid #404eed; border-radius: 8px; padding: 20px; text-align: center; font-family: monospace; display: none; flex-direction: column; gap: 15px; box-shadow: 0 0 30px rgba(64, 78, 237, 0.4); z-index: 10000;";
+        divCartelResultado.innerHTML = `
+            <h2 id="cartel-titulo" style="font-size: 1.5rem; letter-spacing: 1px;">-</h2>
+            <p id="cartel-mensaje" style="color: #cccccc; font-size: 13px; line-height: 1.4;"></p>
+            <div style="background: #111622; padding: 10px; border-radius: 4px; border: 1px solid #222;">
+                <span style="color: #72767d; font-size: 11px;">REQUISICIÓN DE PUNTOS</span>
+                <div id="cartel-puntos" style="font-size: 1.8rem; font-weight: bold; color: #ffffff; margin-top: 5px;">000</div>
+            </div>
+            <button id="btn-cerrar-cartel" style="background: #404eed; color: white; border: none; padding: 10px; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: monospace; transition: background 0.1s;">
+                ACEPTAR TRANSMISIÓN
+            </button>
+        `;
+        // Insertarlo dentro del monitor para que quede perfectamente posicionado
+        if (marcoGrisMonitor) {
+            marcoGrisMonitor.style.position = "relative"; // Asegurar el eje de coordenadas
+            marcoGrisMonitor.appendChild(divCartelResultado);
+        }
+
+        // Programar el botón para cerrar el cartel de forma limpia
+        document.getElementById("btn-cerrar-cartel").onclick = function() {
+            document.getElementById("aion-cartel-resultado").style.display = "none";
+        };
+
         const divEstructuraJuego = document.createElement("div");
         divEstructuraJuego.style.width = "100%";
         divEstructuraJuego.innerHTML = `
@@ -762,11 +787,33 @@ const BASE_DATOS_RETO = {
             finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
         };
 
-        function finalizarSistemaJuego(victoria, mensajeResultado) {
+                function finalizarSistemaJuego(victoria, mensajeResultado) {
             gameCorriendo = false;
             cancelAnimationFrame(animacionFrameId);
             
-            alert(`${victoria ? '🔓 SISTEMA EN LÍNEA' : '🔒 INTRUSIÓN DETENIDA'}\n\n${mensajeResultado}\nPuntaje de Partida: ${gamePuntos} Puntos.`);
+            // 📡 ACTIVAR CARTEL DIGITAL EN LUGAR DE ALERT
+            const cartel = document.getElementById("aion-cartel-resultado");
+            const cTitulo = document.getElementById("cartel-titulo");
+            const cMensaje = document.getElementById("cartel-mensaje");
+            const cPuntos = document.getElementById("cartel-puntos");
+
+            if (cartel && cTitulo && cMensaje && cPuntos) {
+                // Configurar colores y textos según el resultado del piloto
+                if (victoria) {
+                    cartel.style.borderColor = "#00ff88"; // Borde verde
+                    cTitulo.innerText = "🔓 SISTEMA EN LÍNEA";
+                    cTitulo.style.color = "#00ff88";
+                } else {
+                    cartel.style.borderColor = "#ef4444"; // Borde rojo
+                    cTitulo.innerText = "🔒 INTRUSIÓN DETENIDA";
+                    cTitulo.style.color = "#ef4444";
+                }
+                cMensaje.innerText = mensajeResultado;
+                cPuntos.innerText = `${gamePuntos} PTS`;
+                
+                // Mostrar el cartel en pantalla
+                cartel.style.display = "flex";
+            }
 
             const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
             if (cuentaLocal) {
@@ -778,18 +825,22 @@ const BASE_DATOS_RETO = {
                 localStorage.setItem(llaveHistorialAlumno, JSON.stringify(historialPartidas));
             }
 
+            // Regresar el tablero a su estado base
             document.getElementById("aion-game-tablero-activo").style.display = "none";
             document.getElementById("contenedor-apuntes-hangar").style.display = "grid";
             document.getElementById("aion-game-menu-inicio").style.display = "flex";
 
             for (let i = 0; i < 3; i++) {
                 const gap = document.getElementById(`gap-${i}`);
-                gap.innerText = "____";
-                gap.style.backgroundColor = "#ffffff";
-                gap.style.color = "#000000";
-                gap.style.borderColor = "#000000";
+                if (gap) {
+                    gap.innerText = "____";
+                    gap.style.backgroundColor = "#ffffff";
+                    gap.style.color = "#000000";
+                    gap.style.borderColor = "#000000";
+                }
             }
         }
+
     </script>
 </body>
 </html>
