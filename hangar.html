@@ -577,98 +577,98 @@ if (primeraLinea) primeraLinea.focus();
             { texto: "return" }
         ];
 
-       // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN (NIVELES 1 AL 3)
-   const BASE_DATOS_RETO = {
-                   1: {
-        titulo: "# MASTER INTERFACE DEPLOY: Arquitectura HTML5 / CSS3 de 10 Oleadas",
+              // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN: PRODUCCIÓN AMAZON WEB PLATFORM
+       const BASE_DATOS_RETO = {
+           1: {
+        titulo: "# PRODUCTION DEPLOY: Arquitectura Base del Core Global de Amazon.com",
         lineas: [
             '# =======================================================',
-            '# OLEADA 01: DOCUMENTO BASE Y ESQUELETO DE RED',
+            '# OLEADA 01: DOCUMENTO MAESTRO DEL PORTAL DE VENTAS',
             '# =======================================================',
             '&lt;!DOCTYPE <span id="gap-0" class="game-gap">____</span>&gt;',
             '&lt;html lang="es"&gt;',
             '&lt;head&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="<span id="gap-1" class="game-gap">____</span>"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;AION SPACE SYSTEM | Hangar&lt;/title&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Amazon.com | Compra Online de Electrónicos, Ropa y más&lt;/title&gt;',
             '&lt;/head&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 02: ENTORNO DEL MONITOR CENTRAL DEL INTERIOR',
+            '# OLEADA 02: RENDERIZADO DEL CONTENEDOR PRINCIPAL DE PRODUCTOS',
             '# =======================================================',
-            '&lt;body style="background-color: #060913;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Monitor central de comandos del hangar --&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="editor-box" style="width: 100%; max-width: 950px;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Cargando terminal de red central...&lt;/p&gt;',
+            '&lt;body style="background-color: #eaeded;"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Grid principal para las ofertas del día de Amazon --&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="main-catalog-box" style="width: 100%; max-width: 1500px;"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Cargando recomendaciones personalizadas...&lt;/p&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-2" class="game-gap">____</span>&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 03: BARRA SUPERIOR DE COMANDOS (NAVBAR)',
+            '# OLEADA 03: BARRA DE NAVEGACIÓN SUPERIOR (AMAZON NAVBAR)',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;header class="top-navbar" style="display: <span id="gap-3" class="game-gap">____</span>;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="btn-regresar"&gt;VOLVER AL PANEL&lt;/button&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;header class="nav-belt" style="display: <span id="gap-3" class="game-gap">____</span>;"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="nav-logo"&gt;AMAZON LOGO&lt;/button&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div style="display: flex; align-items: center;"&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 04: IDENTIDAD EN RED Y AVATAR DEL PILOTO',
+            '# OLEADA 04: ICONO INTERACTIVO DEL CARRITO DE COMPRAS',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="txt-piloto-game"&gt;ANALIZANDO FIRMA...&lt;/span&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-4" class="game-gap">____</span> id="avatar-nav-bar" src="logo.png"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="nav-cart-count"&gt;CARRITO (0 ARTÍCULOS)...&lt;/span&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-4" class="game-gap">____</span> id="cart-icon" src="amazon-cart.png"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 05: TEXTOS PRINCIPALES Y MONITOREO UTP',
+            '# OLEADA 05: SECCIÓN DE COMPRAS DEL AMAZON PRIME DAY',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;main id="hangar-container"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="hangar-title"&gt;CUADRANTE TÁCTICO DE TRABAJO&lt;/h1&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Grid dinámico para inyectar apuntes de la UTP --&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;main id="prime-container"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="prime-title"&gt;OFERTAS EXCLUSIVAS DEL PRIME DAY&lt;/h1&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Inyección asíncrona de las tarjetas de productos --&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 06: CUADRÍCULA DE LOS 30 CUADERNOS DE ALUMNOS',
+            '# OLEADA 06: CUADRÍCULA DE TARJETAS DE ARTÍCULOS DESTACADOS',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section id="contenedor-apuntes-hangar"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="mini-hoja-apunte"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="titulo-hoja-mini"&gt;<span id="gap-5" class="game-gap">____</span> Linear&lt;/span&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section id="products-grid-layout"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="product-card-item"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="product-title"&gt;<span id="gap-5" class="game-gap">____</span> Inalámbricos&lt;/span&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-6" class="game-gap">____</span>&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Progreso del alumno: <span id="gap-7" class="game-gap">____</span> de 30 avanzados.&lt;/p&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-6" class="game-gap">____</span>&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Progreso de carga: Módulo de <span id="gap-7" class="game-gap">____</span> Completo.&lt;/p&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/main&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 07: ESTILOS CRÍTICOS CSS Y COLORES DE FIRMA',
+            '# OLEADA 07: ESTILOS CSS E IDENTIDAD CORPORATIVA (AMAZON ORANGE)',
             '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-8" class="game-gap">____</span>&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.mini-hoja-apunte {',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #111622;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: 2px solid <span id="gap-9" class="game-gap">____</span>;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item {',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #ffffff;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: 1px solid <span id="gap-9" class="game-gap">____</span>;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 08: DINÁMICA DE HOVER Y SOMBRAS CUÁNTICAS',
+            '# OLEADA 08: DINÁMICA DE HOVER DE COMPRA RÁPIDA "BUY NOW"',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 6px;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 4px;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: transform <span id="gap-10" class="game-gap">____</span>s ease;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.mini-hoja-apunte:hover {',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: scale(1.05);',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 0 15px <span id="gap-11" class="game-gap">____</span>;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item:hover {',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: scale(1.02);',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 4px 12px <span id="gap-11" class="game-gap">____</span>;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 09: INTERFAZ DEL CARTEL FLOTANTE OCULTO',
+            '# OLEADA 09: VENTANA DE CONFIRMACIÓN DE ENVÍO PRIME EXPRÉS',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Modal oculto de requisición de puntos central --&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="aion-cartel-resultado" style="display: <span id="gap-12" class="game-gap">____</span>;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 id="cartel-titulo"&gt;SISTEMA EN LÍNEA&lt;/h2&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p id="cartel-mensaje"&gt;Transmisión exitosa del script.&lt;/p&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Modal de pasarela de pago y Checkout --&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="checkout-status-panel" style="display: <span id="gap-12" class="game-gap">____</span>;"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 id="cartel-titulo"&gt;ORDEN PROCESADA&lt;/h2&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p id="cartel-mensaje"&gt;Tu paquete de Amazon va en camino.&lt;/p&gt;',
             '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 10: CONFIRMACIÓN Y CIERRE DE RED',
+            '# OLEADA 10: MONEDERO DIGITAL Y CIERRE DE TRANSACCIÓN',
             '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="puntos-contenedor"&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="total-container"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="cartel-puntos"&gt;000 <span id="gap-13" class="game-gap">____</span>&lt;/span&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button id="btn-cerrar-cartel"&gt;<span id="gap-14" class="game-gap">____</span> TRANSMISIÓN&lt;/button&gt;',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button id="btn-cerrar-cartel"&gt;<span id="gap-14" class="game-gap">____</span> ORDEN&lt;/button&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;'
@@ -676,73 +676,59 @@ if (primeraLinea) primeraLinea.focus();
         respuestas: {
             0: 'html', 1: 'UTF-8', 2: 'div',
             3: 'flex', 4: 'img',
-            5: 'Sistema', 6: 'section', 7: 'Nivel',
-            8: 'style', 9: '#404eed', 10: '0.2', 11: 'rgba(64,78,237,0.4)',
-            12: 'none', 13: 'PTS', 14: 'ACEPTAR'
+            5: 'Audífonos', 6: 'section', 7: 'Pagos',
+            8: 'style', 9: '#ff9900', 10: '0.2', 11: 'rgba(0,0,0,0.15)',
+            12: 'none', 13: 'USD', 14: 'FINALIZAR'
         },
-        // Mapeo dinámico de alternativas separadas de 3 en 3 por oleada
         bloquesAlternativas: {
-            0: ['html', 'UTF-8', 'div', 'doctype', 'body'],               // Oleada 1
-            1: ['html', 'UTF-8', 'div', 'doctype', 'body'],               // Oleada 2
-            2: ['flex', 'img', 'nav', 'header', 'src'],                   // Oleada 3
-            3: ['flex', 'img', 'nav', 'header', 'src'],                   // Oleada 4
-            4: ['Sistema', 'section', 'Nivel', 'main', 'span'],           // Oleada 5
-            5: ['Sistema', 'section', 'Nivel', 'main', 'span'],           // Oleada 6
-            6: ['style', '#404eed', '0.2', 'rgba(64,78,237,0.4)', 'css'], // Oleada 7
-            7: ['style', '#404eed', '0.2', 'rgba(64,78,237,0.4)', 'css'], // Oleada 8
-            8: ['none', 'PTS', 'ACEPTAR', 'flex', 'block'],               // Oleada 9
-            9: ['none', 'PTS', 'ACEPTAR', 'flex', 'block']                // Oleada 10
+            0: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
+            1: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
+            2: ['flex', 'img', 'nav', 'header', 'src'],                   
+            3: ['flex', 'img', 'nav', 'header', 'src'],                   
+            4: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
+            5: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
+            6: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
+            7: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
+            8: ['none', 'USD', 'FINALIZAR', 'flex', 'block'],               
+            9: ['none', 'USD', 'FINALIZAR', 'flex', 'block']                
         },
-        velocidad: 1.50, 
         totalGaps: 15
     },
-
-
-
     2: {
-        titulo: "# Desafío 2: Control de Matrices y Listas en Python",
+        titulo: "# DESAFÍO 2: Control de Inventario Automatizado (Python Backend Amazon)",
         lineas: [
-            '# Declarar matriz identidad de 2x2',
-            'matriz_utp = [,]',
+            '# Registrar existencias en servidores de AWS',
+            'stock_amazon = [,]',
             '<br>',
-            '# Iterar sobre las filas de la matriz',
-            '<span id="gap-0" class="game-gap">____</span> fila in matriz_utp:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;for elemento in fila:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if elemento == <span id="gap-1" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Diagonal principal activada")',
+            '# Filtrar productos con inventario crítico',
+            '<span id="gap-0" class="game-gap">____</span> producto in stock_amazon:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;for item in producto:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if item == <span id="gap-1" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Alerta: Stock insuficiente en almacén")',
             '<br>',
-            '# Agregar un nuevo cuadrante al hangar',
-            'matriz_utp.<span id="gap-2" class="game-gap">____</span>()'
+            '# Adicionar nuevo lote de distribución',
+            'stock_amazon.<span id="gap-2" class="game-gap">____</span>()'
         ],
-        respuestas: {
-            0: 'for',
-            1: '1',
-            2: 'append'
-        },
+        respuestas: { 0: 'for', 1: '0', 2: 'append' },
         alternativas: ['for', 'while', '1', '0', 'append'],
-        velocidad: 1.85,
         totalGaps: 3
     },
     3: {
-        titulo: "# Desafío 3: Manejo de Excepciones de Red",
+        titulo: "# DESAFÍO 3: Gestión de Excepciones en Pasarela de Pago Stripe / Amazon Pay",
         lineas: [
-            '# Capturar caídas en el enlace de datos',
+            '# Validar cargos a tarjetas de crédito de clientes',
             '<span id="gap-0" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;conectar_servidor_firebase()',
-            '<span id="gap-1" class="game-gap">____</span> Exception as e:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;print("Enlace roto, reintentando...")',
+            '&nbsp;&nbsp;&nbsp;&nbsp;procesar_cargo_bancario()',
+            '<span id="gap-1" class="game-gap">____</span> FondosInsuficientes as e:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Pago rechazado, notificando al comprador...")',
             '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-2" class="game-gap">____</span>'
         ],
-        respuestas: {
-            0: 'try',
-            1: 'except',
-            2: 'pass'
-        },
+        respuestas: { 0: 'try', 1: 'except', 2: 'pass' },
         alternativas: ['try', 'except', 'pass', 'catch', 'finally'],
-        velocidad: 2.30,
         totalGaps: 3
     }
 };
+
 
                 // Asegúrate de que esta variable esté declarada con el valor = 1
         let nivelMaximoAlcanzado = 1; 
@@ -810,8 +796,23 @@ if (primeraLinea) primeraLinea.focus();
 
             // Seguro táctico de velocidad mínima
             if (velocidadDesplazamiento < 0.15) velocidadDesplazamiento = 0.25;
+                        // --- CRONÓMETRO DIGITAL INTEGRADO DE AMAZON ---
+            let tiempoRestanteSegundos = 90;
+            window.intervaloRelojGlobal = setInterval(() => {
+                if (tiempoRestanteSegundos > 0 && gameCorriendo) {
+                    tiempoRestanteSegundos--;
+                    const min = String(Math.floor(tiempoRestanteSegundos / 60)).padStart(2, '0');
+                    const seg = String(tiempoRestanteSegundos % 60).padStart(2, '0');
+                    const txtReloj = document.getElementById("txt-reloj-amazon");
+                    if (txtReloj) txtReloj.innerText = `⏳ TIEMPO: ${min}:${seg}`;
+                } else {
+                    clearInterval(window.intervaloRelojGlobal);
+                }
+            }, 1000);
 
-            document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | DESAFÍO Lvl ${nivelMaximoAlcanzado}`;
+            document.getElementById("txt-piloto-game").innerHTML = `💻 SERVER: Amazon AWS Deploy | <span id="txt-reloj-amazon">⏳ TIEMPO: 01:30</span>`;
+
+            
             document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ ❤️ ❤️ ❤️ | PUNTOS: 0`;
             
             const primerGap = document.getElementById("gap-0");
@@ -897,16 +898,17 @@ if (primeraLinea) primeraLinea.focus();
                 gamePuntos += 250;
                 gapActivoId++;
 
-                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS OLEADAS CONTINUAS
-                if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 1; cargarSetAlternativasInferior(); } 
-                else if (gapActivoId === 3 && window.bloqueActualId === 1) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 3; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 6 && window.bloqueActualId === 3) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 8 && window.bloqueActualId === 4) { window.bloqueActualId = 5; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 9 && window.bloqueActualId === 5) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 11 && window.bloqueActualId === 6) { window.bloqueActualId = 7; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 12 && window.bloqueActualId === 7) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
-                else if (gapActivoId === 14 && window.bloqueActualId === 8) { window.bloqueActualId = 9; cargarSetAlternativasInferior(); }
+                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS OLEADAS CONTINUAS DE AMAZON
+if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 1; cargarSetAlternativasInferior(); } 
+else if (gapActivoId === 3 && window.bloqueActualId === 1) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 3; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 6 && window.bloqueActualId === 3) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 8 && window.bloqueActualId === 4) { window.bloqueActualId = 5; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 9 && window.bloqueActualId === 5) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 11 && window.bloqueActualId === 6) { window.bloqueActualId = 7; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 12 && window.bloqueActualId === 7) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
+else if (gapActivoId === 14 && window.bloqueActualId === 8) { window.bloqueActualId = 9; cargarSetAlternativasInferior(); }
+
 
                 // Actualizar letrero superior dinámico según el bloque de oleada actual
                 const numOleadaTexto = String(window.bloqueActualId + 1).padStart(2, '0');
@@ -942,6 +944,8 @@ if (primeraLinea) primeraLinea.focus();
         };
 
         function finalizarSistemaJuego(victoria, mensajeResultado) {
+            clearInterval(window.intervaloRelojGlobal);
+
     // 🔇 DESVANECIMIENTO SUAVE DE AUDIO (FADE-OUT SINCRONIZADO)
     if (audioHangarJuego) {
         let intervaloFade = setInterval(() => {
