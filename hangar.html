@@ -859,7 +859,7 @@ if (primeraLinea) primeraLinea.focus();
             }
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
-                function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+                    function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
             const txtVidas = document.getElementById("txt-vidas-game");
@@ -891,34 +891,26 @@ if (primeraLinea) primeraLinea.focus();
                 gamePuntos += 250;
                 gapActivoId++;
 
-                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS 5 OLEADAS CONTINUAS
-                if (gapActivoId === 5 && window.bloqueActualId === 0) {
-                    window.bloqueActualId = 1;
-                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 02`;
-                    cargarSetAlternativasInferior();
-                } 
-                else if (gapActivoId === 10 && window.bloqueActualId === 1) {
-                    window.bloqueActualId = 2;
-                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 03`;
-                    cargarSetAlternativasInferior();
-                }
-                else if (gapActivoId === 15 && window.bloqueActualId === 2) {
-                    window.bloqueActualId = 3;
-                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 04`;
-                    cargarSetAlternativasInferior();
-                }
-                else if (gapActivoId === 20 && window.bloqueActualId === 3) {
-                    window.bloqueActualId = 4;
-                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 05`;
-                    cargarSetAlternativasInferior();
-                }
+                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS 10 OLEADAS CONTINUAS
+                if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 1; cargarSetAlternativasInferior(); } 
+                else if (gapActivoId === 3 && window.bloqueActualId === 1) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 3; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 6 && window.bloqueActualId === 3) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 8 && window.bloqueActualId === 4) { window.bloqueActualId = 5; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 9 && window.bloqueActualId === 5) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 11 && window.bloqueActualId === 6) { window.bloqueActualId = 7; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 12 && window.bloqueActualId === 7) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 14 && window.bloqueActualId === 8) { window.bloqueActualId = 9; cargarSetAlternativasInferior(); }
 
-                // Evaluar si se completó la oleada final (Pregunta 25)
+                // Actualizar letrero superior dinámico según el bloque de oleada actual
+                const numOleadaTexto = String(window.bloqueActualId + 1).padStart(2, '0');
+                if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA ${numOleadaTexto}`;
+
                 if (gapActivoId < window.gapsTotalesNivel) {
                     const proxGap = document.getElementById(`gap-${gapActivoId}`);
                     if (proxGap) proxGap.style.borderColor = "#ffaa00";
                 } else {
-                    finalizarSistemaJuego(true, "¡Script Omega compilado con éxito! Se restauró el control absoluto del hangar.");
+                    finalizarSistemaJuego(true, "¡Script maestro compilado con éxito! Se restauró el control de red.");
                 }
             } else {
                 gameVidas--;
