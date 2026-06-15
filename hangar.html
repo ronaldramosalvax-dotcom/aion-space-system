@@ -200,9 +200,6 @@
     </div>
 </div>
 
-
-
-
     <!-- VENTANA EMERGENTE DE TU WORD -->
     <div id="modal-perfil-flotante" class="modal-fondo-oscuro">
         <div class="modal-perfil-caja">
@@ -503,9 +500,8 @@ if (primeraLinea) primeraLinea.focus();
             }
             contenedorApuntes.appendChild(fragment);
         }
-
-        // Lógica de guardado al presionar el botón rojo
-               btnCerrarDoc.onclick = function() {
+  // Lógica de guardado al presionar el botón rojo de Word
+        btnCerrarDoc.onclick = function() {
             if (apunteActivoId) {
                 const datosRenglones = {};
                 for (let f = 1; f <= TOTAL_RENGI; f++) {
@@ -519,12 +515,224 @@ if (primeraLinea) primeraLinea.focus();
                 localStorage.setItem('aion_word_notes', JSON.stringify(baseDatosApuntes));
             }
             contenedorApuntes.style.display = 'grid';
+            document.getElementById("aion-game-menu-inicio").style.display = 'flex';
             barraHerramientas.style.display = 'none';
             visorHojaWord.style.display = 'none';
             apunteActivoId = null;
         };
 
         generarEstante();
+
+
+        // =========================================================================
+        // 🎮 INTERFAZ INTEGRADA DEL JUEGO: SCRIPT CONTINUO (ESTILO WORD / EDUCAPLAY)
+        // =========================================================================
+        
+        const marcoGrisMonitor = document.getElementById("contenedor-apuntes-hangar").parentElement;
+        
+        const divEstructuraJuego = document.createElement("div");
+        divEstructuraJuego.style.width = "100%";
+        divEstructuraJuego.innerHTML = `
+            <!-- ESTADO 1: CUADRADO GRIS CENTRAL DEL MENU -->
+            <div id="aion-game-menu-inicio" style="width: 100%; min-height: 40vh; display: flex; justify-content: center; align-items: center; background: #000000; padding: 20px 0;">
+                <div id="btn-disparar-nivel1" style="width: 200px; height: 200px; background-color: #a6a6a6; border: 2px solid #ffffff; color: #ffffff; font-family: monospace; font-size: 1.8rem; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: transform 0.2s;">
+                    Nivel 1
+                </div>
+            </div>
+
+            <!-- ESTADO 2: TABLERO INTERACTIVO EN VIVO DEL JUEGO -->
+            <div id="aion-game-tablero-activo" style="display: none; width: 100%; max-width: 850px; height: 420px; background-color: #7f7f7f; border: 2px solid #000; position: relative; margin: 0 auto; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div style="background: #0c0d12; color: #00ff88; font-family: monospace; padding: 8px 20px; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 2px solid #1f2937; user-select:none;">
+                    <span id="txt-piloto-game">PILOTO: ANALIZANDO FIRMA...</span>
+                    <span id="txt-vidas-game">INTENTOS: ❤️ ❤️ | PUNTOS: 0</span>
+                </div>
+                
+                <button id="btn-abandonar-nivel" style="position: absolute; top: 38px; right: 15px; background: #ef4444; color: white; border: 1px solid #000; padding: 3px 9px; font-weight: bold; font-family: monospace; cursor: pointer; z-index: 100; font-size: 12px; border-radius:3px;">❌</button>
+                
+                <div id="aion-consola-desplazable" style="flex: 1; position: relative; overflow: hidden; padding: 25px 40px; background-color: #7f7f7f;">
+                    <div id="aion-bloque-movil-script" style="position: absolute; left: 10%; width: 80%; font-size: 1.35rem; color: #ffffff; line-height: 2.5rem; font-family: monospace; pointer-events: none;">
+                        <p style="color: #444444; font-weight: bold;"># Script de Inicialización de Red AION UTP</p>
+                        <p>def iniciar_sistema_hangar():</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;servidor = <span id="gap-0" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span></p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;print("Escaneando firmas cuánticas...")</p>
+                        <br>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;if servidor == "ONLINE":</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span>("Acceso de Alumno Concedido")</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;else:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Fallo de infraestructura")</p>
+                        <br>
+                        <p># Rutina central del Hangar</p>
+                        <p>if __name__ == <span id="gap-2" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span>:</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;iniciar_sistema_hangar()</p>
+                    </div>
+                </div>
+
+                <div style="height: 70px; background-color: #1a1a1a; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 6px;">
+                    <button class="caja-blanca-opc" id="g-opt-0" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
+                    <button class="caja-blanca-opc" id="g-opt-1" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
+                    <button class="caja-blanca-opc" id="g-opt-2" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
+                    <button class="caja-blanca-opc" id="g-opt-3" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
+                    <button class="caja-blanca-opc" id="g-opt-4" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
+                </div>
+            </div>
+        `;
+        marcoGrisMonitor.appendChild(divEstructuraJuego);
+
+        const RESPUESTAS_NIVEL = {
+            0: { palabra: '"ONLINE"' },
+            1: { palabra: "print" },
+            2: { palabra: '"__main__"' }
+        };
+
+        const ALTERNATIVAS_DEL_JUEGO = [
+            { texto: '"ONLINE"' },
+            { texto: "print" },
+            { texto: "input" },
+            { texto: '"__main__"' },
+            { texto: "return" }
+        ];
+
+        let gamePuntos = 0;
+        let gameVidas = 2; 
+        let gapActivoId = 0;
+        let gameCorriendo = false;
+        let posicionScriptY = 320;
+        let velocidadDesplazamiento = 0.45; 
+        let animacionFrameId = null;
+
+        const btnNivel1 = document.getElementById("btn-disparar-nivel1");
+        btnNivel1.onmouseover = function() { this.style.transform = "scale(1.03)"; this.style.backgroundColor = "#b3b3b3"; };
+        btnNivel1.onmouseout = function() { this.style.transform = "scale(1)"; this.style.backgroundColor = "#a6a6a6"; };
+
+        btnNivel1.onclick = function() {
+            document.getElementById("contenedor-apuntes-hangar").style.display = "none";
+            document.getElementById("aion-game-menu-inicio").style.display = "none";
+            
+            const tableroJuego = document.getElementById("aion-game-tablero-activo");
+            tableroJuego.style.display = "flex";
+            
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+            let nombrePiloto = "Piloto";
+            let codigoPiloto = "#0000";
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                nombrePiloto = perfil.nombre || nombrePiloto;
+                codigoPiloto = perfil.codigo || codigoPiloto;
+            }
+
+            gameCorriendo = true;
+            gapActivoId = 0;
+            gameVidas = 2;
+            gamePuntos = 0;
+            
+            posicionScriptY = document.getElementById("aion-consola-desplazable").clientHeight - 40;
+            
+            document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto}`;
+            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ | PUNTOS: 0`;
+            document.getElementById("gap-0").style.borderColor = "#ffaa00"; 
+
+            ALTERNATIVAS_DEL_JUEGO.forEach((alt, idx) => {
+                const btnCaja = document.getElementById(`g-opt-${idx}`);
+                btnCaja.innerText = alt.texto;
+                btnCaja.style.opacity = "1";
+                btnCaja.style.backgroundColor = "#ffffff";
+                btnCaja.style.pointerEvents = "auto";
+                
+                btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
+                btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
+                
+                btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${idx}`); };
+            });
+
+            bucleMovimientoUniforme();
+        };
+
+        function bucleMovimientoUniforme() {
+            if (!gameCorriendo) return;
+
+            posicionScriptY -= velocidadDesplazamiento;
+            const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+            
+            if (bloqueMovil) {
+                bloqueMovil.style.top = posicionScriptY + 'px';
+
+                if (posicionScriptY < -bloqueMovil.clientHeight) {
+                    finalizarSistemaJuego(false, "El tiempo expiró. El script superó el límite superior del monitor.");
+                }
+            }
+            animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
+        }
+
+        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+            if (!gameCorriendo) return;
+
+            if (textoBoton === RESPUESTAS_NIVEL[gapActivoId].palabra) {
+                const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
+                huecoElemento.innerText = textoBoton;
+                huecoElemento.style.backgroundColor = "transparent";
+                huecoElemento.style.color = "#00ff88";
+                huecoElemento.style.borderColor = "#00ff88";
+
+                const btnUsado = document.getElementById(idBotonElemento);
+                btnUsado.style.opacity = "0.2";
+                btnUsado.style.pointerEvents = "none";
+
+                gamePuntos += 250;
+                gapActivoId++;
+
+                if (gapActivoId < 3) {
+                    document.getElementById(`gap-${gapActivoId}`).style.borderColor = "#ffaa00";
+                } else {
+                    finalizarSistemaJuego(true, "¡Rutina de inicialización compilada con éxito!");
+                }
+            } else {
+                gameVidas--;
+                alert(`❌ ERROR DE SINTAXIS. Intentos restantes: ${gameVidas}`);
+                
+                if (gameVidas <= 0) {
+                    finalizarSistemaJuego(false, "Consola bloqueada. Superaste el límite de 2 fallos permitidos.");
+                }
+            }
+            
+            let stringCorazones = "❤️ ".repeat(gameVidas) || "❌";
+            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
+        }
+
+        document.getElementById("btn-abandonar-nivel").onclick = function() {
+            finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
+        };
+
+        function finalizarSistemaJuego(victoria, mensajeResultado) {
+            gameCorriendo = false;
+            cancelAnimationFrame(animacionFrameId);
+            
+            alert(`${victoria ? '🔓 SISTEMA EN LÍNEA' : '🔒 INTRUSIÓN DETENIDA'}\n\n${mensajeResultado}\nPuntaje de Partida: ${gamePuntos} Puntos.`);
+
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                const llaveHistorialAlumno = `aion_game_history_${perfil.nombre || 'Piloto'}_${perfil.codigo || 'AION'}`;
+                
+                let historialPartidas = JSON.parse(localStorage.getItem(llaveHistorialAlumno)) || [];
+                historialPartidas.push({ fecha: new Date().toLocaleTimeString(), puntos: gamePuntos });
+                localStorage.setItem(llaveHistorialAlumno, JSON.stringify(historialPartidas));
+            }
+
+            document.getElementById("aion-game-tablero-activo").style.display = "none";
+            document.getElementById("contenedor-apuntes-hangar").style.display = "grid";
+            document.getElementById("aion-game-menu-inicio").style.display = "flex";
+
+            for (let i = 0; i < 3; i++) {
+                const gap = document.getElementById(`gap-${i}`);
+                gap.innerText = "____";
+                gap.style.backgroundColor = "#ffffff";
+                gap.style.color = "#000000";
+                gap.style.borderColor = "#000000";
+            }
+        }
     </script>
 </body>
 </html>
+                  
+
+        
