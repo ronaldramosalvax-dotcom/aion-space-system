@@ -674,7 +674,7 @@ if (primeraLinea) primeraLinea.focus();
             3: ['not', 'False', 'firma', 'return', '2'],
             4: ['try', 'except', 'pass', '"__main__"', 'validar_acceso_piloto']
         },
-        velocidad: 2.80, // Subimos a 2.80 porque al agregar tantas líneas intermedias el script es mucho más largo y debe recorrer la pantalla en tus 1:30 min exactos
+        velocidad: 1.50, // Subimos a 2.80 porque al agregar tantas líneas intermedias el script es mucho más largo y debe recorrer la pantalla en tus 1:30 min exactos
         totalGaps: 25
     },
 
@@ -925,13 +925,22 @@ if (primeraLinea) primeraLinea.focus();
             finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
         };
 
-                function finalizarSistemaJuego(victoria, mensajeResultado) {
-                    if (audioHangarJuego) {
-                    audioHangarJuego.pause();
+          function finalizarSistemaJuego(victoria, mensajeResultado) {
+          // 🔇 DESVANECIMIENTO SUAVE DE AUDIO (FADE-OUT SINCRONIZADO)
+             if (audioHangarJuego) {
+                let intervaloFade = setInterval(() => {
+                    if (audioHangarJuego.volume > 0.05) {
+                        audioHangarJuego.volume -= 0.05; // Baja el volumen poco a poco
+                    } else {
+                        clearInterval(intervaloFade);
+                        audioHangarJuego.pause();
+                        audioHangarJuego.volume = 0.25; // Restablecer volumen base para la próxima partida
                     }
+                }, 50); // Ejecuta el cambio cada 50 milisegundos
+            }
 
-                    gameCorriendo = false;
-                    cancelAnimationFrame(animacionFrameId);
+            gameCorriendo = false;
+            cancelAnimationFrame(animacionFrameId);
             
             // 📡 ACTIVAR CARTEL DIGITAL EN LUGAR DE ALERT
             const cartel = document.getElementById("aion-cartel-resultado");
