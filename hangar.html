@@ -883,39 +883,35 @@ if (primeraLinea) primeraLinea.focus();
         };
 
         // 🔘 FUNCIÓN PARA INYECTAR LAS ALTERNATIVAS SEGÚN EL BLOQUE EN CURSO
-                function cargarSetAlternativasInferior() {
+                      function cargarSetAlternativasInferior() {
             const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO;
             
-            // 1. Obtener la respuesta correcta actual
-            const respuestaCorrecta = window.respuestasNivelActual[gapActivoId];
-            
-            // 2. Filtrar el banco global de palabras para sacar distractores válidos (que no sean la correcta)
-            const bancoGlobal = ['html', 'UTF-8', 'div', 'flex', 'img', 'Audífonos', 'section', 'Pagos', 'style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'none', 'USD', 'FINALIZAR'];
-            const distractores = bancoGlobal.filter(palabra => palabra !== respuestaCorrecta);
-            
-            // 3. Seleccionar de forma aleatoria solo 2 distractores
-            const distractoresMezclados = distractores.sort(() => 0.5 - Math.random()).slice(0, 2);
-            
-            // 4. Armar el set final de 3 alternativas (la correcta + los 2 distractores) y mezclarlos
-            const setFinal3Opciones = [respuestaCorrecta, ...distractoresMezclados].sort(() => 0.5 - Math.random());
+            // 1. Obtener el set específico de alternativas configurado para este bloque de oleada
+            const alternativasSet = datosRetoActual.bloquesAlternativas ? datosRetoActual.bloquesAlternativas[window.bloqueActualId] : datosRetoActual.alternativas;
 
-            // 5. Renderizar dinámicamente en los botones (ocultando los que sobren)
+            // 2. Renderizar sobre los 5 botones físicos fijos de la interfaz
             for (let i = 0; i < 5; i++) {
                 const btnCaja = document.getElementById(`g-opt-${i}`);
                 if (btnCaja) {
-                    if (i < setFinal3Opciones.length) {
-                        btnCaja.innerText = setFinal3Opciones[i];
+                    btnCaja.style.display = "block"; // Mantiene el botón siempre visible en la fila
+                    
+                    if (i < alternativasSet.length) {
+                        // Si hay palabra en el set, se activa el botón normalmente
+                        btnCaja.innerText = alternativasSet[i];
                         btnCaja.style.opacity = "1";
                         btnCaja.style.backgroundColor = "#ffffff";
                         btnCaja.style.pointerEvents = "auto";
-                        btnCaja.style.display = "block"; // Asegurar que sea visible
                         
                         btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
                         btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
                         btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${i}`); };
                     } else {
-                        // Ocultamos las cajitas que no se usan para que queden solo 3 limpias
-                        btnCaja.style.display = "none";
+                        // Si el set tiene solo 3 palabras, los botones 4 y 5 muestran un guión y se bloquean
+                        btnCaja.innerText = "-";
+                        btnCaja.style.opacity = "0.3";
+                        btnCaja.style.backgroundColor = "#111622"; // Fondo oscuro de botón inactivo
+                        btnCaja.style.color = "#72767d";
+                        btnCaja.style.pointerEvents = "none";
                     }
                 }
             }
