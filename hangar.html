@@ -616,9 +616,9 @@ const BASE_DATOS_RETO = {
     }
 };
  
-        
-        
-        
+                // Asegúrate de que esta variable esté declarada con el valor = 1
+        let nivelMaximoAlcanzado = 1; 
+
         let gamePuntos = 0;
         let gameVidas = 2; 
         let gapActivoId = 0;
@@ -627,6 +627,7 @@ const BASE_DATOS_RETO = {
         let velocidadDesplazamiento = 0.85; 
         let animacionFrameId = null;
 
+        
         const btnNivel1 = document.getElementById("btn-disparar-nivel1");
         btnNivel1.onmouseover = function() { this.style.transform = "scale(1.03)"; this.style.backgroundColor = "#b3b3b3"; };
         btnNivel1.onmouseout = function() { this.style.transform = "scale(1)"; this.style.backgroundColor = "#a6a6a6"; };
