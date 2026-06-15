@@ -579,11 +579,11 @@ if (primeraLinea) primeraLinea.focus();
 
        // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN (NIVELES 1 AL 3)
    const BASE_DATOS_RETO = {
-               1: {
-        titulo: "# WEB INTERFACE DEPLOY: Arquitectura HTML5 / CSS3 de AION SPACE",
+                   1: {
+        titulo: "# MASTER INTERFACE DEPLOY: Arquitectura HTML5 / CSS3 de 10 Oleadas",
         lineas: [
             '# =======================================================',
-            '# OLEADA 01: DOCUMENTO BASE Y CONTENEDOR DEL MONITOR',
+            '# OLEADA 01: DOCUMENTO BASE Y ESQUELETO DE RED',
             '# =======================================================',
             '&lt;!DOCTYPE <span id="gap-0" class="game-gap">____</span>&gt;',
             '&lt;html lang="es"&gt;',
@@ -591,29 +591,41 @@ if (primeraLinea) primeraLinea.focus();
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="<span id="gap-1" class="game-gap">____</span>"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;AION SPACE SYSTEM | Hangar&lt;/title&gt;',
             '&lt;/head&gt;',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# OLEADA 02: ENTORNO DEL MONITOR CENTRAL DEL INTERIOR',
+            '# =======================================================',
             '&lt;body style="background-color: #060913;"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Monitor central de comandos del hangar --&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="editor-box" style="width: 100%; max-width: 950px;"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Cargando terminal de red central...&lt;/p&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-2" class="game-gap">____</span>&gt;',
-            '<br><br><br><br><br><br>', 
+            '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 02: BARRA SUPERIOR DE COMANDOS (NAVBAR TÁCTICA)',
+            '# OLEADA 03: BARRA SUPERIOR DE COMANDOS (NAVBAR)',
             '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;header class="top-navbar" style="display: <span id="gap-3" class="game-gap">____</span>;"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="btn-regresar"&gt;VOLVER AL PANEL&lt;/button&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div style="display: flex; align-items: center;"&gt;',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# OLEADA 04: IDENTIDAD EN RED Y AVATAR DEL PILOTO',
+            '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="txt-piloto-game"&gt;ANALIZANDO FIRMA...&lt;/span&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-4" class="game-gap">____</span> id="avatar-nav-bar" src="logo.png"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;',
-            '<br><br><br><br><br><br>',
+            '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 03: MAQUETACIÓN DEL ESTANTE DE LOS 30 CUADERNOS',
+            '# OLEADA 05: TEXTOS PRINCIPALES Y MONITOREO UTP',
             '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;main id="hangar-container"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="hangar-title"&gt;CUADRANTE TÁCTICO DE TRABAJO&lt;/h1&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Grid dinámico para inyectar apuntes de la UTP --&gt;',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# OLEADA 06: CUADRÍCULA DE LOS 30 CUADERNOS DE ALUMNOS',
+            '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section id="contenedor-apuntes-hangar"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="mini-hoja-apunte"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="titulo-hoja-mini"&gt;<span id="gap-5" class="game-gap">____</span> Linear&lt;/span&gt;',
@@ -621,14 +633,18 @@ if (primeraLinea) primeraLinea.focus();
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-6" class="game-gap">____</span>&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Progreso del alumno: <span id="gap-7" class="game-gap">____</span> de 30 avanzados.&lt;/p&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/main&gt;',
-            '<br><br><br><br><br><br>',
+            '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 04: HOJA DE ESTILOS CRÍTICOS EN RED (CSS3)',
+            '# OLEADA 07: ESTILOS CRÍTICOS CSS Y COLORES DE FIRMA',
             '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-8" class="game-gap">____</span>&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.mini-hoja-apunte {',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #111622;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: 2px solid <span id="gap-9" class="game-gap">____</span>;',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# OLEADA 08: DINÁMICA DE HOVER Y SOMBRAS CUÁNTICAS',
+            '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 6px;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: transform <span id="gap-10" class="game-gap">____</span>s ease;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
@@ -637,14 +653,18 @@ if (primeraLinea) primeraLinea.focus();
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 0 15px <span id="gap-11" class="game-gap">____</span>;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;',
-            '<br><br><br><br><br><br>',
+            '<br><br><br><br>',
             '# =======================================================',
-            '# OLEADA 05: CARTEL FLOTANTE DE VICTORIA (MODAL DIÁLOGO)',
+            '# OLEADA 09: INTERFAZ DEL CARTEL FLOTANTE OCULTO',
             '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Modal oculto de requisición de puntos central --&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="aion-cartel-resultado" style="display: <span id="gap-12" class="game-gap">____</span>;"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 id="cartel-titulo"&gt;SISTEMA EN LÍNEA&lt;/h2&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p id="cartel-mensaje"&gt;Transmisión exitosa del script.&lt;/p&gt;',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# OLEADA 10: CONFIRMACIÓN Y CIERRE DE RED',
+            '# =======================================================',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="puntos-contenedor"&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="cartel-puntos"&gt;000 <span id="gap-13" class="game-gap">____</span>&lt;/span&gt;',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
@@ -660,12 +680,18 @@ if (primeraLinea) primeraLinea.focus();
             8: 'style', 9: '#404eed', 10: '0.2', 11: 'rgba(64,78,237,0.4)',
             12: 'none', 13: 'PTS', 14: 'ACEPTAR'
         },
+        // Mapeo dinámico de alternativas separadas de 3 en 3 por oleada
         bloquesAlternativas: {
-            0: ['html', 'UTF-8', 'div', 'doctype', 'body'],
-            1: ['flex', 'img', 'nav', 'header', 'src'],
-            2: ['Sistema', 'section', 'Nivel', 'main', 'span'],
-            3: ['style', '#404eed', '0.2', 'rgba(64,78,237,0.4)', 'css'],
-            4: ['none', 'PTS', 'ACEPTAR', 'flex', 'block']
+            0: ['html', 'UTF-8', 'div', 'doctype', 'body'],               // Oleada 1
+            1: ['html', 'UTF-8', 'div', 'doctype', 'body'],               // Oleada 2
+            2: ['flex', 'img', 'nav', 'header', 'src'],                   // Oleada 3
+            3: ['flex', 'img', 'nav', 'header', 'src'],                   // Oleada 4
+            4: ['Sistema', 'section', 'Nivel', 'main', 'span'],           // Oleada 5
+            5: ['Sistema', 'section', 'Nivel', 'main', 'span'],           // Oleada 6
+            6: ['style', '#404eed', '0.2', 'rgba(64,78,237,0.4)', 'css'], // Oleada 7
+            7: ['style', '#404eed', '0.2', 'rgba(64,78,237,0.4)', 'css'], // Oleada 8
+            8: ['none', 'PTS', 'ACEPTAR', 'flex', 'block'],               // Oleada 9
+            9: ['none', 'PTS', 'ACEPTAR', 'flex', 'block']                // Oleada 10
         },
         velocidad: 1.50, 
         totalGaps: 15
