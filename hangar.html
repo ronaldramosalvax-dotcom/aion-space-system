@@ -966,15 +966,11 @@ if (primeraLinea) primeraLinea.focus();
                 gapActivoId++;
 
                 // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS OLEADAS CONTINUAS DE AMAZON
-if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 1; cargarSetAlternativasInferior(); } 
-else if (gapActivoId === 3 && window.bloqueActualId === 1) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 3; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 6 && window.bloqueActualId === 3) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 8 && window.bloqueActualId === 4) { window.bloqueActualId = 5; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 9 && window.bloqueActualId === 5) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 11 && window.bloqueActualId === 6) { window.bloqueActualId = 7; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 12 && window.bloqueActualId === 7) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
-else if (gapActivoId === 14 && window.bloqueActualId === 8) { window.bloqueActualId = 9; cargarSetAlternativasInferior(); }
+                // 🔄 TRANSICIÓN DE BOTONES EXACTA PARA LAS OLEADAS DE AMAZON
+                if (gapActivoId === 3 && window.bloqueActualId === 0) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); } 
+                else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 8 && window.bloqueActualId === 4) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 12 && window.bloqueActualId === 6) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
 
 
                 // Actualizar letrero superior dinámico según el bloque de oleada actual
