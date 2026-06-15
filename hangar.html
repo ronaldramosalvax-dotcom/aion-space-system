@@ -883,25 +883,44 @@ if (primeraLinea) primeraLinea.focus();
         };
 
         // 🔘 FUNCIÓN PARA INYECTAR LAS ALTERNATIVAS SEGÚN EL BLOQUE EN CURSO
-        function cargarSetAlternativasInferior() {
-            const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO[1];
-            const alternativasSet = datosRetoActual.bloquesAlternativas ? datosRetoActual.bloquesAlternativas[window.bloqueActualId] : datosRetoActual.alternativas;
+                function cargarSetAlternativasInferior() {
+            const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO;
+            
+            // 1. Obtener la respuesta correcta actual
+            const respuestaCorrecta = window.respuestasNivelActual[gapActivoId];
+            
+            // 2. Filtrar el banco global de palabras para sacar distractores válidos (que no sean la correcta)
+            const bancoGlobal = ['html', 'UTF-8', 'div', 'flex', 'img', 'Audífonos', 'section', 'Pagos', 'style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'none', 'USD', 'FINALIZAR'];
+            const distractores = bancoGlobal.filter(palabra => palabra !== respuestaCorrecta);
+            
+            // 3. Seleccionar de forma aleatoria solo 2 distractores
+            const distractoresMezclados = distractores.sort(() => 0.5 - Math.random()).slice(0, 2);
+            
+            // 4. Armar el set final de 3 alternativas (la correcta + los 2 distractores) y mezclarlos
+            const setFinal3Opciones = [respuestaCorrecta, ...distractoresMezclados].sort(() => 0.5 - Math.random());
 
-            alternativasSet.forEach((textoAlternativa, idx) => {
-                const btnCaja = document.getElementById(`g-opt-${idx}`);
+            // 5. Renderizar dinámicamente en los botones (ocultando los que sobren)
+            for (let i = 0; i < 5; i++) {
+                const btnCaja = document.getElementById(`g-opt-${i}`);
                 if (btnCaja) {
-                    btnCaja.innerText = textoAlternativa;
-                    btnCaja.style.opacity = "1";
-                    btnCaja.style.backgroundColor = "#ffffff";
-                    btnCaja.style.pointerEvents = "auto";
-                    
-                    btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
-                    btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
-                    
-                    btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${idx}`); };
+                    if (i < setFinal3Opciones.length) {
+                        btnCaja.innerText = setFinal3Opciones[i];
+                        btnCaja.style.opacity = "1";
+                        btnCaja.style.backgroundColor = "#ffffff";
+                        btnCaja.style.pointerEvents = "auto";
+                        btnCaja.style.display = "block"; // Asegurar que sea visible
+                        
+                        btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
+                        btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
+                        btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${i}`); };
+                    } else {
+                        // Ocultamos las cajitas que no se usan para que queden solo 3 limpias
+                        btnCaja.style.display = "none";
+                    }
                 }
-            });
+            }
         }
+
 
       function bucleMovimientoUniforme() {
     if (!gameCorriendo) return;
