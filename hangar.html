@@ -578,62 +578,89 @@ if (primeraLinea) primeraLinea.focus();
         ];
 
        // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN (NIVELES 1 AL 3)
-const BASE_DATOS_RETO = {
+   const BASE_DATOS_RETO = {
     1: {
-        titulo: "# MASTER SCRIPT: Inicialización de Red Central AION UTP",
+        titulo: "# OMEGA SCRIPT: Inicialización de Red Central AION UTP",
         lineas: [
             '# =======================================================',
-            '# BLOQUE 01: AUTENTICACIÓN Y FILTRADO DE PUERTOS',
+            '# OLEADA 01: AUTENTICACIÓN Y FILTRADO DE PUERTOS',
             '# =======================================================',
             'def validar_acceso_piloto(cuenta):',
             '&nbsp;&nbsp;&nbsp;&nbsp;token = cuenta.obtener_token()',
             '&nbsp;&nbsp;&nbsp;&nbsp;if token == <span id="gap-0" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" class="game-gap">____</span>("Firma de seguridad inválida")',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" class="game-gap">____</span>("Firma inválida")',
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False',
-            '<br><br><br><br>',
-            '# Configuración de sockets del Hangar',
             'puerto_activo = <span id="gap-2" class="game-gap">____</span>(8080)',
             'if puerto_activo.estado == "LISTEN":',
             '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-3" class="game-gap">____</span> = True',
             'else:',
             '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-4" class="game-gap">____</span>',
-            '<br><br><br><br>',
+            '<br><br>',
             '# =======================================================',
-            '# BLOQUE 02: ASIGNACIÓN DE MATRICES Y CAPA DE RED',
+            '# OLEADA 02: CONTROL DE FLUJO Y CONDICIONALES',
             '# =======================================================',
-            'def inicializar_matriz_cuántica():',
-            '&nbsp;&nbsp;&nbsp;&nbsp;dimension = <span id="gap-5" class="game-gap">____</span>(input("Medida del cuadrante: "))',
-            '&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion = [*dimension <span id="gap-6" class="game-gap">____</span> _ in range(dimension)]',
-            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-7" class="game-gap">____</span> fila in range(dimension):',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion[fila][fila] = <span id="gap-8" class="game-gap">____</span>',
-            '&nbsp;&nbsp;&nbsp;&nbsp;return <span id="gap-9" class="game-gap">____</span>',
-            '<br><br><br><br>',
+            '<span id="gap-5" class="game-gap">____</span> conexion_lista == True:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Canal seguro conectado")',
+            '<span id="gap-6" class="game-gap">____</span> estado == "STANDBY":',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Alerta: Servidor en espera")',
+            '<span id="gap-7" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Error crítico: Desconectado")',
+            'intentos = 0',
+            'while intentos < <span id="gap-8" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;intentos += <span id="gap-9" class="game-gap">____</span>',
+            '<br><br>',
             '# =======================================================',
-            '# BLOQUE 03: MANEJO DE EXCEPCIONES Y RUTINA MAIN',
+            '# OLEADA 03: ASIGNACIÓN DE MATRICES Y CAPA DE RED',
             '# =======================================================',
-            '<span id="gap-10" class="game-gap">____</span>:',
+            'def inicializar_matriz_cuantica():',
+            '&nbsp;&nbsp;&nbsp;&nbsp;dimension = <span id="gap-10" class="game-gap">____</span>(input("Medida: "))',
+            '&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion = [*dimension <span id="gap-11" class="game-gap">____</span> _ in range(dimension)]',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-12" class="game-gap">____</span> fila in range(dimension):',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion[fila][fila] = <span id="gap-13" class="game-gap">____</span>',
+            '&nbsp;&nbsp;&nbsp;&nbsp;return <span id="gap-14" class="game-gap">____</span>',
+            '<br><br>',
+            '# =======================================================',
+            '# OLEADA 04: OPERACIONES Y FUNCIONES LÓGICAS',
+            '# =======================================================',
+            'def verificar_hash(servidor, firma):',
+            '&nbsp;&nbsp;&nbsp;&nbsp;if <span id="gap-15" class="game-gap">____</span> servidor or not firma:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return <span id="gap-16" class="game-gap">____</span>',
+            '&nbsp;&nbsp;&nbsp;&nbsp;resultado = servidor.comparar(<span id="gap-17" class="game-gap">____</span>)',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-18" class="game-gap">____</span> resultado',
+            '# Ejecutar sub-rutina de escaneo rápido',
+            'escaneo_rapido = lambda x: x * <span id="gap-19" class="game-gap">____</span>',
+            '<br><br>',
+            '# =======================================================',
+            '# OLEADA 05: MANEJO DE EXCEPCIONES Y RUTINA MAIN',
+            '# =======================================================',
+            '<span id="gap-20" class="game-gap">____</span>:',
             '&nbsp;&nbsp;&nbsp;&nbsp;servidor = "ONLINE"',
-            '&nbsp;&nbsp;&nbsp;&nbsp;print("Cargando base de datos Firebase...")',
-            '<span id="gap-11" class="game-gap">____</span> Exception as e:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;print("Error en transmisión en la nube:", e)',
-            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-12" class="game-gap">____</span>',
-            '<br><br><br><br>',
-            'if __name__ == <span id="gap-13" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-14" class="game-gap">____</span>()'
+            '<span id="gap-21" class="game-gap">____</span> Exception as e:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Enlace central roto:", e)',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-22" class="game-gap">____</span>',
+            'if __name__ == <span id="gap-23" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-24" class="game-gap">____</span>()'
         ],
         respuestas: {
             0: 'None', 1: 'print', 2: 'int', 3: 'conexion_lista', 4: 'pass',
-            5: 'int', 6: 'for', 7: 'for', 8: '1', 9: 'matriz_aion',
-            10: 'try', 11: 'except', 12: 'pass', 13: '"__main__"', 14: 'validar_acceso_piloto'
+            5: 'if', 6: 'elif', 7: 'else', 8: '3', 9: '1',
+            10: 'int', 11: 'for', 12: 'for', 13: '1', 14: 'matriz_aion',
+            15: 'not', 16: 'False', 17: 'firma', 18: 'return', 19: '2',
+            20: 'try', 21: 'except', 22: 'pass', 23: '"__main__"', 24: 'validar_acceso_piloto'
         },
+        // 5 bloques ordenados para alimentar la barra de alternativas inferiores
         bloquesAlternativas: {
             0: ['None', 'print', 'int', 'conexion_lista', 'pass'],
-            1: ['int', 'for', '1', 'matriz_aion', 'while'],
-            2: ['try', 'except', 'pass', '"__main__"', 'validar_acceso_piloto']
+            1: ['if', 'elif', 'else', '3', '1'],
+            2: ['int', 'for', 'for', '1', 'matriz_aion'],
+            3: ['not', 'False', 'firma', 'return', '2'],
+            4: ['try', 'except', 'pass', '"__main__"', 'validar_acceso_piloto']
         },
-        velocidad: 1.60,
-        totalGaps: 15
+        velocidad: 2.10, // ⚡ Calibrado para recorrer las 25 preguntas en exactamente 1:30 min
+        totalGaps: 25
     },
+
+
     2: {
         titulo: "# Desafío 2: Control de Matrices y Listas en Python",
         lineas: [
@@ -794,10 +821,19 @@ const BASE_DATOS_RETO = {
             }
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
-        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+                function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
             const txtVidas = document.getElementById("txt-vidas-game");
+            const txtPiloto = document.getElementById("txt-piloto-game");
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+            let nombrePiloto = "Piloto";
+            let codigoPiloto = "#0000";
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                nombrePiloto = perfil.nombre || nombrePiloto;
+                codigoPiloto = perfil.codigo || codigoPiloto;
+            }
 
             if (textoBoton === window.respuestasNivelActual[gapActivoId]) {
                 const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
@@ -817,27 +853,36 @@ const BASE_DATOS_RETO = {
                 gamePuntos += 250;
                 gapActivoId++;
 
-                // 🔄 ROTACIÓN AUTOMÁTICA DE BOTONES:
-                // Si completó las primeras 5 (huecos 0 a 4), rota al bloque 1 de alternativas
+                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS 5 OLEADAS CONTINUAS
                 if (gapActivoId === 5 && window.bloqueActualId === 0) {
                     window.bloqueActualId = 1;
+                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 02`;
                     cargarSetAlternativasInferior();
                 } 
-                // Si completó las siguientes 5 (huecos 5 a 9), rota al bloque 2 de alternativas
                 else if (gapActivoId === 10 && window.bloqueActualId === 1) {
                     window.bloqueActualId = 2;
+                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 03`;
+                    cargarSetAlternativasInferior();
+                }
+                else if (gapActivoId === 15 && window.bloqueActualId === 2) {
+                    window.bloqueActualId = 3;
+                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 04`;
+                    cargarSetAlternativasInferior();
+                }
+                else if (gapActivoId === 20 && window.bloqueActualId === 3) {
+                    window.bloqueActualId = 4;
+                    if(txtPiloto) txtPiloto.innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | LVL ${nivelMaximoAlcanzado} - OLEADA 05`;
                     cargarSetAlternativasInferior();
                 }
 
-                // Validar si quedan más espacios vacíos en todo el script largo
+                // Evaluar si se completó la oleada final (Pregunta 25)
                 if (gapActivoId < window.gapsTotalesNivel) {
                     const proxGap = document.getElementById(`gap-${gapActivoId}`);
                     if (proxGap) proxGap.style.borderColor = "#ffaa00";
                 } else {
-                    finalizarSistemaJuego(true, "¡Script maestro compilado con éxito! Se restauró el control de red.");
+                    finalizarSistemaJuego(true, "¡Script Omega compilado con éxito! Se restauró el control absoluto del hangar.");
                 }
             } else {
-                // Reducción limpia sobre tus 5 vidas
                 gameVidas--;
                 
                 if (txtVidas) {
@@ -856,9 +901,8 @@ const BASE_DATOS_RETO = {
             }
         }
 
-                     
 
-
+                    
         document.getElementById("btn-abandonar-nivel").onclick = function() {
             finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
         };
