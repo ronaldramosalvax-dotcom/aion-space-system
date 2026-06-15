@@ -712,10 +712,11 @@ const BASE_DATOS_RETO = {
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
 
-                function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+                      function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
-            // VALIDACIÓN DINÁMICA DE ACUERDO AL NIVEL EN CURSO
+            const txtVidas = document.getElementById("txt-vidas-game");
+
             if (textoBoton === window.respuestasNivelActual[gapActivoId]) {
                 const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
                 huecoElemento.innerText = textoBoton;
@@ -730,7 +731,6 @@ const BASE_DATOS_RETO = {
                 gamePuntos += 250;
                 gapActivoId++;
 
-                // Validar si quedan más espacios vacíos usando el límite dinámico del nivel
                 if (gapActivoId < window.gapsTotalesNivel) {
                     const proxGap = document.getElementById(`gap-${gapActivoId}`);
                     if (proxGap) proxGap.style.borderColor = "#ffaa00";
@@ -738,16 +738,23 @@ const BASE_DATOS_RETO = {
                     finalizarSistemaJuego(true, "¡Rutina de inicialización compilada con éxito!");
                 }
             } else {
+                // 🔴 EN LUGAR DE ALERT: Descontamos la vida y cambiamos el texto superior a rojo temporalmente
                 gameVidas--;
-                alert(`❌ ERROR DE SINTAXIS. Intentos restantes: ${gameVidas}`);
+                
+                if (txtVidas) {
+                    txtVidas.style.color = "#ef4444"; // Pintar la barra de rojo
+                    setTimeout(() => { if(gameCorriendo) txtVidas.style.color = "#00ff88"; }, 800); // Volver a verde
+                }
                 
                 if (gameVidas <= 0) {
-                    finalizarSistemaJuego(false, "Consola bloqueada. Superaste el límite de 2 fallos permitidos.");
+                    finalizarSistemaJuego(false, "Consola bloqueada. Superaste el límite de fallos.");
                 }
             }
             
-            let stringCorazones = "❤️ ".repeat(gameVidas) || "❌";
-            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
+            if (txtVidas) {
+                let stringCorazones = "❤️ ".repeat(gameVidas) || "❌";
+                txtVidas.innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
+            }
         }
 
 
