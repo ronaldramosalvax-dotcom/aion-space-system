@@ -572,29 +572,65 @@ if (primeraLinea) primeraLinea.focus();
        // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN (NIVELES 1 AL 3)
 const BASE_DATOS_RETO = {
     1: {
-        titulo: "# Script de Inicialización de Red AION UTP",
+        titulo: "# MASTER SCRIPT: Inicialización de Red Central AION UTP",
+                titulo: "# MASTER SCRIPT: Inicialización de Red Central AION UTP",
+        // Un código súper largo y espaciado para que el piloto respire entre líneas
         lineas: [
-            'def iniciar_sistema_hangar():',
-            '&nbsp;&nbsp;&nbsp;&nbsp;servidor = <span id="gap-0" class="game-gap">____</span>',
-            '&nbsp;&nbsp;&nbsp;&nbsp;print("Escaneando firmas cuánticas...")',
-            '<br>',
-            '&nbsp;&nbsp;&nbsp;&nbsp;if servidor == "ONLINE":',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" class="game-gap">____</span>("Acceso de Alumno Concedido")',
-            '&nbsp;&nbsp;&nbsp;&nbsp;else:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Fallo de infraestructura")',
-            '<br>',
-            '# Rutina central del Hangar',
-            'if __name__ == <span id="gap-2" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;iniciar_sistema_hangar()'
+            '# =======================================================',
+            '# BLOQUE 01: AUTENTICACIÓN Y FILTRADO DE PUERTOS',
+            '# =======================================================',
+            'def validar_acceso_piloto(cuenta):',
+            '&nbsp;&nbsp;&nbsp;&nbsp;token = cuenta.obtener_token()',
+            '&nbsp;&nbsp;&nbsp;&nbsp;if token == <span id="gap-0" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" class="game-gap">____</span>("Firma de seguridad inválida")',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False',
+            '<br><br><br><br>', // Espaciado para que respire
+            '# Configuración de sockets del Hangar',
+            'puerto_activo = <span id="gap-2" class="game-gap">____</span>(8080)',
+            'if puerto_activo.estado == "LISTEN":',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-3" class="game-gap">____</span> = True',
+            'else:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-4" class="game-gap">____</span>',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# BLOQUE 02: ASIGNACIÓN DE MATRICES Y CAPA DE RED',
+            '# =======================================================',
+            'def inicializar_matriz_cuántica():',
+            '&nbsp;&nbsp;&nbsp;&nbsp;dimension = <span id="gap-5" class="game-gap">____</span>(input("Medida del cuadrante: "))',
+            '&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion = [*dimension <span id="gap-6" class="game-gap">____</span> _ in range(dimension)]',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-7" class="game-gap">____</span> fila in range(dimension):',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matriz_aion[fila][fila] = <span id="gap-8" class="game-gap">____</span>',
+            '&nbsp;&nbsp;&nbsp;&nbsp;return <span id="gap-9" class="game-gap">____</span>',
+            '<br><br><br><br>',
+            '# =======================================================',
+            '# BLOQUE 03: MANEJO DE EXCEPCIONES Y RUTINA MAIN',
+            '# =======================================================',
+            '<span id="gap-10" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;servidor = "ONLINE"',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Cargando base de datos Firebase...")',
+            '<span id="gap-11" class="game-gap">____</span> Exception as e:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Error en transmisión en la nube:", e)',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-12" class="game-gap">____</span>',
+            '<br><br><br><br>',
+            'if __name__ == <span id="gap-13" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-14" class="game-gap">____</span>()'
         ],
+        // Las 15 respuestas secuenciales en orden estricto (0 a 14)
         respuestas: {
-            0: '"ONLINE"',
-            1: 'print',
-            2: '"__main__"'
+            0: 'None', 1: 'print', 2: 'int', 3: 'conexion_lista', 4: 'pass',
+            5: 'int', 6: 'for', 7: 'for', 8: '1', 9: 'matriz_aion',
+            10: 'try', 11: 'except', 12: 'pass', 13: '"__main__"', 14: 'validar_acceso_piloto'
         },
-        alternativas: ['"ONLINE"', 'print', 'input', '"__main__"', 'return'],
-        velocidad: 1.40,
-        totalGaps: 3
+        // Los 3 bloques de 5 alternativas cada uno para la barra inferior
+        bloquesAlternativas: {
+            0: ['None', 'print', 'int', 'conexion_lista', 'pass'],
+            1: ['int', 'for', '1', 'matriz_aion', 'while'],
+            2: ['try', 'except', 'pass', '"__main__"', 'validar_acceso_piloto']
+        },
+        velocidad: 1.10,
+        totalGaps: 15
+
+        totalGaps: 15
     },
     2: {
         titulo: "# Desafío 2: Control de Matrices y Listas en Python",
@@ -657,7 +693,7 @@ const BASE_DATOS_RETO = {
         btnNivel1.onmouseover = function() { this.style.transform = "scale(1.03)"; this.style.backgroundColor = "#b3b3b3"; };
         btnNivel1.onmouseout = function() { this.style.transform = "scale(1)"; this.style.backgroundColor = "#a6a6a6"; };
 
-                btnNivel1.onclick = function() {
+                        btnNivel1.onclick = function() {
             const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO[1];
 
             document.getElementById("contenedor-apuntes-hangar").style.display = "none";
@@ -675,9 +711,11 @@ const BASE_DATOS_RETO = {
                 codigoPiloto = perfil.codigo || codigoPiloto;
             }
 
+            // --- REINICIO CON 5 VIDAS Y CONTROL DE BLOQUES ---
             gameCorriendo = true;
             gapActivoId = 0;
-            gameVidas = 2;
+            window.bloqueActualId = 0; 
+            gameVidas = 5; 
             gamePuntos = 0;
             
             velocidadDesplazamiento = datosRetoActual.velocidad;
@@ -695,17 +733,29 @@ const BASE_DATOS_RETO = {
                 el.style = "display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;";
             });
 
-                        // 🎯 El código ahora inicia exactamente en la mitad de la pantalla
+            // 🎯 El código inicia exactamente en la mitad de la pantalla
             const alturaConsola = document.getElementById("aion-consola-desplazable").clientHeight;
             posicionScriptY = (alturaConsola / 2) - 50;
-
             
             document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | DESAFÍO Lvl ${nivelMaximoAlcanzado}`;
-            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ | PUNTOS: 0`;
+            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ ❤️ ❤️ ❤️ | PUNTOS: 0`;
             
             document.getElementById("gap-0").style.borderColor = "#ffaa00"; 
 
-            datosRetoActual.alternativas.forEach((textoAlternativa, idx) => {
+            // Cargar el primer set de 5 alternativas en la barra inferior
+            cargarSetAlternativasInferior();
+
+            if (typeof bucleMovimientoUniforme === "function") {
+                bucleMovimientoUniforme();
+            }
+        };
+
+        // 🔘 FUNCIÓN PARA INYECTAR LAS ALTERNATIVAS SEGÚN EL BLOQUE EN CURSO
+        function cargarSetAlternativasInferior() {
+            const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO[1];
+            const alternativasSet = datosRetoActual.bloquesAlternativas ? datosRetoActual.bloquesAlternativas[window.bloqueActualId] : datosRetoActual.alternativas;
+
+            alternativasSet.forEach((textoAlternativa, idx) => {
                 const btnCaja = document.getElementById(`g-opt-${idx}`);
                 if (btnCaja) {
                     btnCaja.innerText = textoAlternativa;
@@ -719,9 +769,7 @@ const BASE_DATOS_RETO = {
                     btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${idx}`); };
                 }
             });
-
-            bucleMovimientoUniforme();
-        };
+        }
 
 
         function bucleMovimientoUniforme() {
@@ -739,43 +787,59 @@ const BASE_DATOS_RETO = {
             }
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
-
-                      function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
             const txtVidas = document.getElementById("txt-vidas-game");
 
             if (textoBoton === window.respuestasNivelActual[gapActivoId]) {
                 const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
-                huecoElemento.innerText = textoBoton;
-                huecoElemento.style.backgroundColor = "transparent";
-                huecoElemento.style.color = "#00ff88";
-                huecoElemento.style.borderColor = "#00ff88";
+                if (huecoElemento) {
+                    huecoElemento.innerText = textoBoton;
+                    huecoElemento.style.backgroundColor = "transparent";
+                    huecoElemento.style.color = "#00ff88";
+                    huecoElemento.style.borderColor = "#00ff88";
+                }
 
                 const btnUsado = document.getElementById(idBotonElemento);
-                btnUsado.style.opacity = "0.2";
-                btnUsado.style.pointerEvents = "none";
+                if (btnUsado) {
+                    btnUsado.style.opacity = "0.2";
+                    btnUsado.style.pointerEvents = "none";
+                }
 
                 gamePuntos += 250;
                 gapActivoId++;
 
+                // 🔄 ROTACIÓN AUTOMÁTICA DE BOTONES:
+                // Si completó las primeras 5 (huecos 0 a 4), rota al bloque 1 de alternativas
+                if (gapActivoId === 5 && window.bloqueActualId === 0) {
+                    window.bloqueActualId = 1;
+                    cargarSetAlternativasInferior();
+                } 
+                // Si completó las siguientes 5 (huecos 5 a 9), rota al bloque 2 de alternativas
+                else if (gapActivoId === 10 && window.bloqueActualId === 1) {
+                    window.bloqueActualId = 2;
+                    cargarSetAlternativasInferior();
+                }
+
+                // Validar si quedan más espacios vacíos en todo el script largo
                 if (gapActivoId < window.gapsTotalesNivel) {
                     const proxGap = document.getElementById(`gap-${gapActivoId}`);
                     if (proxGap) proxGap.style.borderColor = "#ffaa00";
                 } else {
-                    finalizarSistemaJuego(true, "¡Rutina de inicialización compilada con éxito!");
+                    finalizarSistemaJuego(true, "¡Script maestro compilado con éxito! Se restauró el control de red.");
                 }
             } else {
-                // 🔴 EN LUGAR DE ALERT: Descontamos la vida y cambiamos el texto superior a rojo temporalmente
+                // Reducción limpia sobre tus 5 vidas
                 gameVidas--;
                 
                 if (txtVidas) {
-                    txtVidas.style.color = "#ef4444"; // Pintar la barra de rojo
-                    setTimeout(() => { if(gameCorriendo) txtVidas.style.color = "#00ff88"; }, 800); // Volver a verde
+                    txtVidas.style.color = "#ef4444";
+                    setTimeout(() => { if(gameCorriendo) txtVidas.style.color = "#00ff88"; }, 800);
                 }
                 
                 if (gameVidas <= 0) {
-                    finalizarSistemaJuego(false, "Consola bloqueada. Superaste el límite de fallos.");
+                    finalizarSistemaJuego(false, "Consola bloqueada. Se agotó el margen de fallos críticos.");
                 }
             }
             
@@ -784,6 +848,8 @@ const BASE_DATOS_RETO = {
                 txtVidas.innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
             }
         }
+
+                     
 
 
         document.getElementById("btn-abandonar-nivel").onclick = function() {
