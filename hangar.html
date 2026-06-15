@@ -916,21 +916,35 @@ if (primeraLinea) primeraLinea.focus();
             });
         }
 
-        function bucleMovimientoUniforme() {
-            if (!gameCorriendo) return;
+      function bucleMovimientoUniforme() {
+    if (!gameCorriendo) return;
 
-            posicionScriptY -= velocidadDesplazamiento;
-            const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+    posicionScriptY -= velocidadDesplazamiento;
+    const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+    
+    if (bloqueMovil) {
+        bloqueMovil.style.top = posicionScriptY + 'px';
+
+        // 🚨 TU REGLA ARCADE: Si la caja blanca activa cruza el límite superior, GAMEOVER
+        const gapActualElemento = document.getElementById(`gap-${gapActivoId}`);
+        if (gapActualElemento) {
+            const rectConsola = document.getElementById("aion-consola-desplazable").getBoundingClientRect();
+            const rectGap = gapActualElemento.getBoundingClientRect();
             
-            if (bloqueMovil) {
-                bloqueMovil.style.top = posicionScriptY + 'px';
-
-                if (posicionScriptY < -bloqueMovil.clientHeight) {
-                    finalizarSistemaJuego(false, "El tiempo expiró. El script superó el límite superior del monitor.");
-                }
+            if (rectGap.bottom < rectConsola.top) {
+                finalizarSistemaJuego(false, "Fallo crítico. La línea de comandos activa se perdió fuera del monitor antes de ser completada.");
+                return;
             }
-            animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
+
+        if (posicionScriptY < -bloqueMovil.clientHeight) {
+            finalizarSistemaJuego(false, "El tiempo expiró. El script superó el límite superior del monitor.");
+            return;
+        }
+    }
+    animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
+}
+
 
         function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
