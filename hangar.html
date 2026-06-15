@@ -121,7 +121,7 @@
         <div style="background-color: #0c0d12; height: 15px; border-bottom: 4px solid #1f2937;"></div>
 
                 <!-- Marco Interior Gris con Estante y Hoja de Edición Interactiva -->
-        <div style="background-color: #1a1a1a; padding: 25px; display: flex; flex-direction: column; align-items: center;">
+        <div style="background-color: #1a1a1a; padding: 12px 25px; display: flex; flex-direction: column; align-items: center;">
             
             <!-- Barra de Herramientas Superior del Editor (Estilo Word) -->
             <div id="barra-herramientas-word" style="display: none; width: 100%; max-width: 750px; background: #f3f4f6; border: 1px solid #ccc; border-bottom: none; padding: 6px 12px; border-radius: 4px 4px 0 0; box-sizing: border-box; justify-content: space-between; align-items: center; gap: 10px;">
@@ -481,6 +481,14 @@ if (primeraLinea) primeraLinea.focus();
         // =========================================================================
         
         const marcoGrisMonitor = document.getElementById("contenedor-apuntes-hangar").parentElement;
+        // 🎵 MOTOR DE AUDIO CENTRALIZADO (SINCRONIZACIÓN DE 3 MINUTOS EN LOOP)
+        const audioHangarJuego = document.createElement("audio");
+        audioHangarJuego.id = "aion-audio-motor";
+        audioHangarJuego.src = "https://google.com";
+        audioHangarJuego.loop = true; 
+        audioHangarJuego.volume = 0.25; 
+        document.body.appendChild(audioHangarJuego);
+
                 // 🛰️ INTERFAZ FLOTANTE: Cartel de Resultados Tácticos (Victoria/Derrota)
         const divCartelResultado = document.createElement("div");
         divCartelResultado.id = "aion-cartel-resultado";
@@ -741,6 +749,11 @@ const BASE_DATOS_RETO = {
 
             if (typeof bucleMovimientoUniforme === "function") {
                 bucleMovimientoUniforme();
+                if (audioHangarJuego) {
+                audioHangarJuego.currentTime = 0;
+                audioHangarJuego.play().catch(e => console.log("Audio en espera."));
+            }
+
             }
         };
 
@@ -851,8 +864,12 @@ const BASE_DATOS_RETO = {
         };
 
                 function finalizarSistemaJuego(victoria, mensajeResultado) {
-            gameCorriendo = false;
-            cancelAnimationFrame(animacionFrameId);
+                    if (audioHangarJuego) {
+                    audioHangarJuego.pause();
+                    }
+
+                    gameCorriendo = false;
+                    cancelAnimationFrame(animacionFrameId);
             
             // 📡 ACTIVAR CARTEL DIGITAL EN LUGAR DE ALERT
             const cartel = document.getElementById("aion-cartel-resultado");
