@@ -760,7 +760,7 @@ if (primeraLinea) primeraLinea.focus();
         btnNivel1.onmouseover = function() { this.style.transform = "scale(1.03)"; this.style.backgroundColor = "#b3b3b3"; };
         btnNivel1.onmouseout = function() { this.style.transform = "scale(1)"; this.style.backgroundColor = "#a6a6a6"; };
 
-                        btnNivel1.onclick = function() {
+                            btnNivel1.onclick = function() {
             const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO[1];
 
             document.getElementById("contenedor-apuntes-hangar").style.display = "none";
@@ -785,7 +785,6 @@ if (primeraLinea) primeraLinea.focus();
             gameVidas = 5; 
             gamePuntos = 0;
             
-            velocidadDesplazamiento = datosRetoActual.velocidad;
             window.gapsTotalesNivel = datosRetoActual.totalGaps; 
             window.respuestasNivelActual = datosRetoActual.respuestas;
 
@@ -800,25 +799,32 @@ if (primeraLinea) primeraLinea.focus();
                 el.style = "display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;";
             });
 
-            // 🎯 El código inicia exactamente en la mitad de la pantalla
+            // 🎯 CALIBRACIÓN MATEMÁTICA DE VELOCIDAD PARA DURAR EXACTAMENTE 1:30 MINUTOS (90 SEGUNDOS)
             const alturaConsola = document.getElementById("aion-consola-desplazable").clientHeight;
             posicionScriptY = (alturaConsola / 2) - 120;
             
+            // Distancia total que debe recorrer el script antes de salir completamente de la pantalla
+            const distanciaTotalRecorrido = posicionScriptY + bloqueMovil.clientHeight;
+            // 90 segundos * 60 fotogramas por segundo = 5,400 fotogramas en total
+            velocidadDesplazamiento = distanciaTotalRecorrido / (90 * 60);
+
+            // Seguro táctico de velocidad mínima
+            if (velocidadDesplazamiento < 0.15) velocidadDesplazamiento = 0.25;
+
             document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | DESAFÍO Lvl ${nivelMaximoAlcanzado}`;
             document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ ❤️ ❤️ ❤️ | PUNTOS: 0`;
             
-            document.getElementById("gap-0").style.borderColor = "#ffaa00"; 
+            const primerGap = document.getElementById("gap-0");
+            if (primerGap) primerGap.style.borderColor = "#ffaa00"; 
 
-            // Cargar el primer set de 5 alternativas en la barra inferior
             cargarSetAlternativasInferior();
 
             if (typeof bucleMovimientoUniforme === "function") {
                 bucleMovimientoUniforme();
                 if (audioHangarJuego) {
-                audioHangarJuego.currentTime = 0;
-                audioHangarJuego.play().catch(e => console.log("Audio en espera."));
-            }
-
+                    audioHangarJuego.currentTime = 0;
+                    audioHangarJuego.play().catch(e => console.log("Audio en espera de interacción."));
+                }
             }
         };
 
@@ -843,7 +849,6 @@ if (primeraLinea) primeraLinea.focus();
             });
         }
 
-
         function bucleMovimientoUniforme() {
             if (!gameCorriendo) return;
 
@@ -859,7 +864,8 @@ if (primeraLinea) primeraLinea.focus();
             }
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
-                    function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+
+        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
             const txtVidas = document.getElementById("txt-vidas-game");
@@ -891,7 +897,7 @@ if (primeraLinea) primeraLinea.focus();
                 gamePuntos += 250;
                 gapActivoId++;
 
-                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS 10 OLEADAS CONTINUAS
+                // 🔄 TRANSICIÓN TÁCTICA ENTRE LAS OLEADAS CONTINUAS
                 if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 1; cargarSetAlternativasInferior(); } 
                 else if (gapActivoId === 3 && window.bloqueActualId === 1) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); }
                 else if (gapActivoId === 5 && window.bloqueActualId === 2) { window.bloqueActualId = 3; cargarSetAlternativasInferior(); }
@@ -931,82 +937,76 @@ if (primeraLinea) primeraLinea.focus();
             }
         }
 
-
-                    
         document.getElementById("btn-abandonar-nivel").onclick = function() {
             finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
         };
 
-          function finalizarSistemaJuego(victoria, mensajeResultado) {
-          // 🔇 DESVANECIMIENTO SUAVE DE AUDIO (FADE-OUT SINCRONIZADO)
-             if (audioHangarJuego) {
-                let intervaloFade = setInterval(() => {
-                    if (audioHangarJuego.volume > 0.05) {
-                        audioHangarJuego.volume -= 0.05; // Baja el volumen poco a poco
-                    } else {
-                        clearInterval(intervaloFade);
-                        audioHangarJuego.pause();
-                        audioHangarJuego.volume = 0.25; // Restablecer volumen base para la próxima partida
-                    }
-                }, 50); // Ejecuta el cambio cada 50 milisegundos
+        function finalizarSistemaJuego(victoria, mensajeResultado) {
+    // 🔇 DESVANECIMIENTO SUAVE DE AUDIO (FADE-OUT SINCRONIZADO)
+    if (audioHangarJuego) {
+        let intervaloFade = setInterval(() => {
+            if (audioHangarJuego.volume > 0.05) {
+                audioHangarJuego.volume -= 0.05;
+            } else {
+                clearInterval(intervaloFade);
+                audioHangarJuego.pause();
+                audioHangarJuego.volume = 0.25; 
             }
+        }, 50);
+    }
 
-            gameCorriendo = false;
-            cancelAnimationFrame(animacionFrameId);
-            
-            // 📡 ACTIVAR CARTEL DIGITAL EN LUGAR DE ALERT
-            const cartel = document.getElementById("aion-cartel-resultado");
-            const cTitulo = document.getElementById("cartel-titulo");
-            const cMensaje = document.getElementById("cartel-mensaje");
-            const cPuntos = document.getElementById("cartel-puntos");
+    gameCorriendo = false;
+    cancelAnimationFrame(animacionFrameId);
+    
+    const cartel = document.getElementById("aion-cartel-resultado");
+    const cTitulo = document.getElementById("cartel-titulo");
+    const cMensaje = document.getElementById("cartel-mensaje");
+    const cPuntos = document.getElementById("cartel-puntos");
 
-            if (cartel && cTitulo && cMensaje && cPuntos) {
-                // Configurar colores y textos según el resultado del piloto
-                if (victoria) {
-                    cartel.style.borderColor = "#00ff88"; // Borde verde
-                    cTitulo.innerText = "🔓 SISTEMA EN LÍNEA";
-                    cTitulo.style.color = "#00ff88";
-                } else {
-                    cartel.style.borderColor = "#ef4444"; // Borde rojo
-                    cTitulo.innerText = "🔒 INTRUSIÓN DETENIDA";
-                    cTitulo.style.color = "#ef4444";
-                }
-                cMensaje.innerText = mensajeResultado;
-                cPuntos.innerText = `${gamePuntos} PTS`;
-                
-                // Mostrar el cartel en pantalla
-                cartel.style.display = "flex";
-            }
-
-            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
-            if (cuentaLocal) {
-                const perfil = JSON.parse(cuentaLocal);
-                const llaveHistorialAlumno = `aion_game_history_${perfil.nombre || 'Piloto'}_${perfil.codigo || 'AION'}`;
-                
-                let historialPartidas = JSON.parse(localStorage.getItem(llaveHistorialAlumno)) || [];
-                historialPartidas.push({ fecha: new Date().toLocaleTimeString(), puntos: gamePuntos });
-                localStorage.setItem(llaveHistorialAlumno, JSON.stringify(historialPartidas));
-            }
-
-            // Regresar el tablero a su estado base
-            document.getElementById("aion-game-tablero-activo").style.display = "none";
-            document.getElementById("contenedor-apuntes-hangar").style.display = "grid";
-            document.getElementById("aion-game-menu-inicio").style.display = "flex";
-
-            for (let i = 0; i < 3; i++) {
-                const gap = document.getElementById(`gap-${i}`);
-                if (gap) {
-                    gap.innerText = "____";
-                    gap.style.backgroundColor = "#ffffff";
-                    gap.style.color = "#000000";
-                    gap.style.borderColor = "#000000";
-                }
-            }
+    if (cartel && cTitulo && cMensaje && cPuntos) {
+        if (victoria) {
+            cartel.style.borderColor = "#00ff88";
+            cTitulo.innerText = "🔓 SISTEMA EN LÍNEA";
+            cTitulo.style.color = "#00ff88";
+        } else {
+            cartel.style.borderColor = "#ef4444";
+            cTitulo.innerText = "🔒 INTRUSIÓN DETENIDA";
+            cTitulo.style.color = "#ef4444";
         }
+        cMensaje.innerText = mensajeResultado;
+        cPuntos.innerText = `${gamePuntos} PTS`;
+        cartel.style.display = "flex";
+    }
 
-    </script>
+    const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+    if (cuentaLocal) {
+        const perfil = JSON.parse(cuentaLocal);
+        const llaveHistorialAlumno = `aion_game_history_${perfil.nombre || 'Piloto'}_${perfil.codigo || 'AION'}`;
+        
+        let historialPartidas = JSON.parse(localStorage.getItem(llaveHistorialAlumno)) || [];
+        historialPartidas.push({ fecha: new Date().toLocaleTimeString(), puntos: gamePuntos });
+        localStorage.setItem(llaveHistorialAlumno, JSON.stringify(historialPartidas));
+    }
+
+    // Regresar el tablero a su estado base
+    document.getElementById("aion-game-tablero-activo").style.display = "none";
+    document.getElementById("contenedor-apuntes-hangar").style.display = "grid";
+    document.getElementById("aion-game-menu-inicio").style.display = "flex";
+
+    // CORRECCIÓN DE LIMPIEZA DINÁMICA: Limpia todos los inputs generados sin importar cuántos sean
+    document.querySelectorAll(".game-gap").forEach(gap => {
+        gap.innerText = "____";
+        gap.style.backgroundColor = "#ffffff";
+        gap.style.color = "#000000";
+        gap.style.borderColor = "#000000";
+    });
+}
+</script>
 </body>
 </html>
+
+                       
+ 
                   
 
         
