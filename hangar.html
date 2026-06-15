@@ -544,6 +544,81 @@ if (primeraLinea) primeraLinea.focus();
             { texto: "return" }
         ];
 
+       // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN (NIVELES 1 AL 3)
+const BASE_DATOS_RETO = {
+    1: {
+        titulo: "# Script de Inicialización de Red AION UTP",
+        lineas: [
+            'def iniciar_sistema_hangar():',
+            '&nbsp;&nbsp;&nbsp;&nbsp;servidor = <span id="gap-0" class="game-gap">____</span>',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Escaneando firmas cuánticas...")',
+            '<br>',
+            '&nbsp;&nbsp;&nbsp;&nbsp;if servidor == "ONLINE":',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" class="game-gap">____</span>("Acceso de Alumno Concedido")',
+            '&nbsp;&nbsp;&nbsp;&nbsp;else:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Fallo de infraestructura")',
+            '<br>',
+            '# Rutina central del Hangar',
+            'if __name__ == <span id="gap-2" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;iniciar_sistema_hangar()'
+        ],
+        respuestas: {
+            0: '"ONLINE"',
+            1: 'print',
+            2: '"__main__"'
+        },
+        alternativas: ['"ONLINE"', 'print', 'input', '"__main__"', 'return'],
+        velocidad: 0.85,
+        totalGaps: 3
+    },
+    2: {
+        titulo: "# Desafío 2: Control de Matrices y Listas en Python",
+        lineas: [
+            '# Declarar matriz identidad de 2x2',
+            'matriz_utp = [[1, 0], [0, 1]]',
+            '<br>',
+            '# Iterar sobre las filas de la matriz',
+            '<span id="gap-0" class="game-gap">____</span> fila in matriz_utp:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;for elemento in fila:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if elemento == <span id="gap-1" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Diagonal principal activada")',
+            '<br>',
+            '# Agregar un nuevo cuadrante al hangar',
+            'matriz_utp.<span id="gap-2" class="game-gap">____</span>([0, 0])'
+        ],
+        respuestas: {
+            0: 'for',
+            1: '1',
+            2: 'append'
+        },
+        alternativas: ['for', 'while', '1', '0', 'append'],
+        velocidad: 1.10,
+        totalGaps: 3
+    },
+    3: {
+        titulo: "# Desafío 3: Manejo de Excepciones de Red",
+        lineas: [
+            '# Capturar caídas en el enlace de datos',
+            '<span id="gap-0" class="game-gap">____</span>:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;conectar_servidor_firebase()',
+            '<span id="gap-1" class="game-gap">____</span> Exception as e:',
+            '&nbsp;&nbsp;&nbsp;&nbsp;print("Enlace roto, reintentando...")',
+            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-2" class="game-gap">____</span>'
+        ],
+        respuestas: {
+            0: 'try',
+            1: 'except',
+            2: 'pass'
+        },
+        alternativas: ['try', 'except', 'pass', 'catch', 'finally'],
+        velocidad: 1.35,
+        totalGaps: 3
+    }
+};
+ 
+        
+        
+        
         let gamePuntos = 0;
         let gameVidas = 2; 
         let gapActivoId = 0;
@@ -556,7 +631,9 @@ if (primeraLinea) primeraLinea.focus();
         btnNivel1.onmouseover = function() { this.style.transform = "scale(1.03)"; this.style.backgroundColor = "#b3b3b3"; };
         btnNivel1.onmouseout = function() { this.style.transform = "scale(1)"; this.style.backgroundColor = "#a6a6a6"; };
 
-        btnNivel1.onclick = function() {
+                btnNivel1.onclick = function() {
+            const datosRetoActual = BASE_DATOS_RETO[nivelMaximoAlcanzado] || BASE_DATOS_RETO[1];
+
             document.getElementById("contenedor-apuntes-hangar").style.display = "none";
             document.getElementById("aion-game-menu-inicio").style.display = "none";
             
@@ -577,27 +654,46 @@ if (primeraLinea) primeraLinea.focus();
             gameVidas = 2;
             gamePuntos = 0;
             
+            velocidadDesplazamiento = datosRetoActual.velocidad;
+            window.gapsTotalesNivel = datosRetoActual.totalGaps; 
+            window.respuestasNivelActual = datosRetoActual.respuestas;
+
+            const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+            bloqueMovil.innerHTML = `<p style="color: #444444; font-weight: bold;">${datosRetoActual.titulo}</p>`;
+            
+            datosRetoActual.lineas.forEach(linea => {
+                bloqueMovil.innerHTML += `<p>${linea}</p>`;
+            });
+
+            document.querySelectorAll(".game-gap").forEach(el => {
+                el.style = "display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;";
+            });
+
             posicionScriptY = document.getElementById("aion-consola-desplazable").clientHeight - 40;
             
-            document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto}`;
+            document.getElementById("txt-piloto-game").innerText = `PILOTO: ${nombrePiloto} ${codigoPiloto} | DESAFÍO Lvl ${nivelMaximoAlcanzado}`;
             document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ | PUNTOS: 0`;
+            
             document.getElementById("gap-0").style.borderColor = "#ffaa00"; 
 
-            ALTERNATIVAS_DEL_JUEGO.forEach((alt, idx) => {
+            datosRetoActual.alternativas.forEach((textoAlternativa, idx) => {
                 const btnCaja = document.getElementById(`g-opt-${idx}`);
-                btnCaja.innerText = alt.texto;
-                btnCaja.style.opacity = "1";
-                btnCaja.style.backgroundColor = "#ffffff";
-                btnCaja.style.pointerEvents = "auto";
-                
-                btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
-                btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
-                
-                btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${idx}`); };
+                if (btnCaja) {
+                    btnCaja.innerText = textoAlternativa;
+                    btnCaja.style.opacity = "1";
+                    btnCaja.style.backgroundColor = "#ffffff";
+                    btnCaja.style.pointerEvents = "auto";
+                    
+                    btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
+                    btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
+                    
+                    btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${idx}`); };
+                }
             });
 
             bucleMovimientoUniforme();
         };
+
 
         function bucleMovimientoUniforme() {
             if (!gameCorriendo) return;
@@ -615,10 +711,11 @@ if (primeraLinea) primeraLinea.focus();
             animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
         }
 
-        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+                function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
 
-            if (textoBoton === RESPUESTAS_NIVEL[gapActivoId].palabra) {
+            // VALIDACIÓN DINÁMICA DE ACUERDO AL NIVEL EN CURSO
+            if (textoBoton === window.respuestasNivelActual[gapActivoId]) {
                 const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
                 huecoElemento.innerText = textoBoton;
                 huecoElemento.style.backgroundColor = "transparent";
@@ -632,8 +729,10 @@ if (primeraLinea) primeraLinea.focus();
                 gamePuntos += 250;
                 gapActivoId++;
 
-                if (gapActivoId < 3) {
-                    document.getElementById(`gap-${gapActivoId}`).style.borderColor = "#ffaa00";
+                // Validar si quedan más espacios vacíos usando el límite dinámico del nivel
+                if (gapActivoId < window.gapsTotalesNivel) {
+                    const proxGap = document.getElementById(`gap-${gapActivoId}`);
+                    if (proxGap) proxGap.style.borderColor = "#ffaa00";
                 } else {
                     finalizarSistemaJuego(true, "¡Rutina de inicialización compilada con éxito!");
                 }
@@ -649,6 +748,7 @@ if (primeraLinea) primeraLinea.focus();
             let stringCorazones = "❤️ ".repeat(gameVidas) || "❌";
             document.getElementById("txt-vidas-game").innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
         }
+
 
         document.getElementById("btn-abandonar-nivel").onclick = function() {
             finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
