@@ -828,21 +828,24 @@ if (primeraLinea) primeraLinea.focus();
 
             const bloqueMovil = document.getElementById("aion-bloque-movil-script");
             bloqueMovil.innerHTML = `<p style="color: #444444; font-weight: bold;">${datosRetoActual.titulo}</p>`;
-            
-                       datosRetoActual.lineas.forEach(linea => {
+                        datosRetoActual.lineas.forEach(linea => {
                 let lineaColoreada = linea;
 
                 if (lineaColoreada.trim().startsWith('#') || lineaColoreada.trim().startsWith('//')) {
                     lineaColoreada = `<span style="color: #6a9955;">${lineaColoreada}</span>`;
                 } else {
+                    // Colorear etiquetas HTML de Amazon de forma segura
                     lineaColoreada = lineaColoreada.replace(/(&lt;\/?[a-zA-Z0-9:-]+)/g, '<span style="color: #569cd6;">$1</span>');
                     lineaColoreada = lineaColoreada.replace(/(&gt;)/g, '<span style="color: #569cd6;">&gt;</span>');
-                    lineaColoreada = lineaColoreada.replace(/(style|class|id|src|lang|charset)=/g, '<span style="color: #9cdcfe;">$1</span>=');
+                    
+                    // Colorear atributos e-commerce sin tocar las etiquetas dinámicas del juego
+                    lineaColoreada = lineaColoreada.replace(/(href|target|type|name)=/g, '<span style="color: #9cdcfe;">$1</span>=');
                     lineaColoreada = lineaColoreada.replace(/("[^"]*")/g, '<span style="color: #ce9178;">$1</span>');
                 }
 
                 bloqueMovil.innerHTML += `<p>${lineaColoreada}</p>`;
             });
+
 
             document.querySelectorAll(".game-gap").forEach(el => {
                 el.style = "display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;";
