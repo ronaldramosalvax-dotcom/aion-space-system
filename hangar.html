@@ -935,6 +935,16 @@ if (primeraLinea) primeraLinea.focus();
 
         function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
             if (!gameCorriendo) return;
+                        // 🚫 BLOQUEO ANTICIPACIÓN: Solo responde si el hueco ya es visible en la consola
+            const huecoActual = document.getElementById(`gap-${gapActivoId}`);
+            if (huecoActual) {
+                const rectConsola = document.getElementById("aion-consola-desplazable").getBoundingClientRect();
+                const rectGap = huecoActual.getBoundingClientRect();
+                if (rectGap.top > rectConsola.bottom) {
+                    return; 
+                }
+            }
+
 
             const txtVidas = document.getElementById("txt-vidas-game");
             const txtPiloto = document.getElementById("txt-piloto-game");
