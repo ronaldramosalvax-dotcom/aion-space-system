@@ -874,7 +874,7 @@ const playlist = [
     }
   });
 
-    // Persistencia de Estado Optimizada con Tiempo Continuo
+     // Persistencia de Estado Optimizada con Tiempo Continuo
   if (localStorage.getItem('aion_music_playing') === 'true') {
     musicToggle.innerHTML = '🎵';
     musicToggle.classList.add('playing');
@@ -887,16 +887,17 @@ const playlist = [
       bgMusic.volume = 0.25;
       bgMusic.play()
         .then(() => {
-          // El tiempo se inyecta de forma segura SOLAMENTE cuando el navegador confirma que ya dio play con éxito
+          // El tiempo se inyecta de forma segura cuando el navegador ya dio play con éxito
           const tiempoGuardado = localStorage.getItem('aion_music_time');
           if (tiempoGuardado) {
             bgMusic.currentTime = parseFloat(tiempoGuardado);
-              })
+          }
+        })
         .catch(() => {});
         
-      document.removeEventListener('click', autoPlayIntento);
+          document.removeEventListener('click', autoPlayIntento);
     };
-    
+
     document.addEventListener('click', autoPlayIntento);
     setTimeout(autoPlayIntento, 100);
   }
