@@ -39,7 +39,7 @@
         .frac-table { border-collapse: collapse; text-align: center; color: #333333; font-family: monospace; display: inline-block; vertical-align: middle; }
         .frac-top { border-bottom: 2px solid #333333; padding: 2px 6px; }
         .frac-bot { padding: 2px 6px; color: #333333; }
-                /* Congelar desplazamiento vertical en pantallas móviles */
+                       /* Congelar y adaptar cuadrante en pantallas móviles */
         @media (max-width: 768px) {
             html, body {
                 overflow: hidden !important; 
@@ -48,10 +48,19 @@
                 height: 100vh;
             }
             .quiz-container {
-                height: 100vh;               
-                max-height: 100vh;
+                height: auto;          /* Ya no se estira a la fuerza */
+                max-height: 92vh;      /* Deja un margen sutil arriba y abajo */
+                width: 95%;            /* No se pega completamente a los lados */
+                margin: auto;          /* Lo centra perfectamente en vertical y horizontal */
+                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1); /* Sombra suave */
+            }
+            .problem-block {
+                height: auto;          /* El bloque del problema se adapta a su texto */
+                max-height: 35vh;
             }
         }
+
+       
 
     </style>
 </head>
