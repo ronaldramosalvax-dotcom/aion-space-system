@@ -109,7 +109,7 @@
             <!-- Celdas inyectadas dinámicamente -->
         </div>
     </div>
-    <script>
+       <script>
         const grid = document.getElementById('grid-plantilla');
         const COLS = 35;
         const ROWS = 53;
@@ -120,55 +120,68 @@
                 const cuadro = document.createElement('div');
                 cuadro.className = 'cuadradito';
                 
-                const esMargenHorizontal = (r === 1 || r === ROWS);
-                const esMargenVertical = (c === 1 || c === COLS);
-                
-                if (c === 1 || c === COLS - 1) cuadro.classList.add('sin-borde-derecho');
-                if (r === 1 || r === ROWS - 1) cuadro.classList.add('sin-borde-inferior');
+                // Detectar si la celda está en los extremos exactos (Bordes)
+                const esPrimeraFila = (r === 1);
+                const esUltimaFila = (r === ROWS);
+                const esPrimeraColumna = (c === 1);
+                const esUltimaColumna = (c === COLS);
 
-                if (!esMargenHorizontal && !esMargenVertical) {
+                // OCULTAR LÍNEAS PARA CREAR EL MARGEN LIMPIO EN LOS 4 LADOS
+                // Si está en la última columna o última fila, no lleva ningún borde
+                if (esUltimaColumna || esUltimaFila) {
+                    cuadro.style.borderRight = 'none';
+                    cuadro.style.borderBottom = 'none';
+                }
+                // Si está en la primera fila o primera columna, quitamos sus bordes para limpiar el inicio
+                if (esPrimeraFila || esPrimeraColumna) {
+                    cuadro.style.borderRight = 'none';
+                    cuadro.style.borderBottom = 'none';
+                }
+                // Para simular la línea de margen clásica: activamos borde solo donde empieza la cuadrícula real
+                if (r === 2 && c >= 2 && c < COLS) cuadro.style.borderTop = '1px solid rgba(0, 0, 0, 0.15)';
+                if (c === 2 && r >= 2 && r < ROWS) cuadro.style.borderLeft = '1px solid rgba(0, 0, 0, 0.15)';
+
+                // Solo inyectar inputs si está dentro de la zona de trabajo (lejos del margen)
+                if (!esPrimeraFila && !esUltimaFila && !esPrimeraColumna && !esUltimaColumna) {
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.className = 'celda-input';
                     input.maxLength = 1; 
                     
-                    // Asignar coordenadas como atributos personalizados de datos
                     input.dataset.row = r;
                     input.dataset.col = c;
 
-                    // Escuchar las teclas presionadas
+                    // Lógica de navegación por teclado
                     input.addEventListener('keydown', function(e) {
                         let currentRow = parseInt(this.dataset.row);
                         let currentCol = parseInt(this.dataset.col);
                         let targetInput = null;
 
-                        if (e.key === 'ArrowRight' || this.value.length === 1 && e.key !== 'Backspace') {
-                            // Mover a la derecha (si no está al límite)
+                        if (e.key === ' ' || e.key === 'Spacebar') { // Barra espaciadora (Horizontal)
+                            e.preventDefault();
+                            if (currentCol < COLS - 1) {
+                                targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
+                            }
+                        } else if (e.key === 'ArrowRight') {
                             if (currentCol < COLS - 1) {
                                 targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
                             }
                         } else if (e.key === 'ArrowLeft') {
-                            // Mover a la izquierda
                             if (currentCol > 2) {
                                 targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol - 1}"]`);
                             }
-                        } else if (e.key === 'ArrowDown' || e.key === 'Enter') {
-                            // Mover abajo
-                            e.preventDefault(); // Evita saltos extraños con el Enter
+                        } else if (e.key === 'ArrowDown' || e.key === 'Enter') { // Enter (Vertical)
+                            e.preventDefault(); 
                             if (currentRow < ROWS - 1) {
                                 targetInput = document.querySelector(`[data-row="${currentRow + 1}"][data-col="${currentCol}"]`);
                             }
                         } else if (e.key === 'ArrowUp') {
-                            // Mover arriba
                             if (currentRow > 2) {
                                 targetInput = document.querySelector(`[data-row="${currentRow - 1}"][data-col="${currentCol}"]`);
                             }
                         }
 
-                        // Si existe la celda destino, pasar el foco automáticamente
-                        if (targetInput) {
-                            targetInput.focus();
-                        }
+                        if (targetInput) targetInput.focus();
                     });
 
                     cuadro.appendChild(input);
@@ -178,6 +191,7 @@
             }
         }
     </script>
+
 
 </body>
 </html>
