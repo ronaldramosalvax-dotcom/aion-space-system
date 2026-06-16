@@ -97,7 +97,96 @@
         }
         .avatar-card img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #404eed; }
         .avatar-card span { font-family: monospace; font-weight: bold; font-size: 9px; color: #ffffff; letter-spacing: 0.5px; }
-  
+                /* --- ACCESO DIRECTO AL ARCADE SIMULADOR AION --- */
+        .contenedor-zona-arcade {
+            width: 100%;
+            max-width: 950px;
+            margin: 30px auto 20px auto;
+            display: flex;
+            justify-content: center;
+            padding: 0 10px;
+        }
+        .cuadrante-arcade-card {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(10, 15, 30, 0.95) 0%, rgba(20, 25, 45, 0.95) 100%);
+            border: 2px dashed #404eed;
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        .cuadrante-arcade-card::before {
+            content: ''; position: absolute; top: 0; left: -50%; width: 30%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(0, 242, 254, 0.15), transparent);
+            transform: skewX(-25deg); transition: 0.8s;
+        }
+        .cuadrante-arcade-card:hover::before { left: 150%; }
+        .cuadrante-arcade-card:hover {
+            border-style: solid;
+            border-color: #00ff88;
+            box-shadow: 0 0 35px rgba(0, 255, 136, 0.3);
+            transform: translateY(-3px);
+        }
+        .arcade-info-lado {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            text-align: left;
+        }
+        .arcade-icono-grande {
+            font-size: 2.3rem;
+            background: rgba(64, 78, 237, 0.12);
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid #404eed;
+            transition: 0.3s;
+        }
+        .cuadrante-arcade-card:hover .arcade-icono-grande {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+        .arcade-textos h3 {
+            font-family: monospace;
+            color: #ffffff;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .arcade-textos p {
+            color: #72767d;
+            font-size: 0.9rem;
+        }
+        .btn-arcade-hipervinculo {
+            background: rgba(35, 39, 42, 0.8);
+            border: 1px solid #404eed;
+            color: #404eed;
+            padding: 11px 22px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .cuadrante-arcade-card:hover .btn-arcade-hipervinculo {
+            background: #00ff88;
+            color: #060913;
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+
 
     </style>
 </head>
@@ -151,6 +240,20 @@
         </table>
     </div>
 </div>
+                <!-- SECCIÓN INDEPENDIENTE: ACCESO AL SIMULADOR ESPACIAL -->
+    <div class="contenedor-zona-arcade">
+        <div class="cuadrante-arcade-card" onclick="window.location.href='simulador.html'">
+            <div class="arcade-info-lado">
+                <div class="arcade-icono-grande">🕹️</div>
+                <div class="arcade-textos">
+                    <h3>[ SIMULADOR DE VUELO ARCADE ]</h3>
+                    <p>Inicia el entrenamiento de combate táctico con naves espaciales en el hiperespacio AION.</p>
+                </div>
+            </div>
+            <button class="btn-arcade-hipervinculo">INGRESAR AL ÁREA</button>
+        </div>
+    </div>
+
 
     <!-- VENTANA EMERGENTE DE TU WORD -->
     <div id="modal-perfil-flotante" class="modal-fondo-oscuro">
