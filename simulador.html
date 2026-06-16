@@ -3,18 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AION SPACE SYSTEM | Simulador de Vuelo</title>
+    <title>AION SPACE SYSTEM | Simulador de Vuelo Avanzado</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body {
-            background-color: #060913;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
+            background-color: #060913; color: #ffffff;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; overflow: hidden;
         }
         .header { margin-bottom: 15px; text-align: center; }
         .btn-back {
@@ -24,19 +19,16 @@
         }
         .btn-back:hover { color: white; background: rgba(255,255,255,0.08); border-color: #404eed; }
         canvas {
-            border: 2px solid #404eed;
-            background-color: #02040a;
-            box-shadow: 0 0 30px rgba(64, 78, 237, 0.4);
-            border-radius: 8px;
-            cursor: none;
+            border: 2px solid #404eed; background-color: #02040a;
+            box-shadow: 0 0 30px rgba(64, 78, 237, 0.4); border-radius: 8px; cursor: none;
         }
-        .score-board { font-size: 1.2rem; font-weight: bold; color: #00ff88; margin-top: 10px; }
+        .score-board { font-size: 1.2rem; font-weight: bold; color: #00ff88; margin-top: 10px; font-family: monospace; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2 style="color: #5765f2; letter-spacing: 1px; margin-bottom: 5px;">🚀 SIMULADOR TÁCTICO AION</h2>
+        <h2 style="color: #5765f2; letter-spacing: 1px; margin-bottom: 5px; font-family: monospace;">🚀 SIMULADOR TÁCTICO AION v2.0</h2>
         <a href="hangar.html" class="btn-back">⬅ Volver al Hangar</a>
     </div>
 
@@ -51,6 +43,7 @@
         let score = 0;
         let juegoTerminado = false;
 
+        // --- ENTORNO MOUSE ---
         let mouseX = canvas.width / 2;
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
@@ -62,43 +55,90 @@
             disparar();
         });
 
-        const jugador = { x: 200, y: 480, w: 40, h: 40, color: '#00f2fe' };
+        // --- SISTEMAS ADICIONALES ---
+        const jugador = { x: 200, y: 480, w: 40, h: 40, color: '#00f2fe', maxEscudo: 100, escudo: 100, tipoDisparo: 'normal', powerUpTimer: 0 };
         let laseres = [];
         let enemigos = [];
         let estrellas = [];
+        let particulas = [];
+        let powerups = [];
+        let jefe = null;
+        let jefeDireccion = 1;
 
+        // Inicializar estrellas del espacio de fondo
         for (let i = 0; i < 50; i++) {
             estrellas.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, velocidad: Math.random() * 2 + 1 });
         }
 
+        function crearExplosion(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                particulas.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    size: Math.random() * 3 + 1,
+                    vida: 30, color: color
+                });
+            }
+        }
+
         function disparar() {
-            laseres.push({ x: jugador.x + jugador.w / 2 - 3, y: jugador.y, w: 6, h: 15, velocidad: 7, color: '#00ff88' });
+            if (jugador.tipoDisparo === 'doble') {
+                laseres.push({ x: jugador.x, y: jugador.y + 10, w: 5, h: 15, velocidad: 8, color: '#ffff00' });
+                laseres.push({ x: jugador.x + jugador.w - 5, y: jugador.y + 10, w: 5, h: 15, velocidad: 8, color: '#ffff00' });
+            } else {
+                laseres.push({ x: jugador.x + jugador.w / 2 - 3, y: jugador.y, w: 6, h: 15, velocidad: 7, color: '#00ff88' });
+            }
         }
 
         function crearEnemigo() {
+            if (jefe) return; // No salen enemigos comunes si está el Jefe
+            
+            // Aparece Jefe cada 300 puntos
+            if (score > 0 && score % 300 === 0 && !jefe) {
+                jefe = { x: canvas.width / 2 - 50, y: -80, w: 100, h: 50, maxVida: 15, vida: 15, velocidad: 2, color: '#d63031' };
+                return;
+            }
+
             if (Math.random() < 0.03 && enemigos.length < 6) {
-                enemigos.push({ x: Math.random() * (canvas.width - 30), y: -30, w: 32, h: 32, velocidad: Math.random() * 2 + 2, color: '#ff4757' });
+                let tipo = Math.random() < 0.3 ? 'rapido' : 'normal';
+                let col = tipo === 'rapido' ? '#ffeaa7' : '#ff4757';
+                let vel = tipo === 'rapido' ? 5 : Math.random() * 2 + 2;
+                enemigos.push({ x: Math.random() * (canvas.width - 30), y: -30, w: 32, h: 32, velocidad: vel, color: col, tipo: tipo });
             }
         }
 
         function reiniciarJuego() {
-            score = 0; scoreEl.innerText = score; laseres = []; enemigos = []; juegoTerminado = false; buclePrincipal();
+            score = 0; scoreEl.innerText = score; laseres = []; enemigos = []; particulas = []; powerups = []; jefe = null;
+            jugador.escudo = 100; jugador.tipoDisparo = 'normal'; jugador.powerUpTimer = 0;
+            juegoTerminado = false; buclePrincipal();
         }
 
         function buclePrincipal() {
             if (juegoTerminado) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                let acoinsGanadas = Math.floor(score / 100) * 10;
+                if (acoinsGanadas > 0) {
+                    let balanceActual = parseInt(localStorage.getItem("aion_acoins_balance")) || 0;
+                    localStorage.setItem("aion_acoins_balance", (balanceActual + acoinsGanadas).toString());
+                }
+
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ff4757'; ctx.font = '24px Segoe UI'; ctx.textAlign = 'center';
-                ctx.fillText('Nave Destruida', canvas.width / 2, canvas.height / 2 - 10);
+                ctx.fillStyle = '#ff4757'; ctx.font = 'bold 26px Segoe UI'; ctx.textAlign = 'center';
+                ctx.fillText('SISTEMA COLAPSADO', canvas.width / 2, canvas.height / 2 - 30);
+                
+                ctx.fillStyle = '#00f2fe'; ctx.font = '16px monospace';
+                ctx.fillText(`+${acoinsGanadas} A-COINS SINCRONIZADAS`, canvas.width / 2, canvas.height / 2 + 10);
+                
                 ctx.fillStyle = '#ffffff'; ctx.font = '14px Segoe UI';
-                ctx.fillText('Haz clic para reingresar al hiperespacio', canvas.width / 2, canvas.height / 2 + 20);
+                ctx.fillText('Haz clic para reiniciar escaneo de vuelo', canvas.width / 2, canvas.height / 2 + 50);
                 return;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             crearEnemigo();
 
+            // 1. Estrellas de Fondo
             ctx.fillStyle = '#ffffff';
             estrellas.forEach(est => {
                 ctx.fillRect(est.x, est.y, est.size, est.size);
@@ -106,10 +146,18 @@
                 if (est.y > canvas.height) est.y = 0;
             });
 
+            // 2. Controlar Temporizador del Power-Up de Disparo Doble
+            if (jugador.tipoDisparo === 'doble') {
+                jugador.powerUpTimer--;
+                if (jugador.powerUpTimer <= 0) jugador.tipoDisparo = 'normal';
+            }
+
+            // 3. Renderizar y mover Jugador
             jugador.x = mouseX - jugador.w / 2;
             if (jugador.x < 0) jugador.x = 0;
             if (jugador.x > canvas.width - jugador.w) jugador.x = canvas.width - jugador.w;
 
+            // Dibujar Nave Jugador
             ctx.fillStyle = jugador.color;
             ctx.beginPath();
             ctx.moveTo(jugador.x + jugador.w / 2, jugador.y);
@@ -118,10 +166,29 @@
             ctx.closePath();
             ctx.fill();
 
-            ctx.fillStyle = '#5765f2';
-            ctx.fillRect(jugador.x - 5, jugador.y + jugador.h - 15, 5, 15);
-            ctx.fillRect(jugador.x + jugador.w, jugador.y + jugador.h - 15, 5, 15);
+            // Dibujar Campo de Fuerza/Escudo Circular si está activo
+            if (jugador.escudo > 0) {
+                ctx.strokeStyle = `rgba(0, 242, 254, ${jugador.escudo / 100})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(jugador.x + jugador.w / 2, jugador.y + jugador.h / 2, 28, 0, Math.PI * 2);
+                ctx.stroke();
+            }
 
+            // 4. Interfaz Gráfica Integrada: Barra de Escudos
+            ctx.fillStyle = '#222'; ctx.fillRect(15, 15, 120, 10);
+            ctx.fillStyle = jugador.escudo > 30 ? '#00f2fe' : '#ff4757';
+            ctx.fillRect(15, 15, (jugador.escudo / 100) * 120, 10);
+
+            // 5. Manejar Partículas de Explosiones
+            particulas.forEach((p, index) => {
+                p.x += p.vx; p.y += p.vy; p.vida--;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+                if (p.vida <= 0) particulas.splice(index, 1);
+            });
+
+            // 6. Manejar Láseres
             laseres.forEach((laser, index) => {
                 laser.y -= laser.velocidad;
                 ctx.fillStyle = laser.color;
@@ -129,28 +196,89 @@
                 if (laser.y < 0) laseres.splice(index, 1);
             });
 
+            // 7. Manejar ítems Power-Ups Dropeados
+            powerups.forEach((pu, index) => {
+                pu.y += 2;
+                ctx.fillStyle = '#ffff00';
+                ctx.beginPath(); ctx.arc(pu.x, pu.y, 8, 0, Math.PI * 2); ctx.fill();
+                
+                // Colisión con el Jugador
+                if (pu.x > jugador.x && pu.x < jugador.x + jugador.w && pu.y > jugador.y && pu.y < jugador.y + jugador.h) {
+                    jugador.tipoDisparo = 'doble';
+                    jugador.powerUpTimer = 300; // Dura 5 segundos (60 fps * 5)
+                    powerups.splice(index, 1);
+                }
+                if (pu.y > canvas.height) powerups.splice(index, 1);
+            });
+
+            // 8. MANEJAR ENTORNO DEL JEFE FINAL
+            if (jefe) {
+                if (jefe.y < 40) jefe.y += 1; // Entrada fluida a pantalla
+                jefe.x += jefe.velocidad * jefeDireccion;
+                if (jefe.x <= 0 || jefe.x >= canvas.width - jefe.w) jefeDireccion *= -1;
+
+                // Dibujar Nave Nodriza Jefe
+                ctx.fillStyle = jefe.color;
+                ctx.fillRect(jefe.x, jefe.y, jefe.w, jefe.h);
+                // Barra de Vida del Jefe superior
+                ctx.fillStyle = '#ff2e63';
+                                ctx.fillRect(jefe.x, jefe.y - 12, (jefe.vida / jefe.maxVida) * jefe.w, 6);
+
+                // Ataque aleatorio del Jefe
+                if (Math.random() < 0.02) {
+                    enemigos.push({ x: jefe.x + jefe.w / 2, y: jefe.y + jefe.h, w: 20, h: 20, velocidad: 4, color: '#e17055', tipo: 'jefe_drop' });
+                }
+
+                // Láseres vs Jefe
+                laseres.forEach((laser, lIndex) => {
+                    if (laser.x > jefe.x && laser.x < jefe.x + jefe.w && laser.y > jefe.y && laser.y < jefe.y + jefe.h) {
+                        laseres.splice(lIndex, 1);
+                        jefe.vida--;
+                        crearExplosion(laser.x, laser.y, '#e17055');
+                        if (jefe.vida <= 0) {
+                            crearExplosion(jefe.x + jefe.w/2, jefe.y + jefe.h/2, '#ff4757');
+                            jefe = null;
+                            score += 150; // Recompensa masiva por derribar al jefe
+                            scoreEl.innerText = score;
+                        }
+                    }
+                });
+            }
+
+            // 9. Manejar Naves Enemigas Comunes
             enemigos.forEach((enemigo, eIndex) => {
                 enemigo.y += enemigo.velocidad;
 
                 ctx.fillStyle = enemigo.color;
                 ctx.beginPath();
                 ctx.moveTo(enemigo.x, enemigo.y);
-                ctx.lineTo(enemigo.x + enemigo.w, enemigo.y);
+                ctx.lineTo(enemigo.x + enemigo.w);
                 ctx.lineTo(enemigo.x + enemigo.w / 2, enemigo.y + enemigo.h);
-                ctx.closePath();
-                ctx.fill();
+                ctx.closePath(); ctx.fill();
 
+                // Colisión Láser vs Enemigo común
                 laseres.forEach((laser, lIndex) => {
                     if (laser.x < enemigo.x + enemigo.w && laser.x + laser.w > enemigo.x && laser.y < enemigo.y + enemigo.h && laser.y + laser.h > enemigo.y) {
+                        crearExplosion(enemigo.x + enemigo.w / 2, enemigo.y + enemigo.h / 2, enemigo.color);
+                        
+                        // Probabilidad de soltar Power-Up (20%)
+                        if (Math.random() < 0.2) {
+                            powerups.push({ x: enemigo.x + enemigo.w / 2, y: enemigo.y });
+                        }
+
                         enemigos.splice(eIndex, 1);
                         laseres.splice(lIndex, 1);
-                        score += 10;
+                        score += enemigo.tipo === 'rapido' ? 20 : 10;
                         scoreEl.innerText = score;
                     }
                 });
 
+                // Colisión Enemigo vs Jugador (Reduce barra de escudo)
                 if (jugador.x < enemigo.x + enemigo.w && jugador.x + jugador.w > enemigo.x && jugador.y < enemigo.y + enemigo.h && jugador.y + jugador.h > enemigo.y) {
-                    juegoTerminado = true;
+                    crearExplosion(enemigo.x + enemigo.w / 2, enemigo.y + enemigo.h / 2, '#ff4757');
+                    enemigos.splice(eIndex, 1);
+                    jugador.escudo -= 25; // 4 impactos permitidos antes de destruirse
+                    if (jugador.escudo <= 0) juegoTerminado = true;
                 }
 
                 if (enemigo.y > canvas.height) enemigos.splice(eIndex, 1);
@@ -163,3 +291,4 @@
     </script>
 </body>
 </html>
+
