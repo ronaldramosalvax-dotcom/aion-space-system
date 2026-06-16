@@ -78,20 +78,21 @@
             border-bottom: none !important;
         }
 
-        /* Celda donde puedes escribir */
+              /* Celda donde puedes escribir de forma fluida */
         .celda-input {
             width: 100%;
             height: 100%;
             border: none;
             background: transparent;
-            text-align: center;
+            text-align: left;       /* Cambiado de center a left para unir las letras */
             font-family: monospace; 
-            font-size: 14px;
+            font-size: 13px;        /* Un punto más pequeño para que no sature el cuadro */
             color: #000000;
             font-weight: bold;
             outline: none;
-            padding: 0;
+            padding: 0 0 0 4px;     /* Pequeño margen izquierdo para que no se pegue a la línea vertical */
         }
+
 
         .celda-input:focus {
             background-color: #e2e8f0;
