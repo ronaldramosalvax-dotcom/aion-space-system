@@ -834,10 +834,12 @@ const playlist = [
     return cancionSeleccionada;
   }
 
-  function cargarYReproducir() {
+   function cargarYReproducir() {
     bgMusic.src = obtenerSiguienteCancion();
+    bgMusic.volume = 0.25; // 🔴 Baja el volumen al 25% (Ajusta entre 0.0 y 1.0 según gustos)
     bgMusic.play().catch(err => console.log("Se requiere interacción para iniciar audio."));
   }
+
 
   // Al finalizar una canción, salta automáticamente a otra
   bgMusic.addEventListener('ended', () => {
@@ -850,17 +852,19 @@ const playlist = [
   musicToggle.addEventListener('click', () => {
     const estaSonando = localStorage.getItem('aion_music_playing') === 'true';
 
-    if (!estaSonando) {
+       if (!estaSonando) {
       // ENCENDER
       localStorage.setItem('aion_music_playing', 'true');
       musicToggle.innerHTML = '🎵';
       musicToggle.classList.add('playing');
       
+      bgMusic.volume = 0.25; // 🔴 Agrégalo aquí también para el encendido manual
       if (!bgMusic.src || bgMusic.src === window.location.href) {
         cargarYReproducir();
       } else {
         bgMusic.play().catch(() => cargarYReproducir());
       }
+
     } else {
       // APAGAR COMPLETAMENTE
       localStorage.setItem('aion_music_playing', 'false');
