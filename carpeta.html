@@ -116,107 +116,101 @@
             <!-- Celdas inyectadas dinámicamente -->
         </div>
     </div>
-       <script>
-                const grid = document.getElementById('grid-plantilla');
-        const COLS = 37; /* Cambiado de 35 a 37 */
-        const ROWS = 55; /* Cambiado de 53 a 55 */
+          <script>
+        const grid = document.getElementById('grid-plantilla');
+        const COLS = 37; 
+        const ROWS = 55; 
 
-
-        // Bucle para mapear las posiciones exactas
+        // 1. GENERAR LA CUADRÍCULA DE FONDO IDÉNTICA
         for (let r = 1; r <= ROWS; r++) {
+            // Creamos un contenedor contenedor para cada fila real
+            const filaContenedor = document.createElement('div');
+            filaContenedor.style.display = 'contents'; // Mantiene el CSS Grid intacto
+
             for (let c = 1; c <= COLS; c++) {
                 const cuadro = document.createElement('div');
                 cuadro.className = 'cuadradito';
                 
-                // Detectar si la celda está en los extremos exactos (Bordes)
                 const esPrimeraFila = (r === 1);
                 const esUltimaFila = (r === ROWS);
                 const esPrimeraColumna = (c === 1);
                 const esUltimaColumna = (c === COLS);
 
-                // OCULTAR LÍNEAS PARA CREAR EL MARGEN LIMPIO EN LOS 4 LADOS
-                // Si está en la última columna o última fila, no lleva ningún borde
-                if (esUltimaColumna || esUltimaFila) {
+                // Mantener tus márgenes blancos limpios en los 4 lados
+                if (esUltimaColumna || esUltimaFila || esPrimeraFila || esPrimeraColumna) {
                     cuadro.style.borderRight = 'none';
                     cuadro.style.borderBottom = 'none';
                 }
-                // Si está en la primera fila o primera columna, quitamos sus bordes para limpiar el inicio
-                if (esPrimeraFila || esPrimeraColumna) {
-                    cuadro.style.borderRight = 'none';
-                    cuadro.style.borderBottom = 'none';
-                }
-                // Para simular la línea de margen clásica: activamos borde solo donde empieza la cuadrícula real
-                                // Para simular la línea de margen clásica exacta
                 if (r === 2 && c >= 2 && c <= COLS) cuadro.style.borderTop = '1px solid rgba(0, 0, 0, 0.15)';
                 if (c === 2 && r >= 2 && r <= ROWS) cuadro.style.borderLeft = '1px solid rgba(0, 0, 0, 0.15)';
 
-                       // Solo inyectar inputs si está dentro de la zona de trabajo (lejos del margen)
-                if (!esPrimeraFila && !esUltimaFila && !esPrimeraColumna && !esUltimaColumna) {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'celda-input';
-                    input.maxLength = 1; 
-                    
-                    input.dataset.row = r;
-                    input.dataset.col = c;
-
-                    // 1. ESCRITURA DE CORRIDO: Salta a la derecha inmediatamente al escribir una letra o número
-                    input.addEventListener('input', function() {
-                        if (this.value.length === 1) {
-                            let currentRow = parseInt(this.dataset.row);
-                            let currentCol = parseInt(this.dataset.col);
-                            if (currentCol < COLS - 1) {
-                                const next = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
-                                if (next) next.focus();
-                            }
-                        }
-                    });
-
-                    // 2. NAVEGACIÓN Y CONTROLES ADICIONALES (Enter, Espacio y Flechas)
-                    input.addEventListener('keydown', function(e) {
-                        let currentRow = parseInt(this.dataset.row);
-                        let currentCol = parseInt(this.dataset.col);
-                        let targetInput = null;
-
-                        if (e.key === ' ' || e.key === 'Spacebar') { // Barra espaciadora fuerza salto manual
-                            e.preventDefault();
-                            if (currentCol < COLS - 1) {
-                                targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
-                            }
-                        } else if (e.key === 'ArrowRight') {
-                            if (currentCol < COLS - 1) {
-                                targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol + 1}"]`);
-                            }
-                        } else if (e.key === 'ArrowLeft') {
-                            if (currentCol > 2) {
-                                targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol - 1}"]`);
-                            }
-                        } else if (e.key === 'ArrowDown' || e.key === 'Enter') { // Enter baja de fila
-                            e.preventDefault(); 
-                            if (currentRow < ROWS - 1) {
-                                targetInput = document.querySelector(`[data-row="${currentRow + 1}"][data-col="${currentCol}"]`);
-                            }
-                        } else if (e.key === 'ArrowUp') {
-                            if (currentRow > 2) {
-                                targetInput = document.querySelector(`[data-row="${currentRow - 1}"][data-col="${currentCol}"]`);
-                            }
-                        } else if (e.key === 'Backspace' && this.value.length === 0) { // Retroceder al borrar si está vacío
-                            if (currentCol > 2) {
-                                targetInput = document.querySelector(`[data-row="${currentRow}"][data-col="${currentCol - 1}"]`);
-                            }
-                        }
-
-                        if (targetInput) targetInput.focus();
-                    });
-
-                    cuadro.appendChild(input);
+                // Guardar la posición de la primera celda útil para meter el renglón flotante
+                if (r > 1 && r < ROWS && c === 2) {
+                    cuadro.id = `renglon-${r}`;
                 }
 
+                filaContenedor.appendChild(cuadro);
+            }
+            grid.appendChild(filaContenedor);
+        }
 
-                grid.appendChild(cuadro);
+        // 2. INYECTAR LOS RENGLONES DE TEXTO CONTINUO (Uno por fila horizontal)
+        // Empezamos en la fila 2 y terminamos antes de la última fila por el margen
+        for (let r = 2; r < ROWS; r++) {
+            const celdaInicio = document.getElementById(`renglon-${r}`);
+            if (celdaInicio) {
+                const inputRenglon = document.createElement('input');
+                inputRenglon.type = 'text';
+                inputRenglon.className = 'celda-input';
+                
+                // Mapear la coordenada de la fila para los controles
+                inputRenglon.dataset.row = r;
+
+                // CSS FLOTANTE: El input mide el ancho total de la fila útil
+                // 35 columnas de ancho multiplicadas por el 100% de una celda grid
+                inputRenglon.style.position = 'absolute';
+                inputRenglon.style.width = 'calc(35 * 100%)'; 
+                inputRenglon.style.height = '100%';
+                inputRenglon.style.left = '0';
+                inputRenglon.style.top = '0';
+                inputRenglon.style.zIndex = '5';
+                inputRenglon.style.background = 'transparent';
+                inputRenglon.style.border = 'none';
+                inputRenglon.style.outline = 'none';
+                inputRenglon.style.color = '#000000';
+                inputRenglon.style.fontWeight = 'bold';
+                inputRenglon.style.fontSize = '14px';
+                inputRenglon.style.fontFamily = "'Segoe UI', sans-serif";
+                inputRenglon.style.paddingLeft = '6px';
+                
+                // Ajustar el espaciado de letras nativo para que coincida sutilmente con el patrón
+                inputRenglon.style.letterSpacing = '11.2px'; 
+
+                // CONTROLES DE FLUJO INTEGRADOS (Enter y Flechas)
+                inputRenglon.addEventListener('keydown', function(e) {
+                    let currentRow = parseInt(this.dataset.row);
+                    let targetInput = null;
+
+                    if (e.key === 'Enter' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (currentRow < ROWS - 1) {
+                            targetInput = document.querySelector(`input[data-row="${currentRow + 1}"]`);
+                        }
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (currentRow > 2) {
+                            targetInput = document.querySelector(`input[data-row="${currentRow - 1}"]`);
+                        }
+                    }
+
+                    if (targetInput) targetInput.focus();
+                });
+
+                celdaInicio.appendChild(inputRenglon);
             }
         }
     </script>
+
 
 
 </body>
