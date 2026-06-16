@@ -78,21 +78,20 @@
             border-bottom: none !important;
         }
 
-              /* Celda donde puedes escribir de forma fluida */
+                      /* Celda optimizada para juntar las letras en la cuadrícula */
         .celda-input {
             width: 100%;
             height: 100%;
             border: none;
             background: transparent;
-            text-align: left;       /* Cambiado de center a left para unir las letras */
-            font-family: monospace; 
-            font-size: 13px;        /* Un punto más pequeño para que no sature el cuadro */
+            text-align: center;     /* Volvemos a centrar para que llene el cuadro */
+            font-family: 'Segoe UI', sans-serif; /* Cambiado a sans-serif para letras más compactas */
+            font-size: 16px;        /* Subimos a 16px para que la letra ocupe más ancho del cuadro */
             color: #000000;
             font-weight: bold;
             outline: none;
-            padding: 0 0 0 4px;     /* Pequeño margen izquierdo para que no se pegue a la línea vertical */
+            padding: 0;     
         }
-
 
         .celda-input:focus {
             background-color: #e2e8f0;
