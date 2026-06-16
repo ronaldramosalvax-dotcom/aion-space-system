@@ -82,21 +82,11 @@
             border-bottom: none !important;
         }
 
-                   .celda-input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-family: sans-serif;
-    font-size: 17px;        
-    color: #000000;
-    font-weight: bold;
-    outline: none;
-    padding: 0;
-    letter-spacing: 0px;    
-    display: block;
-}
+                        .celda-input {
+            text-align: left !important;
+            padding-left: 6px !important;
+            letter-spacing: normal !important;
+        }
 
 
         .celda-input:focus {
@@ -154,20 +144,17 @@
             grid.appendChild(filaContenedor);
         }
 
-        // 2. INYECTAR LOS RENGLONES DE TEXTO CONTINUO (Uno por fila horizontal)
-        // Empezamos en la fila 2 y terminamos antes de la última fila por el margen
+               // 2. INYECTAR LOS RENGLONES DE TEXTO CONTINUO (Uno por fila horizontal)
         for (let r = 2; r < ROWS; r++) {
             const celdaInicio = document.getElementById(`renglon-${r}`);
             if (celdaInicio) {
                 const inputRenglon = document.createElement('input');
                 inputRenglon.type = 'text';
                 inputRenglon.className = 'celda-input';
-                
-                // Mapear la coordenada de la fila para los controles
+                inputRenglon.id = `input-fila-${r}`;
                 inputRenglon.dataset.row = r;
 
-                // CSS FLOTANTE: El input mide el ancho total de la fila útil
-                // 35 columnas de ancho multiplicadas por el 100% de una celda grid
+                // Estilos base obligatorios para el renglón flotante continuo
                 inputRenglon.style.position = 'absolute';
                 inputRenglon.style.width = 'calc(35 * 100%)'; 
                 inputRenglon.style.height = '100%';
@@ -181,10 +168,17 @@
                 inputRenglon.style.fontWeight = 'bold';
                 inputRenglon.style.fontSize = '14px';
                 inputRenglon.style.fontFamily = "'Segoe UI', sans-serif";
-                inputRenglon.style.paddingLeft = '6px';
-                
-                // Ajustar el espaciado de letras nativo para que coincida sutilmente con el patrón
-                inputRenglon.style.letterSpacing = '11.2px'; 
+
+                // CARGAR TEXTO GUARDADO PREVIAMENTE
+                const textoGuardado = localStorage.getItem(`nota-aion-fila-${r}`);
+                if (textoGuardado) {
+                    inputRenglon.value = textoGuardado;
+                }
+
+                // SISTEMA DE AUTO-GUARDADO EN TIEMPO REAL
+                inputRenglon.addEventListener('input', function() {
+                    localStorage.setItem(`nota-aion-fila-${this.dataset.row}`, this.value);
+                });
 
                 // CONTROLES DE FLUJO INTEGRADOS (Enter y Flechas)
                 inputRenglon.addEventListener('keydown', function(e) {
@@ -194,12 +188,12 @@
                     if (e.key === 'Enter' || e.key === 'ArrowDown') {
                         e.preventDefault();
                         if (currentRow < ROWS - 1) {
-                            targetInput = document.querySelector(`input[data-row="${currentRow + 1}"]`);
+                            targetInput = document.getElementById(`input-fila-${currentRow + 1}`);
                         }
                     } else if (e.key === 'ArrowUp') {
                         e.preventDefault();
                         if (currentRow > 2) {
-                            targetInput = document.querySelector(`input[data-row="${currentRow - 1}"]`);
+                            targetInput = document.getElementById(`input-fila-${currentRow - 1}`);
                         }
                     }
 
@@ -210,8 +204,5 @@
             }
         }
     </script>
-
-
-
 </body>
 </html>
