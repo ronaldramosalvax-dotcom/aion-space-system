@@ -37,14 +37,14 @@
             font-size: 14px;
         }
 
-        .hoja-container {
+               .hoja-container {
             width: 100%;
             max-width: 800px; 
             background-color: #ffffff;
             border: 2px solid #333333;
             border-radius: 4px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            padding: 15px; 
+            padding: 0px; /* Cambiado de 15px a 0px para eliminar el grosor extra */
         }
 
         /* Matriz de 53 filas x 35 columnas */
@@ -138,8 +138,9 @@
                     cuadro.style.borderBottom = 'none';
                 }
                 // Para simular la línea de margen clásica: activamos borde solo donde empieza la cuadrícula real
-                if (r === 2 && c >= 2 && c < COLS) cuadro.style.borderTop = '1px solid rgba(0, 0, 0, 0.15)';
-                if (c === 2 && r >= 2 && r < ROWS) cuadro.style.borderLeft = '1px solid rgba(0, 0, 0, 0.15)';
+                                // Para simular la línea de margen clásica exacta
+                if (r === 2 && c >= 2 && c <= COLS) cuadro.style.borderTop = '1px solid rgba(0, 0, 0, 0.15)';
+                if (c === 2 && r >= 2 && r <= ROWS) cuadro.style.borderLeft = '1px solid rgba(0, 0, 0, 0.15)';
 
                 // Solo inyectar inputs si está dentro de la zona de trabajo (lejos del margen)
                 if (!esPrimeraFila && !esUltimaFila && !esPrimeraColumna && !esUltimaColumna) {
