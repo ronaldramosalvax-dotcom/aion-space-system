@@ -736,7 +736,7 @@ window.seleccionarAvatarVisual = function(elemento) {
             setTimeout(() => { if(inputApodo) inputApodo.focus(); }, 100);
 
             // Guardamos cuando el piloto haga clic en el botón verde
-                        // Guardamos cuando el piloto haga clic en el botón verde
+                        
             btnGuardar.onclick = async () => {
               const apodoDigitado = inputApodo.value.trim();
               if (apodoDigitado === "" || apodoDigitado.length < 3) {
@@ -846,9 +846,12 @@ window.seleccionarAvatarVisual = function(elemento) {
     }
   });
 
-  // Control manual estricto del interruptor
+   // Control manual estricto del interruptor (Corregido)
   musicToggle.addEventListener('click', () => {
-    if (bgMusic.paused) {
+    const estaSonando = localStorage.getItem('aion_music_playing') === 'true';
+
+    if (!estaSonando) {
+      // ENCENDER
       localStorage.setItem('aion_music_playing', 'true');
       musicToggle.innerHTML = '🎵';
       musicToggle.classList.add('playing');
@@ -859,13 +862,14 @@ window.seleccionarAvatarVisual = function(elemento) {
         bgMusic.play().catch(() => cargarYReproducir());
       }
     } else {
-      // Única forma en el universo de apagarla: presionar de nuevo el botón
+      // APAGAR COMPLETAMENTE
       localStorage.setItem('aion_music_playing', 'false');
       bgMusic.pause();
       musicToggle.innerHTML = '🔇';
       musicToggle.classList.remove('playing');
     }
   });
+
 
   // Persistencia de Estado Optimizada
 if (localStorage.getItem('aion_music_playing') === 'true') {
