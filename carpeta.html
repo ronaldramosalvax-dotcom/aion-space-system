@@ -47,15 +47,16 @@
             padding: 0px; /* Cambiado de 15px a 0px para eliminar el grosor extra */
         }
 
-        /* Matriz de 53 filas x 35 columnas */
+                /* Matriz aumentada para conservar el área útil de 53 x 35 */
         .cuadricula-matematica {
             display: grid;
-            grid-template-columns: repeat(35, 1fr);
-            grid-template-rows: repeat(53, 1fr);
+            grid-template-columns: repeat(37, 1fr); /* Cambiado de 35 a 37 */
+            grid-template-rows: repeat(55, 1fr);    /* Cambiado de 53 a 55 */
             width: 100%;
-            aspect-ratio: 35 / 53; 
+            aspect-ratio: 37 / 55; /* Mantiene la proporción perfecta */
             background-color: #ffffff;
         }
+
 
         /* Cada celda cuadriculada exacta */
         .cuadradito {
@@ -110,9 +111,10 @@
         </div>
     </div>
        <script>
-        const grid = document.getElementById('grid-plantilla');
-        const COLS = 35;
-        const ROWS = 53;
+                const grid = document.getElementById('grid-plantilla');
+        const COLS = 37; /* Cambiado de 35 a 37 */
+        const ROWS = 55; /* Cambiado de 53 a 55 */
+
 
         // Bucle para mapear las posiciones exactas
         for (let r = 1; r <= ROWS; r++) {
