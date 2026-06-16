@@ -39,6 +39,20 @@
         .frac-table { border-collapse: collapse; text-align: center; color: #333333; font-family: monospace; display: inline-block; vertical-align: middle; }
         .frac-top { border-bottom: 2px solid #333333; padding: 2px 6px; }
         .frac-bot { padding: 2px 6px; color: #333333; }
+                /* Congelar desplazamiento vertical en pantallas móviles */
+        @media (max-width: 768px) {
+            html, body {
+                overflow: hidden !important; 
+                position: fixed;             
+                width: 100vw;
+                height: 100vh;
+            }
+            .quiz-container {
+                height: 100vh;               
+                max-height: 100vh;
+            }
+        }
+
     </style>
 </head>
 
