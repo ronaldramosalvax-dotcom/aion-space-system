@@ -300,5 +300,24 @@
 
         render();
     </script>
+    <!-- 🎵 PERSISTENCIA CUÁNTICA DE AUDIO PARA INTERFACES SECUNDARIAS -->
+<audio id="bgMusicSecundario" preload="auto"></audio>
+
+<script>
+  if (localStorage.getItem('aion_music_playing') === 'true') {
+    const bgMusic = document.getElementById('bgMusicSecundario');
+    bgMusic.src = "musica/track1.mp3";
+    bgMusic.volume = 0.25; // El mismo volumen suave que configuramos
+    bgMusic.loop = true;
+
+    // En cuanto el usuario haga clic para escribir o tocar algo en la IA, arranca automático
+    const activarAudioAlClic = () => {
+      bgMusic.play().catch(err => console.log("Esperando interacción..."));
+      document.removeEventListener('click', activarAudioAlClic);
+    };
+    document.addEventListener('click', activarAudioAlClic);
+  }
+</script>
+
 </body>
 </html>
