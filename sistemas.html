@@ -40,7 +40,7 @@
         .frac-top { border-bottom: 2px solid #333333; padding: 2px 6px; }
         .frac-bot { padding: 2px 6px; color: #333333; }
         
-                           /* Centrar perfectamente el cuadrante en pantallas móviles */
+                                   /* Centrar y elevar ligeramente el cuadrante en pantallas móviles */
         @media (max-width: 768px) {
             html, body {
                 overflow: hidden !important; 
@@ -49,20 +49,21 @@
                 height: 100vh;
             }
             .quiz-container {
-                position: absolute;    /* Permite posicionarlo libremente */
-                top: 50%;              /* Lo baja al centro vertical */
-                left: 50%;             /* Lo mueve al centro horizontal */
-                transform: translate(-50%, -50%); /* Ajuste matemático exacto de centrado */
+                position: absolute;    
+                top: 44%;              /* Subido del 50% al 44% para elevarlo */
+                left: 50%;             
+                transform: translate(-50%, -50%); 
                 height: auto;          
-                max-height: 85vh;      /* Reduce un poco la altura máxima para asegurar los márgenes */
+                max-height: 85vh;      
                 width: 92%;            
-                border-radius: 6px;    /* Mantiene las esquinas redondeadas estéticas */
+                border-radius: 6px;    
             }
             .problem-block {
                 height: auto;          
                 max-height: 30vh;
             }
         }
+
 
        
 
