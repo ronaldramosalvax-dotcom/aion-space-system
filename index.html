@@ -866,23 +866,23 @@ window.seleccionarAvatarVisual = function(elemento) {
     }
   });
 
-  // Persistencia de Estado: Mantiene la música activa al navegar o actualizar
-  window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('aion_music_playing') === 'true') {
-      musicToggle.innerHTML = '🎵';
-      musicToggle.classList.add('playing');
-      
-      const autoPlayIntento = () => {
-        if (!bgMusic.src || bgMusic.src === window.location.href) {
-          cargarYReproducir();
-        } else {
-          bgMusic.play().catch(() => cargarYReproducir());
-        }
-        document.removeEventListener('click', autoPlayIntento);
-      };
-      document.addEventListener('click', autoPlayIntento);
+  // Persistencia de Estado Optimizada
+if (localStorage.getItem('aion_music_playing') === 'true') {
+  musicToggle.innerHTML = '🎵';
+  musicToggle.classList.add('playing');
+  
+  const autoPlayIntento = () => {
+    if (!bgMusic.src || bgMusic.src === window.location.href) {
+      cargarYReproducir();
+    } else {
+      bgMusic.play().catch(() => cargarYReproducir());
     }
-  });
+    document.removeEventListener('click', autoPlayIntento);
+  };
+  document.addEventListener('click', autoPlayIntento);
+}
+
+
 </script>
 
 </body>
