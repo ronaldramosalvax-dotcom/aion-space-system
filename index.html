@@ -891,8 +891,7 @@ const playlist = [
           const tiempoGuardado = localStorage.getItem('aion_music_time');
           if (tiempoGuardado) {
             bgMusic.currentTime = parseFloat(tiempoGuardado);
-          }
-        })
+              })
         .catch(() => {});
         
       document.removeEventListener('click', autoPlayIntento);
@@ -908,7 +907,6 @@ const playlist = [
       localStorage.setItem('aion_music_time', bgMusic.currentTime);
     }
   });
-});
 </script>
 
 </body>
