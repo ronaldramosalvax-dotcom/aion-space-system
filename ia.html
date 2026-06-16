@@ -213,24 +213,19 @@
     bgMusic.loop = true;
 
     // 2. Activación reactiva: En cuanto el piloto interactúe con el teclado o el mouse, arranca el audio
-        const inicializarAudioFlujo = () => {
-      // 🔴 Recuperar el segundo exacto donde iba la música en la otra página
-      const tiempoGuardado = localStorage.getItem('aion_music_time');
-      if (tiempoGuardado) {
-        bgMusic.currentTime = parseFloat(tiempoGuardado);
-      }
-
+           const inicializarAudioFlujo = () => {
+      // Intentamos reproducir primero
       bgMusic.play()
-        .then(() => console.log("Canal de audio reanudado con éxito."))
-        .catch(err => console.log("Esperando flujo de interacción táctica..."));
-      
-      document.removeEventListener('click', inicializarAudioFlujo);
-      document.removeEventListener('keydown', inicializarAudioFlujo);
-    };
-
-      
-      // Destruir detectores para liberar memoria del sistema
-      document.removeEventListener('click', inicializarAudioFlujo);
+        .then(() => {
+          console.log("Canal de audio reanudado.");
+          // Sincronizamos el tiempo guardado de forma segura cuando ya esté sonando
+          const tiempoGuardado = localStorage.getItem('aion_music_time');
+          if (tiempoGuardado) {
+            bgMusic.currentTime = parseFloat(tiempoGuardado);
+          }
+        })
+        .catch(err => console.log("Esperando interacción táctica..."));
+              document.removeEventListener('click', inicializarAudioFlujo);
       document.removeEventListener('keydown', inicializarAudioFlujo);
     };
 
@@ -239,6 +234,9 @@
     document.addEventListener('keydown', inicializarAudioFlujo);
   }
 </script>
+
+      
+    
 
 </body>
 </html>
