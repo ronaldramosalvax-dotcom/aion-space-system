@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE - Carpeta de Apuntes</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh; 
+            background-color: #000000; 
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header-carpeta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 15px;
+        }
+
+        .btn-regresar {
+            padding: 8px 16px;
+            background-color: #1c1f26;
+            border: 2px solid #333333;
+            color: #ffffff;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .hoja-container {
+            width: 100%;
+            max-width: 800px; 
+            background-color: #ffffff;
+            border: 2px solid #333333;
+            border-radius: 4px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            padding: 15px; 
+        }
+
+        /* Matriz de 53 filas x 35 columnas */
+        .cuadricula-matematica {
+            display: grid;
+            grid-template-columns: repeat(35, 1fr);
+            grid-template-rows: repeat(53, 1fr);
+            width: 100%;
+            aspect-ratio: 35 / 53; 
+            background-color: #ffffff;
+        }
+
+        /* Cada celda cuadriculada exacta */
+        .cuadradito {
+            border-right: 1px solid rgba(0, 0, 0, 0.15); /* Negro suave */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15); /* Negro suave */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Clase especial para la primera y última columna (líneas verticales del margen) */
+        .sin-borde-derecho {
+            border-right: none !important;
+        }
+
+        /* Clase especial para la primera y última fila (líneas horizontales del margen) */
+        .sin-borde-inferior {
+            border-bottom: none !important;
+        }
+
+        /* Celda donde puedes escribir */
+        .celda-input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-family: monospace; 
+            font-size: 14px;
+            color: #000000;
+            font-weight: bold;
+            outline: none;
+            padding: 0;
+        }
+
+        .celda-input:focus {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-carpeta">
+        <h2>📂 MI CARPETA DE APUNTES</h2>
+        <a href="index.html" class="btn-regresar">Volver al Hangar</a>
+    </div>
+
+    <div class="hoja-container">
+        <div class="cuadricula-matematica" id="grid-plantilla">
+            <!-- Celdas inyectadas dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid-plantilla');
+        const COLS = 35;
+        const ROWS = 53;
+
+        // Bucle para mapear las posiciones exactas
+        for (let r = 1; r <= ROWS; r++) {
+            for (let c = 1; c <= COLS; c++) {
+                const cuadro = document.createElement('div');
+                cuadro.className = 'cuadradito';
+                
+                // 1. Validar si la celda es parte del margen exterior (distancia de un cuadrado)
+                const esMargenHorizontal = (r === 1 || r === ROWS);
+                const esMargenVertical = (c === 1 || c === COLS);
+                
+                // Manejo estético de los bordes del margen para que quede en blanco
+                if (c === 1 || c === COLS - 1) cuadro.classList.add('sin-borde-derecho');
+                if (r === 1 || r === ROWS - 1) cuadro.classList.add('sin-borde-inferior');
+
+                // 2. Si NO es margen, le añadimos el input para que puedas escribir
+                if (!esMargenHorizontal && !esMargenVertical) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'celda-input';
+                    input.maxLength = 1; 
+                    cuadro.appendChild(input);
+                }
+
+                grid.appendChild(cuadro);
+            }
+        }
+    </script>
+</body>
+</html>
