@@ -186,6 +186,46 @@
             border-color: #00ff88;
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
         }
+        /* --- ACCESO DIRECTO AL RETO DE CÓDIGO AWS --- */
+        .cuadrante-desafio-card {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(15, 10, 30, 0.95) 0%, rgba(25, 20, 45, 0.95) 100%);
+            border: 2px dashed #f0a04b;
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .cuadrante-desafio-card::before {
+            content: ''; position: absolute; top: 0; left: -50%; width: 30%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(240, 160, 75, 0.15), transparent);
+            transform: skewX(-25deg); transition: 0.8s;
+        }
+        .cuadrante-desafio-card:hover::before { left: 150%; }
+        .cuadrante-desafio-card:hover {
+            border-style: solid;
+            border-color: #ffaa00;
+            box-shadow: 0 0 35px rgba(255, 170, 0, 0.3);
+            transform: translateY(-3px);
+        }
+        .cuadrante-desafio-card:hover .arcade-icono-grande {
+            background: rgba(255, 170, 0, 0.15);
+            border-color: #ffaa00;
+            text-shadow: 0 0 10px #ffaa00;
+        }
+        .cuadrante-desafio-card:hover .btn-arcade-hipervinculo {
+            background: #ffaa00;
+            color: #060913;
+            border-color: #ffaa00;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+        }
 
 
     </style>
@@ -256,6 +296,17 @@
                 </div>
             </div>
             <button class="btn-arcade-hipervinculo">INGRESAR AL ÁREA</button>
+        </div>
+                <!-- TARJETA DEL DESAFÍO DE CÓDIGO AWS -->
+        <div class="cuadrante-desafio-card" onclick="window.location.href='desafio.html'">
+            <div class="arcade-info-lado">
+                <div class="arcade-icono-grande">💻</div>
+                <div class="arcade-textos">
+                    <h3>[ TERMINAL COMPILACIÓN AWS ]</h3>
+                    <p>Repara los servidores de Amazon rellenando las líneas críticas de código a alta velocidad.</p>
+                </div>
+            </div>
+            <button class="btn-arcade-hipervinculo">INICIAR COMPILACIÓN</button>
         </div>
     </div>
 
@@ -632,271 +683,6 @@ if (primeraLinea) primeraLinea.focus();
             document.getElementById("aion-cartel-resultado").style.display = "none";
         };
 
-        const divEstructuraJuego = document.createElement("div");
-        divEstructuraJuego.style.width = "100%";
-        divEstructuraJuego.innerHTML = `
-            <!-- ESTADO 1: CUADRADO GRIS CENTRAL DEL MENU -->
-            <div id="aion-game-menu-inicio" style="width: 100%; min-height: 40vh; display: flex; justify-content: center; align-items: center; background: #000000; padding: 20px 0;">
-                <div id="btn-disparar-nivel1" style="width: 200px; height: 200px; background-color: #a6a6a6; border: 2px solid #ffffff; color: #ffffff; font-family: monospace; font-size: 1.8rem; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; user-select: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: transform 0.2s;">
-                    Nivel 1
-                </div>
-            </div>
-
-            <!-- ESTADO 2: TABLERO INTERACTIVO EN VIVO DEL JUEGO -->
-            <div id="aion-game-tablero-activo" style="display: none; width: 100%; max-width: 850px; height: 540px; background-color: #0a0f1d; border: 2px solid #000; position: relative; margin: -25px auto 0 auto; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                <div style="background: #0c0d12; color: #00ff88; font-family: monospace; padding: 8px 20px; display: flex; justify-content: space-between; font-size: 12px; border-bottom: 2px solid #1f2937; user-select:none;">
-                    <span id="txt-piloto-game">PILOTO: ANALIZANDO FIRMA...</span>
-                    <span id="txt-vidas-game">INTENTOS: ❤️ ❤️ | PUNTOS: 0</span>
-                </div>
-                
-                <button id="btn-abandonar-nivel" style="position: absolute; top: 38px; right: 15px; background: #ef4444; color: white; border: 1px solid #000; padding: 3px 9px; font-weight: bold; font-family: monospace; cursor: pointer; z-index: 100; font-size: 12px; border-radius:3px;">❌</button>
-                
-                <div id="aion-consola-desplazable" style="flex: 1; position: relative; overflow: hidden; padding: 25px 40px; background-color: #0a0f1d;">
-                    <div id="aion-bloque-movil-script" style="position: absolute; left: 10%; width: 80%; font-size: 1.35rem; color: #ffffff; line-height: 2.5rem; font-family: monospace; pointer-events: none;">
-                        <p style="color: #444444; font-weight: bold;"># Script de Inicialización de Red AION UTP</p>
-                        <p>def iniciar_sistema_hangar():</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;servidor = <span id="gap-0" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span></p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;print("Escaneando firmas cuánticas...")</p>
-                        <br>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;if servidor == "ONLINE":</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-1" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span>("Acceso de Alumno Concedido")</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;else:</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Fallo de infraestructura")</p>
-                        <br>
-                        <p># Rutina central del Hangar</p>
-                        <p>if __name__ == <span id="gap-2" style="display:inline-block; width:120px; height:26px; border:2px solid #000; background:#ffffff; color:#000; text-align:center; line-height:22px; font-weight:bold; font-size:14px; border-radius:4px; pointer-events: auto;">____</span>:</p>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;iniciar_sistema_hangar()</p>
-                    </div>
-                </div>
-
-                <div style="height: 50px; background-color: #1a1a1a; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 3px 6px;">
-                    <button class="caja-blanca-opc" id="g-opt-0" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
-                    <button class="caja-blanca-opc" id="g-opt-1" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
-                    <button class="caja-blanca-opc" id="g-opt-2" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
-                    <button class="caja-blanca-opc" id="g-opt-3" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
-                    <button class="caja-blanca-opc" id="g-opt-4" style="background:#ffffff; border:1px solid #000000; color:#000000; font-family:monospace; font-weight:bold; font-size:14px; cursor:pointer; transition: background 0.1s;">-</button>
-                </div>
-            </div>
-        `;
-        marcoGrisMonitor.appendChild(divEstructuraJuego);
-
-        const RESPUESTAS_NIVEL = {
-            0: { palabra: '"ONLINE"' },
-            1: { palabra: "print" },
-            2: { palabra: '"__main__"' }
-        };
-
-        const ALTERNATIVAS_DEL_JUEGO = [
-            { texto: '"ONLINE"' },
-            { texto: "print" },
-            { texto: "input" },
-            { texto: '"__main__"' },
-            { texto: "return" }
-        ];
-
-              // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN: PRODUCCIÓN AMAZON WEB PLATFORM
-       const BASE_DATOS_RETO = {
-                  1: {
-        titulo: "# AWS PRODUCTION DEPLOY: Amazon Retail Global Infrastructure v4.2.1",
-        lineas: [
-            '# =======================================================',
-            '# PACKET INITIALIZATION: COMPILING CORE SYSTEM',
-            '# -------------------------------------------------------',
-            '# LOADING AMAZON WEB SERVICES (AWS) DATA CENTERS...',
-            '# CLOUD COMPLIANCE SECURITY LAYER: STANDBY',
-            '# =======================================================',
-            '# OLEADA 01: DOCUMENTO MAESTRO DEL PORTAL DE VENTAS',
-            '# =======================================================',
-            '&lt;!DOCTYPE <span id="gap-0" class="game-gap">____</span>&gt;',
-            '&lt;html lang="es"&gt;',
-            '&lt;head&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="<span id="gap-1" class="game-gap">____</span>"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Amazon.com | Compra Online de Electrónicos&lt;/title&gt;',
-            '&lt;/head&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# BALANCEADOR DE CARGA: REDIRECTING TRAFFIC TO REGION-1',
-            '# -------------------------------------------------------',
-            '# CACHE POLICY: ENABLED (TTL 3600s)',
-            '# RENDER ENGINE: INJECTING DOM STRUCTURE...',
-            '# =======================================================',
-            '# OLEADA 02: RENDERIZADO DEL CONTENEDOR PRINCIPAL',
-            '# =======================================================',
-            '&lt;body style="background-color: #eaeded;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Grid principal para las ofertas del día --&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="main-catalog-box" style="width: 100%;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Cargando recomendaciones...&lt;/p&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-2" class="game-gap">____</span>&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# HEADER COMPILATION: STYLING NAVIGATION SYSTEM',
-            '# -------------------------------------------------------',
-            '# UI COMPONENT: AMAZON BLACK TOP BAR DESIGN',
-            '# RESPONSIVE BREAKPOINTS: DESKTOP / MOBILE / TABLET',
-            '# =======================================================',
-            '# OLEADA 03: BARRA DE NAVEGACIÓN SUPERIOR (NAVBAR)',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;header class="nav-belt" style="display: <span id="gap-3" class="game-gap">____</span>;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="nav-logo"&gt;AMAZON LOGO&lt;/button&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div style="display: flex; align-items: center;"&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# ASYNC STATE MANAGEMENT: CHECKING PERSISTENT USER CART',
-            '# -------------------------------------------------------',
-            '# LOCALSTORAGE SYNC: FETCHING CURRENT SESSIONS',
-            '# CART REQUISITION ID: AWS-X-998124',
-            '# =======================================================',
-            '# OLEADA 04: ICONO INTERACTIVO DEL CARRITO DE COMPRAS',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="nav-cart-count"&gt;CARRITO (0 ARTÍCULOS)...&lt;/span&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-4" class="game-gap">____</span> id="cart-icon" src="amazon-cart.png"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# MARKETING BANNER CALIBRATION: PRIME DAY CAMPAIGN',
-            '# -------------------------------------------------------',
-            '# DISCOUNTS ALGORITHM: 20% OFF IN ELECTRONICS',
-            '# PROMOTION DATA BINDING... COMPILING LAYOUT',
-            '# =======================================================',
-            '# OLEADA 05: SECCIÓN DE COMPRAS DEL AMAZON PRIME DAY',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;main id="prime-container"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1 class="prime-title"&gt;OFERTAS EXCLUSIVAS&lt;/h1&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Inyección asíncrona de las tarjetas --&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# DYNAMIC ITEM POPULATION: GRID ENGINE INITIALIZATION',
-            '# -------------------------------------------------------',
-            '# INVENTORY CHECK: API GATEWAY CONNECTED',
-            '# FETCH STATUS: 200 OK (DB_CATALOG_PRODUCT)',
-            '# =======================================================',
-            '# OLEADA 06: TARGETAS DE ARTÍCULOS DESTACADOS',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section id="products-grid-layout"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="product-card-item"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="product-title"&gt;<span id="gap-5" class="game-gap">____</span> Inalámbricos&lt;/span&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-6" class="game-gap">____</span>&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Progreso de carga: Módulo de <span id="gap-7" class="game-gap">____</span> Completo.&lt;/p&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/main&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# CSS PARSING: COMPILING BRAND BRANDING INJECTORS',
-            '# -------------------------------------------------------',
-            '# PRIMARY COLOR MATCH: #ff9900 (AMAZON SMILE ORANGE)',
-            '# BACKGROUND METRICS: AWS LIGHT BG STYLE SHEET',
-            '# =======================================================',
-            '# OLEADA 07: ESTILOS CSS E IDENTIDAD CORPORATIVA',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-8" class="game-gap">____</span>&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item {',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #ffffff;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: 1px solid <span id="gap-9" class="game-gap">____</span>;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# ANIMATION PIPELINE: RE-RENDERING HARDWARE ACCELERATION',
-            '# -------------------------------------------------------',
-            '# HOVER STATE INTERACTION MAP',
-            '# TRANSITION MATRIX: 200ms LINEAR SMOOTHING',
-            '# =======================================================',
-            '# OLEADA 08: DINÁMICA DE HOVER DE COMPRA RÁPIDA',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 4px;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: transform <span id="gap-10" class="game-gap">____</span>s ease;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item:hover {',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: scale(1.02);',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 4px 12px <span id="gap-11" class="game-gap">____</span>;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;',
-            '<br><br><br><br><br><br>',
-            '# =======================================================',
-            '# CHECKOUT GATEWAY: PREPARING SECURE SOCKET LAYER (SSL)',
-            '# -------------------------------------------------------',
-            '# ENCRYPTION LEVEL: AES-256 BIT KEY TRANSFER',
-            '# SHIPPING CALCULATOR MODAL INJECTOR',
-            '# =======================================================',
-            '# OLEADA 09: VENTANA DE CONFIRMACIÓN DE ENVÍO',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- Modal de pasarela de pago --&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="checkout-status-panel" style="display: <span id="gap-12" class="game-gap">____</span>;"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 id="cartel-titulo"&gt;ORDEN PROCESADA&lt;/h2&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p id="cartel-mensaje"&gt;Tu paquete va en camino.&lt;/p&gt;',
-            '<br><br><br><br><br><br>',
-                        '# =======================================================',
-            '# TRANSACTION FINALIZE: UPDATING USER WALLET STATUS',
-            '# -------------------------------------------------------',
-            '# BANK TOKENIZATION: SUCCESSFUL RESPONSE FROM ENDPOINT',
-            '# DISCONNECTING SESSION... PIPELINE CLOSING.',
-            '# =======================================================',
-            '# OLEADA 10: MONEDERO DIGITAL Y CIERRE',
-            '# =======================================================',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="total-container"&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="cartel-puntos"&gt;000 <span id="gap-13" class="game-gap">____</span>&lt;/span&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button id="btn-cerrar-cartel"&gt;<span id="gap-14" class="game-gap">____</span> ORDEN&lt;/button&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;'
-        ],
-        bloquesAlternativas: {
-            0: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
-            1: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
-            2: ['flex', 'img', 'nav', 'header', 'src'],                   
-            3: ['flex', 'img', 'nav', 'header', 'src'],                   
-            4: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
-            5: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
-            6: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
-            7: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
-            8: ['none', 'USD', 'FINALIZAR', 'flex', 'block'],               
-            9: ['none', 'USD', 'FINALIZAR', 'flex', 'block']                
-        },
-        respuestas: {
-            0: 'html', 1: 'UTF-8', 2: 'div',
-            3: 'flex', 4: 'img',
-            5: 'Audífonos', 6: 'section', 7: 'Pagos',
-            8: 'style', 9: '#ff9900', 10: '0.2', 11: 'rgba(0,0,0,0.15)',
-            12: 'none', 13: 'USD', 14: 'FINALIZAR'
-        },
-        totalGaps: 15
-    },
-    2: {
-        titulo: "# DESAFÍO 2: Control de Inventario Automatizado (Python Backend Amazon)",
-
-
-        lineas: [
-            '# Registrar existencias en servidores de AWS',
-            'stock_amazon = [,]',
-            '<br>',
-            '# Filtrar productos con inventario crítico',
-            '<span id="gap-0" class="game-gap">____</span> producto in stock_amazon:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;for item in producto:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if item == <span id="gap-1" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Alerta: Stock insuficiente en almacén")',
-            '<br>',
-            '# Adicionar nuevo lote de distribución',
-            'stock_amazon.<span id="gap-2" class="game-gap">____</span>()'
-        ],
-        respuestas: { 0: 'for', 1: '0', 2: 'append' },
-        alternativas: ['for', 'while', '1', '0', 'append'],
-        totalGaps: 3
-    },
-    3: {
-        titulo: "# DESAFÍO 3: Gestión de Excepciones en Pasarela de Pago Stripe / Amazon Pay",
-        lineas: [
-            '# Validar cargos a tarjetas de crédito de clientes',
-            '<span id="gap-0" class="game-gap">____</span>:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;procesar_cargo_bancario()',
-            '<span id="gap-1" class="game-gap">____</span> FondosInsuficientes as e:',
-            '&nbsp;&nbsp;&nbsp;&nbsp;print("Pago rechazado, notificando al comprador...")',
-            '&nbsp;&nbsp;&nbsp;&nbsp;<span id="gap-2" class="game-gap">____</span>'
-        ],
-        respuestas: { 0: 'try', 1: 'except', 2: 'pass' },
-        alternativas: ['try', 'except', 'pass', 'catch', 'finally'],
-        totalGaps: 3
-    }
-};
 
 
                 // Asegúrate de que esta variable esté declarada con el valor = 1
