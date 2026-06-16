@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM | Terminal AWS Cloud Deploy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace; }
+        body {
+            background-color: #060913;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .header { margin-bottom: 15px; text-align: center; }
+        .btn-back {
+            color: #b9bbbe; text-decoration: none; font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px;
+            border-radius: 4px; background: rgba(255,255,255,0.02); transition: 0.2s;
+            cursor: pointer; font-family: monospace;
+        }
+        .btn-back:hover { color: white; background: rgba(255,255,255,0.08); border-color: #ef4444; }
+        
+        /* TABLERO ACTIVO RE-AJUSTADO PARA PANTALLA COMPLETA */
+        #aion-game-tablero-activo {
+            display: flex; width: 100%; max-width: 850px; height: 560px; 
+            background-color: #0a0f1d; border: 2px solid #404eed; 
+            position: relative; flex-direction: column; overflow: hidden; 
+            box-shadow: 0 0 35px rgba(64, 78, 237, 0.3); border-radius: 8px;
+        }
+        .top-status-bar {
+            background: #0c0d12; color: #00ff88; font-family: monospace; 
+            padding: 10px 20px; display: flex; justify-content: space-between; 
+            font-size: 13px; border-bottom: 2px solid #1f2937; user-select:none;
+        }
+        #aion-consola-desplazable {
+            flex: 1; position: relative; overflow: hidden; 
+            padding: 25px 40px; background-color: #0a0f1d;
+        }
+        #aion-bloque-movil-script {
+            position: absolute; left: 10%; width: 80%; font-size: 1.35rem; 
+            color: #ffffff; line-height: 2.5rem; font-family: monospace; pointer-events: none;
+        }
+        .game-gap {
+            display: inline-block; width: 120px; height: 26px; border: 2px solid #000; 
+            background: #ffffff; color: #000; text-align: center; line-height: 22px; 
+            font-weight: bold; font-size: 14px; border-radius: 4px; pointer-events: auto;
+        }
+        .botton-option-bar {
+            height: 55px; background-color: #1a1a1a; display: grid; 
+            grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 4px 8px;
+            border-top: 2px solid #1f2937;
+        }
+        .caja-blanca-opc {
+            background: #ffffff; border: 1px solid #000000; color: #000000; 
+            font-family: monospace; font-weight: bold; font-size: 14px; 
+            cursor: pointer; transition: background 0.1s; border-radius: 4px;
+        }
+        
+        /* CARTEL DE RESULTADOS */
+        #aion-cartel-resultado {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 340px; background: #000000; border: 3px solid #404eed; 
+            border-radius: 8px; padding: 25px; text-align: center; font-family: monospace; 
+            display: none; flex-direction: column; gap: 15px; 
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(64, 78, 237, 0.3); z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2 style="color: #404eed; letter-spacing: 1px; margin-bottom: 5px; font-family: monospace;">📡 TERMINAL DE COMPILACIÓN EN LA NUBE</h2>
+        <button class="btn-back" onclick="abandonarPartidaRapido()">❌ ABANDONAR MISIÓN</button>
+    </div>
+
+    <!-- TABLERO ACTIVO -->
+    <div id="aion-game-tablero-activo">
+        <div class="top-status-bar">
+            <span id="txt-piloto-game">💻 SERVER: Amazon AWS Deploy | <span id="txt-reloj-amazon">⏳ TIEMPO: 01:30</span></span>
+            <span id="txt-vidas-game">INTENTOS: ❤️ ❤️ ❤️ ❤️ ❤️ | PUNTOS: 0</span>
+        </div>
+        
+        <div id="aion-consola-desplazable">
+            <div id="aion-bloque-movil-script">
+                <!-- Líneas de AWS inyectadas dinámicamente -->
+            </div>
+            
+            <!-- CARTEL TÁCTICO FLOTANTE -->
+            <div id="aion-cartel-resultado">
+                <h2 id="cartel-titulo" style="font-size: 1.5rem; letter-spacing: 1px;">-</h2>
+                <p id="cartel-mensaje" style="color: #cccccc; font-size: 13px; line-height: 1.4;"></p>
+                <div style="background: #111622; padding: 10px; border-radius: 4px; border: 1px solid #222;">
+                    <span style="color: #72767d; font-size: 11px;">REQUISICIÓN DE RECOMPENSA</span>
+                    <div id="cartel-puntos" style="font-size: 1.8rem; font-weight: bold; color: #ffffff; margin-top: 5px;">000 PTS</div>
+                </div>
+                <button id="btn-cerrar-cartel" style="background: #404eed; color: white; border: none; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 4px; font-family: monospace;">
+                    ACEPTAR TRANSMISIÓN
+                </button>
+            </div>
+        </div>
+
+        <!-- BOTONERA DE 5 ALTERNATIVAS FIJAS -->
+        <div class="botton-option-bar">
+            <button class="caja-blanca-opc" id="g-opt-0">-</button>
+            <button class="caja-blanca-opc" id="g-opt-1">-</button>
+            <button class="caja-blanca-opc" id="g-opt-2">-</button>
+            <button class="caja-blanca-opc" id="g-opt-3">-</button>
+            <button class="caja-blanca-opc" id="g-opt-4">-</button>
+        </div>
+    </div>
+
+    <script>
+        // 🗂️ BANCO CENTRAL DE DESAFÍOS DE PROGRAMACIÓN: PRODUCCIÓN AMAZON WEB PLATFORM
+        const BASE_DATOS_RETO = {
+            1: {
+                titulo: "# AWS PRODUCTION DEPLOY: Amazon Retail Global Infrastructure v4.2.1",
+                lineas: [
+                    '# =======================================================',
+                    '# PACKET INITIALIZATION: COMPILING CORE SYSTEM',
+                    '# -------------------------------------------------------',
+                    '# LOADING AMAZON WEB SERVICES (AWS) DATA CENTERS...',
+                    '# CLOUD COMPLIANCE SECURITY LAYER: STANDBY',
+                    '# =======================================================',
+                    '# OLEADA 01: DOCUMENTO MAESTRO DEL PORTAL DE VENTAS',
+                    '# =======================================================',
+                    '&lt;!DOCTYPE <span id="gap-0" class="game-gap">____</span>&gt;',
+                    '&lt;html lang="es"&gt;',
+                    '&lt;head&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="<span id="gap-1" class="game-gap">____</span>"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Amazon.com | Compra Online de Electrónicos&lt;/title&gt;',
+                    '&lt;/head&gt;',
+                    '<br><br>',
+                    '# =======================================================',
+                    '# BALANCEADOR DE CARGA: REDIRECTING TRAFFIC TO REGION-1',
+                    '# =======================================================',
+                    '# OLEADA 02: RENDERIZADO DEL CONTENEDOR PRINCIPAL',
+                    '# =======================================================',
+                    '&lt;body style="background-color: #eaeded;"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="main-catalog-box" style="width: 100%;"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Cargando recomendaciones...&lt;/p&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-2" class="game-gap">____</span>&gt;',
+                    '<br><br>',
+                    '# OLEADA 03: BARRA DE NAVEGACIÓN SUPERIOR (NAVBAR)',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;header class="nav-belt" style="display: <span id="gap-3" class="game-gap">____</span>;"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="nav-logo"&gt;AMAZON LOGO&lt;/button&gt;',
+                    '<br><br>',
+                    '# OLEADA 04: ICONO INTERACTIVO DEL CARRITO DE COMPRAS',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="nav-cart-count"&gt;CARRITO (0 ARTÍCULOS)...&lt;/span&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-4" class="game-gap">____</span> id="cart-icon" src="amazon-cart.png"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/header&gt;',
+                    '<br><br>',
+                    '# OLEADA 05: SECCIÓN DE COMPRAS DEL AMAZON PRIME DAY',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;main id="prime-container"&gt;',
+                    '<br><br>',
+                    '# OLEADA 06: TARGETAS DE ARTÍCULOS DESTACADOS',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;section id="products-grid-layout"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="product-card-item"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span class="product-title"&gt;<span id="gap-5" class="game-gap">____</span> Inalámbricos&lt;/span&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span id="gap-6" class="game-gap">____</span>&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Progreso de carga: Módulo de <span id="gap-7" class="game-gap">____</span> Completo.&lt;/p&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/main&gt;',
+                    '<br><br>',
+                    '# OLEADA 07: ESTILOS CSS E IDENTIDAD CORPORATIVA',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span id="gap-8" class="game-gap">____</span>&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item {',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #ffffff;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: 1px solid <span id="gap-9" class="game-gap">____</span>;',
+                    '<br><br>',
+                    '# OLEADA 08: DINÁMICA DE HOVER DE COMPRA RÁPIDA',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 4px;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: transform <span id="gap-10" class="game-gap">____</span>s ease;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.product-card-item:hover {',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transform: scale(1.02);',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-shadow: 0 4px 12px <span id="gap-11" class="game-gap">____</span>;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;',
+                    '<br><br>',
+                    '# OLEADA 09: VENTANA DE CONFIRMACIÓN DE ENVÍO',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="checkout-status-panel" style="display: <span id="gap-12" class="game-gap">____</span>;"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 id="cartel-titulo"&gt;ORDEN PROCESADA&lt;/h2&gt;',
+                    '<br><br>',
+                    '# OLEADA 10: MONEDERO DIGITAL Y CIERRE',
+                    '# =======================================================',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="total-container"&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;span id="cartel-puntos"&gt;000 <span id="gap-13" class="game-gap">____</span>&lt;/span&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button id="btn-cerrar-cartel"&gt;<span id="gap-14" class="game-gap">____</span> ORDEN&lt;/button&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;',
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;'
+                ],
+                bloquesAlternativas: {
+                    0: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
+                    1: ['html', 'UTF-8', 'div', 'doctype', 'body'],               
+                    2: ['flex', 'img', 'nav', 'header', 'src'],                   
+                    3: ['flex', 'img', 'nav', 'header', 'src'],                   
+                    4: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
+                    5: ['Audífonos', 'section', 'Pagos', 'main', 'span'],           
+                    6: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
+                    7: ['style', '#ff9900', '0.2', 'rgba(0,0,0,0.15)', 'css'], 
+                    8: ['none', 'USD', 'FINALIZAR', 'flex', 'block'],               
+                    9: ['none', 'USD', 'FINALIZAR', 'flex', 'block']                
+                },
+                respuestas: {
+                    0: 'html', 1: 'UTF-8', 2: 'div',
+                    3: 'flex', 4: 'img',
+                    5: 'Audífonos', 6: 'section', 7: 'Pagos',
+                    8: 'style', 9: '#ff9900', 10: '0.2', 11: 'rgba(0,0,0,0.15)',
+                    12: 'none', 13: 'USD', 14: 'FINALIZAR'
+                },
+                totalGaps: 15
+            }
+        };
+
+        let gamePuntos = 0;
+        let gameVidas = 5;
+        let gapActivoId = 0;
+        window.bloqueActualId = 0;
+        let gameCorriendo = false;
+        let posicionScriptY = 320;
+        let velocidadDesplazamiento = 0.85;
+        let animacionFrameId = null;
+        let recompensaProcesada = false;
+
+        // Iniciar de forma automática el reto al cargar el archivo independiente
+        window.onload = function() {
+            const datosRetoActual = BASE_DATOS_RETO[1];
+            
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+            let nombrePiloto = "Piloto";
+            let codigoPiloto = "#0000";
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                nombrePiloto = perfil.nombre || nombrePiloto;
+                codigoPiloto = perfil.codigo || codigoPiloto;
+            }
+
+            gameCorriendo = true;
+            gapActivoId = 0;
+            window.bloqueActualId = 0;
+            gameVidas = 5;
+            gamePuntos = 0;
+            recompensaProcesada = false;
+            
+            window.gapsTotalesNivel = datosRetoActual.totalGaps;
+            window.respuestasNivelActual = datosRetoActual.respuestas;
+
+            const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+            bloqueMovil.innerHTML = `<p style="color: #444444; font-weight: bold;">${datosRetoActual.titulo}</p>`;
+            datosRetoActual.lineas.forEach(linea => {
+                bloqueMovil.innerHTML += `<p>${linea}</p>`;
+            });
+
+            const alturaConsola = document.getElementById("aion-consola-desplazable").clientHeight;
+            posicionScriptY = (alturaConsola / 2) - 30;
+            const distanciaTotal = posicionScriptY + bloqueMovil.clientHeight + 100;
+            velocidadDesplazamiento = distanciaTotal / (90 * 60); 
+            if (velocidadDesplazamiento < 0.2) velocidadDesplazamiento = 0.3;
+
+            let tiempoRestante = 90;
+            window.intervaloRelojGlobal = setInterval(() => {
+                if (tiempoRestante > 0 && gameCorriendo) {
+                    tiempoRestante--;
+                    const min = String(Math.floor(tiempoRestante / 60)).padStart(2, '0');
+                    const seg = String(tiempoRestante % 60).padStart(2, '0');
+                    const txtReloj = document.getElementById("txt-reloj-amazon");
+                    if (txtReloj) txtReloj.innerText = `⏳ TIEMPO: ${min}:${seg}`;
+                } else if (tiempoRestante <= 0 && gameCorriendo) {
+                    clearInterval(window.intervaloRelojGlobal);
+                    finalizarSistemaJuego(false, "El tiempo expiró. El script superó el límite superior del monitor.");
+                }
+            }, 1000);
+
+            document.getElementById("txt-piloto-game").innerHTML = `💻 SERVER: Amazon AWS Deploy | <span id="txt-reloj-amazon">⏳ TIEMPO: 01:30</span>`;
+            document.getElementById("txt-vidas-game").innerText = `INTENTOS: ❤️ ❤️ ❤️ ❤️ ❤️ | PUNTOS: 0`;
+            
+            const primerGap = document.getElementById("gap-0");
+            if (primerGap) primerGap.style.borderColor = "#ffaa00";
+
+            cargarSetAlternativasInferior();
+            bucleMovimientoUniforme();
+        };
+
+        function cargarSetAlternativasInferior() {
+            const datosRetoActual = BASE_DATOS_RETO[1];
+            const alternativasSet = datosRetoActual.bloquesAlternativas[window.bloqueActualId];
+
+            for (let i = 0; i < 5; i++) {
+                const btnCaja = document.getElementById(`g-opt-${i}`);
+                if (btnCaja) {
+                    btnCaja.style.display = "block";
+                    if (i < alternativasSet.length) {
+                        btnCaja.innerText = alternativasSet[i];
+                        btnCaja.style.opacity = "1";
+                        btnCaja.style.backgroundColor = "#ffffff";
+                        btnCaja.style.pointerEvents = "auto";
+                        
+                        btnCaja.onmouseover = function() { this.style.backgroundColor = "#e6e6e6"; };
+                        btnCaja.onmouseout = function() { this.style.backgroundColor = "#ffffff"; };
+                        btnCaja.onclick = function() { verificarAlternativaPresionada(btnCaja.innerText, `g-opt-${i}`); };
+                    } else {
+                        btnCaja.innerText = "-";
+                        btnCaja.style.opacity = "0.3";
+                        btnCaja.style.backgroundColor = "#111622";
+                        btnCaja.style.color = "#72767d";
+                        btnCaja.style.pointerEvents = "none";
+                    }
+                }
+            }
+        }
+
+        function bucleMovimientoUniforme() {
+            if (!gameCorriendo) return;
+
+            posicionScriptY -= velocidadDesplazamiento;
+            const bloqueMovil = document.getElementById("aion-bloque-movil-script");
+            
+            if (bloqueMovil) {
+                bloqueMovil.style.top = posicionScriptY + 'px';
+
+                const huecoActual = document.getElementById(`gap-${gapActivoId}`);
+                if (huecoActual) {
+                    const rectConsola = document.getElementById("aion-consola-desplazable").getBoundingClientRect();
+                    const rectGap = huecoActual.getBoundingClientRect();
+                    
+                    if (rectGap.bottom < rectConsola.top) {
+                        finalizarSistemaJuego(false, "Fallo crítico. La línea de comandos activa se perdió fuera del monitor.");
+                        return;
+                    }
+                }
+
+                if (posicionScriptY < -bloqueMovil.clientHeight) {
+                    finalizarSistemaJuego(false, "El tiempo expiró. El script superó el límite del monitor.");
+                    return;
+                }
+            }
+            animacionFrameId = requestAnimationFrame(bucleMovimientoUniforme);
+        }
+
+        function verificarAlternativaPresionada(textoBoton, idBotonElemento) {
+            if (!gameCorriendo) return;
+
+            const huecoActual = document.getElementById(`gap-${gapActivoId}`);
+            if (huecoActual) {
+                const rectConsola = document.getElementById("aion-consola-desplazable").getBoundingClientRect();
+                const rectGap = huecoActual.getBoundingClientRect();
+                if (rectGap.top > rectConsola.bottom) return; 
+            }
+
+            const txtVidas = document.getElementById("txt-vidas-game");
+
+            if (textoBoton === window.respuestasNivelActual[gapActivoId]) {
+                const huecoElemento = document.getElementById(`gap-${gapActivoId}`);
+                if (huecoElemento) {
+                    huecoElemento.innerText = textoBoton;
+                    huecoElemento.style.backgroundColor = "transparent";
+                    huecoElemento.style.color = "#00ff88";
+                    huecoElemento.style.borderColor = "#00ff88";
+                }
+
+                gamePuntos += 250;
+                gapActivoId++;
+
+                if (gapActivoId === 2 && window.bloqueActualId === 0) { window.bloqueActualId = 2; cargarSetAlternativasInferior(); } 
+                else if (gapActivoId === 3 && window.bloqueActualId === 2) { window.bloqueActualId = 4; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 4 && window.bloqueActualId === 4) { window.bloqueActualId = 6; cargarSetAlternativasInferior(); }
+                else if (gapActivoId === 8 && window.bloqueActualId === 6) { window.bloqueActualId = 8; cargarSetAlternativasInferior(); }
+
+                if (gapActivoId < window.gapsTotalesNivel) {
+                    const proxGap = document.getElementById(`gap-${gapActivoId}`);
+                    if (proxGap) proxGap.style.borderColor = "#ffaa00";
+                } else {
+                    finalizarSistemaJuego(true, "¡Script maestro compilado con éxito! Se restauró el control de red.");
+                }
+            } else {
+                gameVidas--;
+                if (txtVidas) {
+                    txtVidas.style.color = "#ef4444";
+                    setTimeout(() => { if(gameCorriendo) txtVidas.style.color = "#00ff88"; }, 800);
+                }
+                if (gameVidas <= 0) {
+                    finalizarSistemaJuego(false, "Consola bloqueada. Se agotó el margen de fallos críticos.");
+                }
+            }
+            
+            if (txtVidas) {
+                let stringCorazones = "❤️ ".repeat(gameVidas) || "❌";
+                txtVidas.innerText = `INTENTOS: ${stringCorazones} | PUNTOS: ${gamePuntos}`;
+            }
+        }
+
+        function abandonarPartidaRapido() {
+            finalizarSistemaJuego(false, "Partida cancelada voluntariamente por el piloto.");
+        }
+
+        function finalizarSistemaJuego(victoria, mensajeResultado) {
+            if (recompensaProcesada) return;
+            recompensaProcesada = true;
+            
+            clearInterval(window.intervaloRelojGlobal);
+            gameCorriendo = false;
+            cancelAnimationFrame(animacionFrameId);
+            
+            const cartel = document.getElementById("aion-cartel-resultado");
+            const cTitulo = document.getElementById("cartel-titulo");
+            const cMensaje = document.getElementById("cartel-mensaje");
+            const cPuntos = document.getElementById("cartel-puntos");
+
+            if (cartel && cTitulo && cMensaje && cPuntos) {
+                if (victoria) {
+                    cartel.style.borderColor = "#00ff88";
+                    cTitulo.innerText = "🔓 SISTEMA EN LÍNEA";
+                    cTitulo.style.color = "#00ff88";
+                    
+                    try {
+                        let balance = parseInt(localStorage.getItem("aion_acoins_balance")) || 0;
+                        localStorage.setItem("aion_acoins_balance", (balance + 50).toString()); 
+                    } catch(e) {}
+                } else {
+                    cartel.style.borderColor = "#ef4444";
+                    cTitulo.innerText = "🔒 INTRUSIÓN DETENIDA";
+                    cTitulo.style.color = "#ef4444";
+                }
+                cMensaje.innerText = mensajeResultado;
+                cPuntos.innerText = victoria ? `${gamePuntos} PTS (+50 A-COINS)` : `${gamePuntos} PTS`;
+                cartel.style.display = "flex";
+            }
+
+            const cuentaLocal = localStorage.getItem("cuenta_aion_instalada");
+            if (cuentaLocal) {
+                const perfil = JSON.parse(cuentaLocal);
+                const llaveHistorialAlumno = `aion_game_history_${perfil.nombre || 'Piloto'}_${perfil.codigo || 'AION'}`;
+                let historialPartidas = JSON.parse(localStorage.getItem(llaveHistorialAlumno)) || [];
+                historialPartidas.push({ fecha: new Date().toLocaleTimeString(), puntos: gamePuntos });
+            localStorage.setItem(llaveHistorialAlumno, JSON.stringify(historialPartidas));
+        }
+
+        document.getElementById("btn-cerrar-cartel").onclick = function() {
+            window.location.href = 'hangar.html'; 
+        };
+    }
+</script>
+</body>
+</html>
