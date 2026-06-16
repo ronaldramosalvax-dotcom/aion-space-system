@@ -42,6 +42,8 @@
 
         let score = 0;
         let juegoTerminado = false;
+        let recompensaProcesada = false;
+        let acoinsGanadasCopia = 0;
 
         let mouseX = canvas.width / 2;
         canvas.addEventListener('mousemove', (e) => {
@@ -107,15 +109,24 @@
         function reiniciarJuego() {
             score = 0; scoreEl.innerText = score; laseres = []; enemigos = []; particulas = []; powerups = []; jefe = null;
             jugador.escudo = 100; jugador.tipoDisparo = 'normal'; jugador.powerUpTimer = 0;
-            juegoTerminado = false; buclePrincipal();
+            juegoTerminado = false; recompensaProcesada = false; acoinsGanadasCopia = 0;
+            buclePrincipal();
         }
+        function procesarFinDelJuego() {
+            if (recompensaProcesada) return;
+            recompensaProcesada = true;
+            acoinsGanadasCopia = Math.floor(score / 100) * 10;
+            if (acoinsGanadasCopia > 0) {
+                try {
+                    let balanceActual = parseInt(localStorage.getItem("aion_acoins_balance")) || 0;
+                    localStorage.setItem("aion_acoins_balance", (balanceActual + acoinsGanadasCopia).toString());
+                } catch(e) { console.error(e); }
+            }
+        }
+
         function buclePrincipal() {
             if (juegoTerminado) {
-                let acoinsGanadas = Math.floor(score / 100) * 10;
-                if (acoinsGanadas > 0) {
-                    let balanceActual = parseInt(localStorage.getItem("aion_acoins_balance")) || 0;
-                    localStorage.setItem("aion_acoins_balance", (balanceActual + acoinsGanadas).toString());
-                }
+                procesarFinDelJuego();
 
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -123,7 +134,7 @@
                 ctx.fillText('SISTEMA COLAPSADO', canvas.width / 2, canvas.height / 2 - 30);
                 
                 ctx.fillStyle = '#00f2fe'; ctx.font = '16px monospace';
-                ctx.fillText(`+${acoinsGanadas} A-COINS SINCRONIZADAS`, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.fillText(`+${acoinsGanadasCopia} A-COINS SINCRONIZADAS`, canvas.width / 2, canvas.height / 2 + 10);
                 
                 ctx.fillStyle = '#ffffff'; ctx.font = '14px Segoe UI';
                 ctx.fillText('Haz clic para reiniciar escaneo de vuelo', canvas.width / 2, canvas.height / 2 + 50);
@@ -231,7 +242,7 @@
                 ctx.fillStyle = enemigo.color;
                 ctx.beginPath();
                 ctx.moveTo(enemigo.x, enemigo.y);
-                ctx.lineTo(enemigo.x + enemigo.w);
+                ctx.lineTo(enemigo.x + enemigo.w, enemigo.y);
                 ctx.lineTo(enemigo.x + enemigo.w / 2, enemigo.y + enemigo.h);
                 ctx.closePath(); ctx.fill();
 
