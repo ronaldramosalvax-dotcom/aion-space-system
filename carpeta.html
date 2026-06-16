@@ -36,29 +36,31 @@
             text-decoration: none;
             font-size: 14px;
         }
-        .hoja-container {
-            width: fit-content;    /* Se ajusta exactamente al tamaño de la cuadrícula */
-            height: 82vh;          /* Altura fija para que entre perfecta en la pantalla */
+                .hoja-container {
+            width: 95%;            /* Ocupa casi todo el ancho de la pantalla */
+            max-width: 900px;      /* Pero no se pasa de 900px para que no se desarme */
             background-color: #ffffff;
             border: 2px solid #333333;
             border-radius: 4px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             padding: 0px; 
-            margin: 0 auto;        /* Centra la hoja en la pantalla */
+            margin: 0 auto 40px auto; /* Lo centra y le da espacio abajo */
         }
+
 
 
                 /* Matriz aumentada para conservar el área útil de 53 x 35 */
-                .cuadricula-matematica {
+                    .cuadricula-matematica {
             display: grid;
             grid-template-columns: repeat(37, 1fr); 
             grid-template-rows: repeat(55, 1fr);    
-            height: 100%;          /* Sigue la altura del contenedor principal */
-            aspect-ratio: 37 / 55; /* Proporción geométrica fija de tus celdas */
+            width: 100%;           
+            height: auto;          /* El alto se calcula solo de forma perfecta */
+            aspect-ratio: 37 / 55; /* Mantiene la geometría exacta de tus cuadrados */
             background-color: #ffffff;
         }
 
-
+        
 
         /* Cada celda cuadriculada exacta */
         .cuadradito {
