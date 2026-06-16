@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM | Simulador de Vuelo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background-color: #060913;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .header { margin-bottom: 15px; text-align: center; }
+        .btn-back {
+            color: #b9bbbe; text-decoration: none; font-size: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px;
+            border-radius: 4px; background: rgba(255,255,255,0.02); transition: 0.2s;
+        }
+        .btn-back:hover { color: white; background: rgba(255,255,255,0.08); border-color: #404eed; }
+        canvas {
+            border: 2px solid #404eed;
+            background-color: #02040a;
+            box-shadow: 0 0 30px rgba(64, 78, 237, 0.4);
+            border-radius: 8px;
+            cursor: none;
+        }
+        .score-board { font-size: 1.2rem; font-weight: bold; color: #00ff88; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2 style="color: #5765f2; letter-spacing: 1px; margin-bottom: 5px;">🚀 SIMULADOR TÁCTICO AION</h2>
+        <a href="hangar.html" class="btn-back">⬅ Volver al Hangar</a>
+    </div>
+
+    <canvas id="gameCanvas" width="450" height="550"></canvas>
+    <div class="score-board">PUNTOS: <span id="score">0</span></div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+
+        let score = 0;
+        let juegoTerminado = false;
+
+        let mouseX = canvas.width / 2;
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+        });
+
+        canvas.addEventListener('click', () => {
+            if(juegoTerminado) { reiniciarJuego(); return; }
+            disparar();
+        });
+
+        const jugador = { x: 200, y: 480, w: 40, h: 40, color: '#00f2fe' };
+        let laseres = [];
+        let enemigos = [];
+        let estrellas = [];
+
+        for (let i = 0; i < 50; i++) {
+            estrellas.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, velocidad: Math.random() * 2 + 1 });
+        }
+
+        function disparar() {
+            laseres.push({ x: jugador.x + jugador.w / 2 - 3, y: jugador.y, w: 6, h: 15, velocidad: 7, color: '#00ff88' });
+        }
+
+        function crearEnemigo() {
+            if (Math.random() < 0.03 && enemigos.length < 6) {
+                enemigos.push({ x: Math.random() * (canvas.width - 30), y: -30, w: 32, h: 32, velocidad: Math.random() * 2 + 2, color: '#ff4757' });
+            }
+        }
+
+        function reiniciarJuego() {
+            score = 0; scoreEl.innerText = score; laseres = []; enemigos = []; juegoTerminado = false; buclePrincipal();
+        }
+
+        function buclePrincipal() {
+            if (juegoTerminado) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ff4757'; ctx.font = '24px Segoe UI'; ctx.textAlign = 'center';
+                ctx.fillText('Nave Destruida', canvas.width / 2, canvas.height / 2 - 10);
+                ctx.fillStyle = '#ffffff'; ctx.font = '14px Segoe UI';
+                ctx.fillText('Haz clic para reingresar al hiperespacio', canvas.width / 2, canvas.height / 2 + 20);
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            crearEnemigo();
+
+            ctx.fillStyle = '#ffffff';
+            estrellas.forEach(est => {
+                ctx.fillRect(est.x, est.y, est.size, est.size);
+                est.y += est.velocidad;
+                if (est.y > canvas.height) est.y = 0;
+            });
+
+            jugador.x = mouseX - jugador.w / 2;
+            if (jugador.x < 0) jugador.x = 0;
+            if (jugador.x > canvas.width - jugador.w) jugador.x = canvas.width - jugador.w;
+
+            ctx.fillStyle = jugador.color;
+            ctx.beginPath();
+            ctx.moveTo(jugador.x + jugador.w / 2, jugador.y);
+            ctx.lineTo(jugador.x, jugador.y + jugador.h);
+            ctx.lineTo(jugador.x + jugador.w, jugador.y + jugador.h);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#5765f2';
+            ctx.fillRect(jugador.x - 5, jugador.y + jugador.h - 15, 5, 15);
+            ctx.fillRect(jugador.x + jugador.w, jugador.y + jugador.h - 15, 5, 15);
+
+            laseres.forEach((laser, index) => {
+                laser.y -= laser.velocidad;
+                ctx.fillStyle = laser.color;
+                ctx.fillRect(laser.x, laser.y, laser.w, laser.h);
+                if (laser.y < 0) laseres.splice(index, 1);
+            });
+
+            enemigos.forEach((enemigo, eIndex) => {
+                enemigo.y += enemigo.velocidad;
+
+                ctx.fillStyle = enemigo.color;
+                ctx.beginPath();
+                ctx.moveTo(enemigo.x, enemigo.y);
+                ctx.lineTo(enemigo.x + enemigo.w, enemigo.y);
+                ctx.lineTo(enemigo.x + enemigo.w / 2, enemigo.y + enemigo.h);
+                ctx.closePath();
+                ctx.fill();
+
+                laseres.forEach((laser, lIndex) => {
+                    if (laser.x < enemigo.x + enemigo.w && laser.x + laser.w > enemigo.x && laser.y < enemigo.y + enemigo.h && laser.y + laser.h > enemigo.y) {
+                        enemigos.splice(eIndex, 1);
+                        laseres.splice(lIndex, 1);
+                        score += 10;
+                        scoreEl.innerText = score;
+                    }
+                });
+
+                if (jugador.x < enemigo.x + enemigo.w && jugador.x + jugador.w > enemigo.x && jugador.y < enemigo.y + enemigo.h && jugador.y + jugador.h > enemigo.y) {
+                    juegoTerminado = true;
+                }
+
+                if (enemigo.y > canvas.height) enemigos.splice(eIndex, 1);
+            });
+
+            requestAnimationFrame(buclePrincipal);
+        }
+
+        buclePrincipal();
+    </script>
+</body>
+</html>
