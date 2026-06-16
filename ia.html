@@ -212,8 +212,8 @@
     bgMusic.volume = 0.25; // Nivel de volumen ambiental exacto
     bgMusic.loop = true;
 
-    // 2. Activación reactiva: En cuanto el piloto interactúe con el teclado o el mouse, arranca el audio
-              const inicializarAudioFlujo = () => {
+        // Activación reactiva de la playlist en el Modo IA
+    const inicializarAudioFlujo = () => {
       bgMusic.play()
         .then(() => {
           console.log("Canal de audio reanudado.");
@@ -228,10 +228,7 @@
       document.removeEventListener('keydown', inicializarAudioFlujo);
     };
 
-    // 🔴 INTENTO AUTOMÁTICO INSTANTÁNEO: Intenta colar el audio a los 100ms aprovechando tu clic de navegación anterior
     setTimeout(inicializarAudioFlujo, 100);
-
-    // Respaldo táctico por si el navegador obliga estrictamente a interactuar en la nueva pantalla
     document.addEventListener('click', inicializarAudioFlujo);
     document.addEventListener('keydown', inicializarAudioFlujo);
   }
