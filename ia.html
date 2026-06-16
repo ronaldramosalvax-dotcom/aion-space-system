@@ -232,6 +232,16 @@
     document.addEventListener('click', inicializarAudioFlujo);
     document.addEventListener('keydown', inicializarAudioFlujo);
   }
+  // Guarda el tiempo continuamente mientras estés en la interfaz de la IA
+  const bgMusicElement = document.getElementById('bgMusicSecundario');
+  if (bgMusicElement) {
+    bgMusicElement.addEventListener('timeupdate', () => {
+      if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+        localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+      }
+    });
+  }
+
 </script>
 
 </body>
