@@ -874,8 +874,7 @@ const playlist = [
     }
   });
 
-
-      // Persistencia de Estado Optimizada con Tiempo Continuo
+    // Persistencia de Estado Optimizada con Tiempo Continuo
   if (localStorage.getItem('aion_music_playing') === 'true') {
     musicToggle.innerHTML = '🎵';
     musicToggle.classList.add('playing');
@@ -885,14 +884,17 @@ const playlist = [
         bgMusic.src = obtenerSiguienteCancion();
       }
       
-      // Sincroniza el segundo exacto antes de darle Play para que no empiece desde el comienzo
-      const tiempoGuardado = localStorage.getItem('aion_music_time');
-      if (tiempoGuardado) {
-        bgMusic.currentTime = parseFloat(tiempoGuardado);
-      }
-      
       bgMusic.volume = 0.25;
-      bgMusic.play().catch(() => {});
+      bgMusic.play()
+        .then(() => {
+          // El tiempo se inyecta de forma segura SOLAMENTE cuando el navegador confirma que ya dio play con éxito
+          const tiempoGuardado = localStorage.getItem('aion_music_time');
+          if (tiempoGuardado) {
+            bgMusic.currentTime = parseFloat(tiempoGuardado);
+          }
+        })
+        .catch(() => {});
+        
       document.removeEventListener('click', autoPlayIntento);
     };
     
@@ -900,9 +902,9 @@ const playlist = [
     setTimeout(autoPlayIntento, 100);
   }
 
-  // Guarda la posición del segundo exacto continuamente
+  // Guarda la posición del segundo exacto continuamente sin trabarse
   bgMusic.addEventListener('timeupdate', () => {
-    if (localStorage.getItem('aion_music_playing') === 'true') {
+    if (localStorage.getItem('aion_music_playing') === 'true' && bgMusic.currentTime > 0) {
       localStorage.setItem('aion_music_time', bgMusic.currentTime);
     }
   });
