@@ -890,6 +890,12 @@ if (localStorage.getItem('aion_music_playing') === 'true') {
   };
   document.addEventListener('click', autoPlayIntento);
 }
+// Guarda la posición del segundo exacto continuamente
+bgMusic.addEventListener('timeupdate', () => {
+  if (localStorage.getItem('aion_music_playing') === 'true') {
+    localStorage.setItem('aion_music_time', bgMusic.currentTime);
+  }
+});
 
 
 </script>
