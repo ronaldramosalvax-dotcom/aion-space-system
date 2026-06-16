@@ -307,15 +307,39 @@
   if (localStorage.getItem('aion_music_playing') === 'true') {
     const bgMusic = document.getElementById('bgMusicSecundario');
     bgMusic.src = "musica/track1.mp3";
-    bgMusic.volume = 0.25; // El mismo volumen suave que configuramos
+    bgMusic.volume = 0.25; // Tu volumen ambiental máster
     bgMusic.loop = true;
 
-    // En cuanto el usuario haga clic para escribir o tocar algo en la IA, arranca automático
-    const activarAudioAlClic = () => {
-      bgMusic.play().catch(err => console.log("Esperando interacción..."));
-      document.removeEventListener('click', activarAudioAlClic);
+    // Reanudación de audio fluida
+    const inicializarAudioFlujo = () => {
+      bgMusic.play()
+        .then(() => {
+          console.log("Canal de audio reanudado.");
+          const tiempoGuardado = localStorage.getItem('aion_music_time');
+          if (tiempoGuardado) {
+            bgMusic.currentTime = parseFloat(tiempoGuardado);
+          }
+        })
+        .catch(err => console.log("Bloqueo de navegador, esperando clic..."));
+      
+      document.removeEventListener('click', inicializarAudioFlujo);
+      document.removeEventListener('keydown', inicializarAudioFlujo);
     };
-    document.addEventListener('click', activarAudioAlClic);
+
+    // Intento instantáneo aprovechando la navegación
+    setTimeout(inicializarAudioFlujo, 100);
+    document.addEventListener('click', inicializarAudioFlujo);
+    document.addEventListener('keydown', inicializarAudioFlujo);
+  }
+
+  // Guarda el tiempo continuamente mientras estés revisando Sistemas
+  const bgMusicElement = document.getElementById('bgMusicSecundario');
+  if (bgMusicElement) {
+    bgMusicElement.addEventListener('timeupdate', () => {
+      if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+        localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+      }
+    });
   }
 </script>
 
