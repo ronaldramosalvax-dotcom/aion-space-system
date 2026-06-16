@@ -390,8 +390,37 @@
             .panel-pilotos::-webkit-scrollbar-thumb:hover {
                 background: #00ff88; /* Cambia a verde neón al pasar el mouse */
             }
+    /* 🔴 INTERRUPTOR DE MÚSICA - ROJO NEÓN */
+.music-btn-nav {
+    width: 38px;
+    height: 38px;
+    background-color: rgba(35, 39, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.music-btn-nav:hover {
+    border-color: #ff3333;
+    background: rgba(255, 51, 51, 0.05);
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+}
+
+.music-btn-nav.playing {
+    border-color: #ff0055;
+    color: #ff0055;
+    background: rgba(255, 0, 85, 0.07);
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+}
+
     
-    </style>
 </head>
 <body>
 
@@ -411,8 +440,14 @@
 
         </ul>
        <div style="display: flex; align-items: center; gap: 12px; justify-content: center; margin-top: 5px;">
-    <a href="https://discord.gg/37kUZthe" target="_blank" class="btn-account" style="margin: 0 !important;">Conectar Discord</a>
+    <!-- 🎵 INTERRUPTOR DE MÚSICA ALEATORIA -->
+    <button id="musicToggle" class="music-btn-nav" title="Música de fondo">🔇</button>
+
+    <audio id="bgMusic" preload="auto"></audio>
+
+    <a href="https://discord.gg" target="_blank" class="btn-account" style="margin: 0 !important;">Conectar Discord</a>
     <img id="avatar-nav-bar" src="logo.png" onclick="window.location.href='hangar.html'" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #00ff88; cursor: pointer; box-shadow: 0 0 12px rgba(0, 255, 136, 0.5); object-fit: cover;">
+</div>
 
 
 </div>
@@ -774,6 +809,80 @@ window.seleccionarAvatarVisual = function(elemento) {
   cargarAvatarIndex();
   document.addEventListener("DOMContentLoaded", cargarAvatarIndex);
   window.addEventListener('authPilotoListo', cargarAvatarIndex);
+</script>
+<!-- CONTROLADOR DE PLAYLIST ALEATORIA INFINITA -->
+<script>
+  // 🔴 1. Tu lista de reproducción (Nombres exactos de tus archivos .mp3 en tu servidor)
+  const playlist = [
+    "musica/track1.mp3",
+    "musica/track2.mp3",
+    "musica/track3.mp3"
+  ];
+
+  let cancionesDisponibles = [...playlist];
+  const musicToggle = document.getElementById('musicToggle');
+  const bgMusic = document.getElementById('bgMusic');
+
+  // Selecciona un archivo al azar sin repetir consecutivamente
+  function obtenerSiguienteCancion() {
+    if (cancionesDisponibles.length === 0) {
+      cancionesDisponibles = [...playlist]; 
+    }
+    const randomIndex = Math.floor(Math.random() * cancionesDisponibles.length);
+    const cancionSeleccionada = cancionesDisponibles.splice(randomIndex, 1);
+    return cancionSeleccionada;
+  }
+
+  function cargarYReproducir() {
+    bgMusic.src = obtenerSiguienteCancion();
+    bgMusic.play().catch(err => console.log("Se requiere interacción para iniciar audio."));
+  }
+
+  // Al finalizar una canción, salta automáticamente a otra
+  bgMusic.addEventListener('ended', () => {
+    if (localStorage.getItem('aion_music_playing') === 'true') {
+        cargarYReproducir();
+    }
+  });
+
+  // Control manual estricto del interruptor
+  musicToggle.addEventListener('click', () => {
+    if (bgMusic.paused) {
+      localStorage.setItem('aion_music_playing', 'true');
+      musicToggle.innerHTML = '🎵';
+      musicToggle.classList.add('playing');
+      
+      if (!bgMusic.src || bgMusic.src === window.location.href) {
+        cargarYReproducir();
+      } else {
+        bgMusic.play().catch(() => cargarYReproducir());
+      }
+    } else {
+      // Única forma en el universo de apagarla: presionar de nuevo el botón
+      localStorage.setItem('aion_music_playing', 'false');
+      bgMusic.pause();
+      musicToggle.innerHTML = '🔇';
+      musicToggle.classList.remove('playing');
+    }
+  });
+
+  // Persistencia de Estado: Mantiene la música activa al navegar o actualizar
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('aion_music_playing') === 'true') {
+      musicToggle.innerHTML = '🎵';
+      musicToggle.classList.add('playing');
+      
+      const autoPlayIntento = () => {
+        if (!bgMusic.src || bgMusic.src === window.location.href) {
+          cargarYReproducir();
+        } else {
+          bgMusic.play().catch(() => cargarYReproducir());
+        }
+        document.removeEventListener('click', autoPlayIntento);
+      };
+      document.addEventListener('click', autoPlayIntento);
+    }
+  });
 </script>
 
 </body>
