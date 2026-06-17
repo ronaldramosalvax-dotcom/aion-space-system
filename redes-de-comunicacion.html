@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Redes de Comunicación</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: 2px solid #333333;
+            color: #333333;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            z-index: 999999;
+        }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 86vh; width: 92%; border-radius: 6px; }
+            .options-list { gap: 8px !important; }
+            .option-text { font-size: 13px !important; }
+            .checkbox-anchor { width: 26px !important; height: 26px !important; font-size: 13px !important; }
+            .interactive-block { padding: 12px !important; }
+            .problem-block { padding: 15px !important; font-size: 13.5px !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title"></div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: white;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Pregunta 1: Tomando en cuenta las bases del curso, defina conceptualmente qué es una red de comunicación y mediante qué elementos se logra su transporte operativo.", 
+                o: [
+                    "a) Es un modelo relacional estricto que se administra de forma nativa mediante instrucciones DDL como CREATE.", 
+                    "b) Es una capa lógica del kernel mode que controla la potencia eléctrica de un dispositivo inteligente.", 
+                    "c) Es un conjunto de dispositivos interconectados para transferir datos mediante tecnología con soporte analógico o de software, transportándose en entornos públicos o privados.", 
+                    "d) Es una estrategia de analítica predictiva masiva que se procesa a través de tableros gráficos de alta disponibilidad.", 
+                    "e) Es una técnica humana de ingeniería social orientada a descifrar la integridad referencial de una Smart Card."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Una red de comunicación es un conjunto de dispositivos interconectados con la finalidad de transferir datos a través de una tecnología de comunicación con soporte de software o analógico (p. 7). El transporte de esta información se puede efectuar tanto en entornos privados como públicos (p. 7)." 
+            },
+            { 
+                t: "Pregunta 2: Las redes de datos, telefonía y televisión permiten la transmisión de diversos formatos multimedia (p. 8). Identifique el hito u objetivo primordial que persiguen estos sistemas para beneficio del usuario.", 
+                o: [
+                    "a) Su objetivo es permitir que los usuarios compartan recursos y dispongan de una alta confiabilidad al tener fuentes alternativas de distribución.", 
+                    "b) Su fin es eliminar por completo el uso de sistemas operativos locales mediante el despliegue automático de procesos batch.", 
+                    "c) Busca migrar los objetos binarios BLOB hacia almacenes centralizados divididos en Data Marts comerciales.", 
+                    "d) Su propósito es aislar los nodos inalámbricos para que operen únicamente bajo la teoría de grafos estructurados.", 
+                    "e) Intenta reducir a cero el costo de licencias corporativas mediante la inyección de software potencialmente no deseado."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El objetivo principal de las redes es permitir que los usuarios tengan la facultad de compartir recursos y, simultáneamente, disponer de una alta confiabilidad al contar con fuentes alternativas de distribución de datos (p. 8)." 
+            },
+            { 
+                t: "Pregunta 3: Los elementos técnicos de las redes transmiten datos, video y audio entre diversos equipos (p. 8). Seleccione la alternativa que agrupe correctamente los medios alámbricos e inalámbricos explicados en la sesión.", 
+                o: [
+                    "a) Alámbricos: llamadas de voz y señales de televisión digital. Inalámbricos: bases de datos Oracle.", 
+                    "b) Alámbricos: cable UTP, cable coaxial y fibra óptica. Inalámbricos: tecnologías Bluetooth y Wi-Fi.", 
+                    "c) Alámbricos: consultas SQL estructuradas. Inalámbricos: firewalls lógicos perimetrales de red.", 
+                    "d) Alámbricos: parches de seguridad de software. Inalámbricos: arquitecturas transaccionales del tipo batch.", 
+                    "e) Alámbricos: procesadores multicore domésticos. Inalámbricos: objetos documentales del tipo JSON."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La transmisión física y digital se realiza mediante diversos medios alámbricos como el cable UTP, cable coaxial y fibra óptica, o a través de medios inalámbricos como las tecnologías Bluetooth o Wi-Fi (p. 8)." 
+            },
+            { 
+                t: "Pregunta 4: Describa la arquitectura interna y el método de transmisión que caracteriza tradicionalmente a las redes de telefonía básica.", 
+                o: [
+                    "a) Es una base de datos descentralizada distribuida en bloques lógicos públicos inmunes a virus informáticos.", 
+                    "b) Es una infraestructura perimetral que transmite datos masivos desestructurados en formato XML de alta velocidad.", 
+                    "c) Es una plataforma en la nube que gestiona la disponibilidad de un microondas a través de interfaces gráficas.", 
+                    "d) Es un bloque de código malicioso que se introduce en el sistema mediante correos electrónicos falsos de phishing.", 
+                    "e) Es un sistema de circuitos conductores eléctricos con nodos que conmutan circuitos creando un camino único para transmitir voz en formato analógico."
+                ], 
+                c: 4, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Es un sistema compuesto por circuitos conductores de impulsos eléctricos que internamente poseen una gran cantidad de nodos que van conmutando circuitos hasta crear un camino único entre emisor y receptor, transmitiendo la voz en formato analógico (p. 9)." 
+            },
+            { 
+                t: "Pregunta 5: Si bien la telefonía básica fue diseñada para la voz analógica, es posible transmitir datos lógicos a través de ella (p. 9). Identifique qué dispositivo se requiere para esta tarea y cuál es su limitación técnica.", 
+                o: [
+                    "a) Se requiere un router inalámbrico ADSL que compile de forma automática el lenguaje estructurado Java.", 
+                    "b) Se necesita la instalación de un firewall físico configurado bajo el principio de privilegio mínimo.", 
+                    "c) Se requiere un módem, pero tiene la limitación de ofrecer una velocidad significativamente baja para la transferencia.", 
+                    "d) Se utiliza un dashboard interactivo que elimina la redundancia aplicando procesos automáticos de mapeo ETL.", 
+                    "e) Requiere un chip integrado del tipo Smart Card que restringe el acceso lógico al modo usuario del procesador."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Para la transmisión de datos a través de la red telefónica básica se requiere la incorporación de un módem, sin embargo, este método proporciona una velocidad significativamente baja (p. 9)." 
+            },
+            { 
+                t: "Pregunta 6: Explique el objetivo operativo de las redes de televisión y cuáles son los medios físicos y lógicos que emplean para realizar su difusión a distancia.", 
+                o: [
+                    "a) Su objetivo es transmitir imágenes en movimiento y sonido a distancia, difundiéndose por ondas de radio, cable y/o satélite en señal abierta o privada.", 
+                    "b) Su meta es integrar grandes colecciones de información para que un programa informático seleccione fragmentos relacionales.", 
+                    "c) Busca monitorear el comportamiento humano del personal interno ante amenazas accidentales o intencionales.", 
+                    "d) Intenta soportar el procesamiento en paralelo en entornos de multiprocesamiento utilizando procesadores multicore.", 
+                    "e) Su fin es ejecutar algoritmos de minería de datos sobre un Data Warehouse para hallar patrones ocultos de consumo."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Su objetivo es transmitir imágenes en movimiento y sonido (video) así como recepcionarlos a distancia, realizando su difusión por medio de ondas de radio, cable y/o satélite en modalidades de señal abierta o privada (p. 11)." 
+            },
+            { 
+                t: "Pregunta 7: En el estado actual de las redes de televisión se estudió el sistema CATV (p. 14). Describa las propiedades técnicas de transmisión de este formato clásico.", 
+                o: [
+                    "a) Transmite datos mediante una base de datos documental JSON que acepta consultas avanzadas sobre su contenido interno.", 
+                    "b) Transmite señales para otorgar televisión en formato analógico de manera unidireccional hacia los televisores.", 
+                    "c) Distribuye frecuencias microondas descentralizadas utilizando contratos inteligentes y validación por consenso de nodos.", 
+                    "d) Envía flujos de información bidireccional digitalizada optimizada para el funcionamiento de ciudades inteligentes.", 
+                    "e) Ejecuta comandos transaccionales del lenguaje SQL como UPDATE y DELETE a través de un switch óptico."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El sistema CATV (Community Antenna Television) transmite señales para dar cobertura de televisión en formato analógico de manera estrictamente unidireccional hacia los aparatos televisores (p. 14)." 
+            },
+            { 
+                t: "Pregunta 8: Las redes modernas de televisión emplean la infraestructura HFC (p. 15). Explique las ventajas de este diseño híbrido respecto a los servicios que puede recibir un abonado.", 
+                o: [
+                    "a) Limita el acceso lógico de los usuarios aplicando antivirus perimetrales que escanean el software transaccional.", 
+                    "b) Modifica de forma autónoma las líneas de código fuente de los sistemas operativos embebidos en el hogar.", 
+                    "c) Transmite radiofrecuencia uniendo cable coaxial y fibra óptica, dando acceso a TV (digital o analógica), Internet y telefonía fija.", 
+                    "d) Funciona como un repositorio central de archivos planos que no acepta modificaciones estructurales del tipo DML.", 
+                    "e) Conecta los televisores mediante aristas matemáticas basadas de forma estricta en el Principio de Privilegio Mínimo."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La red HFC transmite señales de radiofrecuencia combinando cables coaxiales y de fibra óptica, lo que permite proporcionar acceso simultáneo a señales de televisión (en formato digital o analógico), servicio de Internet y telefonía fija (p. 15)." 
+            },
+            { 
+                t: "Pregunta 9: Describa cómo está organizada la infraestructura de las redes de telefonía móvil en la superficie terrestre y bajo qué rangos de frecuencia operan habitualmente (p. 16).", 
+                o: [
+                    "a) Se organiza mediante un único servidor centralizado de alta disponibilidad que transmite datos analógicos a 64 Kb/s.", 
+                    "b) Se compone de antenas en espacios hexagonales (células) para comunicación inalámbrica por ondas electromagnéticas, con frecuencias de 900 a 2000 MHz.", 
+                    "c) Funciona mediante un algoritmo de cifrado asimétrico que opera en frecuencias restringidas de uso militar.", 
+                    "d) Se estructura en base a un cable coaxial de gran diámetro que conecta módems de baja velocidad con bases SQL.", 
+                    "e) Utiliza la tecnología Hadoop para organizar las antenas en filas secuenciales inmunes a desastres naturales."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Permiten la comunicación inalámbrica a través de ondas electromagnéticas entre terminales (p. 16). Se compone de antenas distribuidas en espacios hexagonales denominados células y sus frecuencias van desde los 900 MHz hasta los 2000 MHz (p. 16)." 
+            },
+            { 
+                t: "Pregunta 10: La red móvil ha evolucionado incorporando nuevas posibilidades técnicas con el avance tecnológico (p. 20). Identifique el hito o servicio que se introdujo con la llegada de la tecnología 4G.", 
+                o: [
+                    "a) Se habilitó de manera exclusiva el envío de los primeros mensajes de texto simples en formato analógico.", 
+                    "b) Se integró la infraestructura de contratos inteligentes para dar soporte nativo a las Smart Cards corporativas.", 
+                    "c) Se introdujo de forma masiva el soporte para vídeo en terminales móviles, sumándose al acceso a internet y mensajes de texto.", 
+                    "d) Se implementó el concepto de 'Smart Cities' y la interconexión masiva de coches y fábricas inteligentes.", 
+                    "e) Se eliminó el uso de ondas electromagnéticas reemplazándolas por conexiones lógicas basadas en tablas Hash."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Con la llegada de la tecnología 4G en el año 2008, se introdujo de manera masiva la posibilidad técnica y comercial de transmitir y consumir Vídeo en los terminales móviles, sumándose al acceso a internet y mensajes de texto previos (p. 20)." 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = "";
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes[1] ? partes[1].trim() : txt;
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
