@@ -236,7 +236,7 @@
         const tDisplay = document.getElementById('t-display');
         const sButton = document.getElementById('s-button');
 
-        function render() {
+               function render() {
             paused = false; viewRes = false; count = 3;
             clearInterval(clock);
             resBox.style.display = 'none';
@@ -256,8 +256,8 @@
             
             item.o.forEach((txt, i) => {
                 const partes = txt.split(') ');
-                const letra = partes ? partes.trim() : '';
-                const formula = partes.slice(1).join(') ').trim();
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes.length > 1 ? partes.slice(1).join(') ').trim() : txt;
 
                 const li = document.createElement('li');
                 li.className = 'option-item';
@@ -266,6 +266,7 @@
                 optionsBox.appendChild(li);
             });
         }
+
 
         function evaluate(chosen, correct) {
             optionsBox.classList.add('disabled');
