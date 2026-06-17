@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Sistemas Operativos</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: 2px solid #333333;
+            color: #333333;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            z-index: 999999;
+        }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
+            .problem-block { height: auto; max-height: 30vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title"></div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: white;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Pregunta 1: De acuerdo con los fundamentos del curso, defina conceptualmente qué es un sistema operativo y cuál es su rol respecto a los componentes de hardware.", 
+                o: [
+                    "a) Es un cortafuegos perimetral liofilizado que monitoriza el tráfico transaccional de las bases de datos SQL.", 
+                    "b) Es una infraestructura cableada distribuida que interconecta antenas de televisión digital mediante procesos ETL.", 
+                    "c) Es un algoritmo criptográfico avanzado diseñado para proteger la identidad digital frente a ataques de phishing.", 
+                    "d) Es un cuadro de mando interactivo o dashboard analítico que procesa la minería de datos de forma descentralizada.", 
+                    "e) Es una capa de software que facilita a los programas de usuario el uso de los componentes de hardware y administra sus recursos."
+                ], 
+                c: 4, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Un sistema operativo es una capa de software que actúa como intermediario para permitir a los programas del usuario utilizar los diferentes componentes de hardware de una manera más sencilla y eficiente, además de encargarse de la administración integral de todos sus recursos." 
+            },
+            { 
+                t: "Pregunta 2: La mayoría de las computadoras modernas poseen dos modos operativos lógicos. Identifique en qué modo de operación específico se ejecuta el sistema operativo para gestionar los recursos.", 
+                o: [
+                    "a) Se ejecuta a través de consultas indexadas en estructuras de clave-valor dentro de un nodo inalámbrico.", 
+                    "b) Se ejecuta en el kernel mode.", 
+                    "c) Se ejecuta de forma descentralizada en una red pública mediante contratos inteligentes de Blockchain.", 
+                    "d) Se ejecuta de manera nativa en el user mode para evitar la alteración y fabricación de datos falsos.", 
+                    "e) Se ejecuta únicamente dentro de la capa de visualización de informes analíticos utilizando Hadoop."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Las computadoras poseen el modo usuario y el modo kernel. El sistema operativo se ejecuta de forma exclusiva en el kernel mode, lo que le otorga el control total sobre los componentes físicos del computador." 
+            },
+            { 
+                t: "Pregunta 3: Describa el propósito de un sistema operativo del tipo Mainframe OS y explique brevemente el concepto de procesamiento por lotes o batch.", 
+                o: [
+                    "a) Es un motor documental JSON diseñado para ejecutarse eficientemente en dispositivos que funcionan con baterías.", 
+                    "b) Es un software de oficina multitarea que requiere la constante manipulación humana de comandos TCL como COMMIT.", 
+                    "c) Es un protocolo de alta disponibilidad que segmenta las bases de datos relacionales en subconjuntos o Data Marts.", 
+                    "d) Es un sistema que procesa datos de gran magnitud y donde los procesos tipo batch se ejecutan de manera autónoma, sin interacción del usuario.", 
+                    "e) Es un dispositivo físico cableado que bloquea programas potencialmente no deseados mediante reglas de seguridad."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Los Mainframe OS están orientados a grandes volúmenes de procesamiento (como transacciones comerciales bancarias masivas). Un sistema del tipo batch dentro de este entorno ejecuta sus actividades asignadas de forma autónoma, es decir, sin la interacción directa de un usuario." 
+            },
+            { 
+                t: "Pregunta 4: ¿En qué entornos de hardware se ejecutan los sistemas operativos de servidor (Server OS) y qué servicios específicos brindan a las organizaciones?", 
+                o: [
+                    "a) Se ejecuta en servidores físicos o estaciones de trabajo para atender a muchos usuarios en red, compartiendo servicios web, de archivos o bases de datos.", 
+                    "b) Trabaja de forma aislada en nodos de sensores de potencia muy limitada para medir la humedad perimetral.", 
+                    "c) Operan en tarjetas electrónicas pequeñas con chips restringidos para ejecutar una sola función de pago electrónico.", 
+                    "d) Funcionan en computadoras personales de escritorio con el fin de compilar códigos de programación estructurados en Java.", 
+                    "e) Reducen los costos de adquisición de hardware físico transformando amenazas intencionales en ventajas competitivas."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se ejecutan en servidores físicos o estaciones de trabajo y sirven a múltiples usuarios conectados en red a la vez para compartir recursos. Brindan servicios esenciales como impresión, almacenamiento de archivos, páginas web y gestión de bases de datos." 
+            },
+            { 
+                t: "Pregunta 5: Explique qué necesidad técnica cubre un sistema operativo de multiprocesamiento (Multiprocessor OS) y cómo se aplica esta capacidad a menor escala en la actualidad.", 
+                o: [
+                    "a) Reemplazan las labores manuales de los analistas de negocio en la limpieza de datos transaccionales mediante un proceso ETL.", 
+                    "b) Eliminan las líneas de código fuente malicioso aplicando de forma estricta los privilegios mínimos de acceso lógico.", 
+                    "c) Permiten conceptualizar la información del negocio mediante árboles y aristas basados en la teoría analítica de grafos.", 
+                    "d) Están diseñados para ejecutar actividades de procesamiento por lotes que no requieren redundancia de hardware en la nube.", 
+                    "e) Soportan el procesamiento en paralelo y actualmente integran capacidades lógicas a menor escala debido a la masificación de los chips multicore."
+                ], 
+                c: 4, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Requieren un tratamiento especial en su diseño para soportar y gestionar el procesamiento en paralelo. Hoy en día, debido al aumento de chips multicore en computadoras personales, los sistemas operativos integran estas capacidades lógicas a menor escala para optimizar el rendimiento doméstico." 
+            },
+            { 
+                t: "Pregunta 6: Identifique la característica principal de un sistema operativo embebido (Embedded OS) y mencione tres dispositivos cotidianos donde se implemente.", 
+                o: [
+                    "a) Centralizan la información masiva en almacenes centralizados mediante comandos de descripción DDL como DROP y ALTER.", 
+                    "b) Administran miles de redes cableadas telefónicas para evitar la interceptación y modificación de llamadas de voz.", 
+                    "c) Se ejecutan en dispositivos que no son computadoras y no aceptan instalación de software, encontrándose en microondas, televisores y reproductores.", 
+                    "d) Manejan solicitudes bancarias en tiempo compartido utilizando tokens dinámicos de doble factor de autenticación.", 
+                    "e) Son herramientas visuales explicativas orientadas a generar informes gráficos legibles para la alta gerencia."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se ejecutan en dispositivos que no han sido diseñados originalmente como computadoras y que no aceptan la instalación de software externo por parte del usuario final. Se encuentran en hornos microondas, televisores inteligentes y reproductores de música." 
+            },
+            { 
+                t: "Pregunta 7: Describa el entorno físico donde operan los sistemas operativos de nodos de sensores (Sensor-Node OS) y cuáles son sus limitaciones técnicas características.", 
+                o: [
+                    "a) Funcionan dentro de un chip integrado en una Smart Card optimizada para soportar la integridad referencial.", 
+                    "b) Se ejecutan en dispositivos muy pequeños conectados por red inalámbrica, poseen potencia limitada y suelen funcionar con baterías.", 
+                    "c) Operan en grandes infraestructuras de Big Data diseñadas para procesar macrosistemas de archivos planos en tiempo real.", 
+                    "d) Se ejecutan en estaciones de trabajo multitarea que cuentan con suministro eléctrico continuo y refrigeración de hardware.", 
+                    "e) Analizan los patrones ocultos y tendencias comerciales del mercado mediante algoritmos avanzados de minería."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se ejecutan en dispositivos extremadamente pequeños conectados en red mediante tecnología inalámbrica (wireless). Tienen una potencia de procesamiento bastante limitada y suelen funcionar utilizando baterías como fuente de energía." 
+            },
+            { 
+                t: "Pregunta 8: En un sistema operativo en tiempo real (Real-Time OS), ¿cuál es el aspecto crítico que define su funcionamiento y en qué industrias estratégicas se aplican?", 
+                o: [
+                    "a) Se basan en el almacenamiento de objetos binarios masivos para predecir escenarios futuros del e-business.", 
+                    "b) Dependen de la implementación de políticas de concientización humana para mitigar los errores accidentales del personal.", 
+                    "c) Modifican las estructuras relacionales de las bases de datos mediante sentencias transaccionales del lenguaje SQL.", 
+                    "d) Tienen al tiempo como un aspecto clave en su funcionamiento y se aplican en la aviación, sistemas militares y control industrial.", 
+                    "e) Están optimizados para reducir el costo de las licencias de software comerciales mediante el uso de código abierto."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Están caracterizados estrictamente por tener al tiempo como un aspecto clave y mandatorio para la validez de sus resultados. Se aplican en el control de procesos industriales complejos, sistemas de aviación y tecnologías militares." 
+            },
+            { 
+                t: "Pregunta 9: Las tarjetas inteligentes cuentan con su propio sistema operativo (Smart Card OS). Explique cuáles son sus restricciones físicas y operativas principales.", 
+                o: [
+                    "a) Operan en tarjetas con chip integrados, tienen fuertes restricciones de memoria y procesamiento, y por lo general cumplen una sola función como el pago electrónico.", 
+                    "b) Poseen una escalabilidad horizontal ilimitada que permite la carga de volúmenes masivos de datos desestructurados.", 
+                    "c) Están diseñados para ejecutar múltiples aplicaciones simultáneas y aceptar la manipulación directa de sentencias DML.", 
+                    "d) Reemplazan de forma automatizada las capas lógicas del kernel mode para operar directamente en el modo usuario.", 
+                    "e) Funcionan como firewalls lógicos encargados de bloquear virus informáticos y amenazas de interrupción."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se ejecutan en tarjetas pequeñas que contienen un chip electrónico integrado. Tienen de manera inherente severas restricciones de procesamiento y memoria, por lo que, por lo general, solo se diseñan e implementan para cumplir con una única función específica (como el pago electrónico)." 
+            },
+            { 
+                t: "Pregunta 10: Establezca la diferencia operativa fundamental entre un sistema operativo tradicional instalado de forma local y un sistema operativo en la nube según lo revisado en la sesión.", 
+                o: [
+                    "a) El de la nube elimina la necesidad de usar memoria caché y el local almacena los datos estructurados en formato XML.", 
+                    "b) El local opera de forma exclusiva bajo la teoría de grafos y el de la nube maneja tablas Hash distribuidas de alta disponibilidad.", 
+                    "c) El local se instala en el dispositivo físico del usuario; el de la nube corre en un servidor remoto e interactúa a través de internet usando un navegador o aplicación.", 
+                    "d) No existe ninguna diferencia técnica relevante, ya que ambos sistemas ejecutan sus actividades en base a procesos tipo batch independientes.", 
+                    "e) El de la nube está protegido contra la ingeniería social y el local es vulnerable ante cualquier hacker de sombrero gris."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El sistema local se instala directamente en el dispositivo físico que manipula el usuario. El sistema en la nube está instalado en un servidor remoto (sin acceso físico al computador), y el usuario interactúa con él a través de una conexión a Internet empleando un navegador web o una aplicación." 
+            }
+        ];
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = "";
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes[1] ? partes[1].trim() : txt;
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
