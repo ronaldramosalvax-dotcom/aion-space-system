@@ -52,11 +52,16 @@
         }
         .btn-esquina-flecha:hover { background-color: #e6e6e6; }
 
-        @media (max-width: 768px) {
+                @media (max-width: 768px) {
             html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
-            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
-            .problem-block { height: auto; max-height: 30vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 86vh; width: 92%; border-radius: 6px; }
+            .options-list { gap: 8px !important; }
+            .option-text { font-size: 13px !important; }
+            .checkbox-anchor { width: 26px !important; height: 26px !important; font-size: 13px !important; }
+            .interactive-block { padding: 12px !important; }
+            .problem-block { padding: 15px !important; font-size: 13.5px !important; }
         }
+
     </style>
 </head>
 <body>
