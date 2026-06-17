@@ -233,7 +233,7 @@
         const tDisplay = document.getElementById('t-display');
         const sButton = document.getElementById('s-button');
 
-        function render() {
+               function render() {
             paused = false; viewRes = false; count = 3;
             clearInterval(clock);
             resBox.style.display = 'none';
@@ -263,6 +263,7 @@
                 optionsBox.appendChild(li);
             });
         }
+
 
         function evaluate(chosen, correct) {
             optionsBox.classList.add('disabled');
