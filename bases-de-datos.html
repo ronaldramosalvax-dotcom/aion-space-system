@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Bases de Datos</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: 2px solid #333333;
+            color: #333333;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            z-index: 999999;
+        }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
+            .problem-block { height: auto; max-height: 30vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title"></div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: white;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Pregunta 1: Defina el concepto de base de datos y explique cómo opera estructuralmente de acuerdo con lo revisado en la sesión.", 
+                o: [
+                    "a) Es un procesador de textos que almacena hojas de cálculo independientes de forma analógica.", 
+                    "b) Es una colección de información organizada que permite a un programa seleccionar rápidamente los fragmentos de datos requeridos, operando como un sistema de archivos electrónico.", 
+                    "c) Es una plataforma en la nube diseñada exclusivamente para monitorear el tráfico de red de un firewall.", 
+                    "d) Es un algoritmo de encriptación humana empleado para mitigar ataques de ingeniería social.", 
+                    "e) Es un cuadro de mando o dashboard analítico interactivo que automatiza el proceso ETL."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Una base de datos es una colección de información organizada de forma que un programa de ordenador pueda seleccionar rápidamente los fragmentos de datos que necesite. Conceptualmente, funciona de manera equivalente a un sistema de archivos electrónico." 
+            },
+            { 
+                t: "Pregunta 2: Explique la función primordial de un Sistema Gestor de Base de Datos (SGBD) y mencione cómo se clasifican según la forma en la que administran los datos.", 
+                o: [
+                    "a) Actualizar los parches de seguridad del sistema operativo y se clasifican por su origen accidental o intencional.", 
+                    "b) Monitorear los componentes de hardware físicos y se clasifican en cables de red local y fibra óptica.", 
+                    "c) Es un conjunto de programas para gestionar bases de datos (modificar, extraer, almacenar y analizar información) y se clasifican en Relacionales (SQL) y No Relacionales (NoSQL).", 
+                    "d) Diseñar la identidad digital empresarial y se clasifican en hackers de sombrero blanco o negro.", 
+                    "e) Duplicar las copias de seguridad de las llamadas de voz y se clasifican en telefonía y televisión."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Un SGBD es un conjunto de programas que permiten gestionar bases de datos, realizando las funciones de modificar, extraer y almacenar información, además de proveer herramientas para eliminar, analizar y alterar los registros. Se clasifican principalmente en Relacionales (SQL) y No Relacionales (NoSQL)." 
+            },
+            { 
+                t: "Pregunta 3: Describa el propósito general del lenguaje SQL en los entornos informáticos transaccionales de las organizaciones.", 
+                o: [
+                    "a) Es un lenguaje gráfico interactivo usado para compilar videojuegos en tres dimensiones.", 
+                    "b) Funciona como un protocolo de alta disponibilidad que evita la interrupción de la red telefónica.", 
+                    "c) Es un sistema operativo perimetral que limpia los virus y códigos maliciosos del Data Warehouse.", 
+                    "d) Es un lenguaje de computación para trabajar con conjuntos de datos y sus relaciones, utilizado por los programas de bases de datos relacionales.", 
+                    "e) Es una técnica analítica que extrae patrones ocultos desde archivos planos en bruto."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>SQL es un lenguaje de computación diseñado específicamente para trabajar con conjuntos de datos y definir las relaciones existentes entre ellos. Los programas de bases de datos relacionales emplean de forma nativa SQL para operar y manipular dichos datos." 
+            },
+            { 
+                t: "Pregunta 4: Explique el objetivo de las instrucciones del tipo DDL en el lenguaje SQL y mencione cuáles son sus comandos principales.", 
+                o: [
+                    "a) Permite insertar y actualizar datos en las tablas, utilizando los comandos SELECT y INSERT.", 
+                    "b) Permite crear roles y asignar permisos de acceso, utilizando los comandos REVOKE y GRANT.", 
+                    "c) Permite crear y modificar la estructura de la base de datos, utilizando los comandos CREATE, DROP y ALTER.", 
+                    "d) Permite administrar las diferentes transacciones concurrentes, utilizando los comandos ROLLBACK y COMMIT.", 
+                    "e) Permite escanear el sistema en busca de programas potencialmente no deseados o exploits."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El lenguaje DDL o Lenguaje de descripción de datos permite crear y modificar de manera integral la estructura de una base de datos. Sus comandos principales son CREATE, DROP y ALTER." 
+            },
+            { 
+                t: "Pregunta 5: Identifique la función del subconjunto de instrucciones DML en SQL y liste los comandos que lo integran.", 
+                o: [
+                    "a) Construir esquemas de bases de datos en blanco mediante los comandos CREATE y ALTER.", 
+                    "b) Recuperar, almacenar, modificar, eliminar, insertar y actualizar los datos de la base de datos, mediante los comandos SELECT, INSERT, DELETE y UPDATE.", 
+                    "c) Cancelar operaciones sospechosas de hackeo mediante los comandos COMMIT y ROLLBACK.", 
+                    "d) Bloquear los accesos lógicos no autorizados mediante los comandos GRANT y REVOKE.", 
+                    "e) Enlazar múltiples hojas de cálculo electrónicas sin utilizar un gestor relacional."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El lenguaje DML o Lenguaje de manipulación de datos provee las facultades necesarias para recuperar, almacenar, modificar, eliminar, insertar y actualizar los datos contenidos dentro de una base de datos. Sus comandos base son SELECT, INSERT, DELETE y UPDATE." 
+            },
+            { 
+                t: "Pregunta 6: ¿Cuál es la finalidad de las instrucciones clasificadas como TCL en el motor de una base de datos relacional y qué comandos ejecutan dicha tarea?", 
+                o: [
+                    "a) Modificar las columnas de una tabla mediante los comandos DROP y ALTER.", 
+                    "b) Extraer patrones masivos de información mediante los comandos SELECT y UPDATE.", 
+                    "c) Crear perfiles de seguridad para analistas humanos mediante los comandos GRANT y REVOKE.", 
+                    "d) Administrar las diferentes transacciones que ocurren dentro de una base de datos, utilizando los comandos ROLLBACK y COMMIT.", 
+                    "e) Habilitar un firewall lógico para el control del tráfico de red saliente de la empresa."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El lenguaje TCL o Lenguaje de control de transacciones permite administrar las diferentes transacciones que ocurren internamente dentro de una base de datos, garantizando la integridad de los datos a través de los comandos ROLLBACK y COMMIT." 
+            },
+            { 
+                t: "Pregunta 7: Describa el alcance de las instrucciones DCL dentro de la gestión integral de un sistema de base de datos relacional corporativo.", 
+                o: [
+                    "a) Eliminar bases de datos obsoletas mediante el uso exclusivo del comando DROP.", 
+                    "b) Cargar datos procesados en el almacén centralizado mediante la integración de procesos ETL.", 
+                    "c) Crear roles, permisos e integridad referencial, así como el control al acceso a la base de datos mediante los comandos REVOKE y GRANT.", 
+                    "d) Evitar la caída de los dashboards analíticos aplicando redundancia de hardware.", 
+                    "e) Programar scripts en código malicioso para hallar vulnerabilidades lógicas."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El lenguaje DCL o Lenguaje de control de datos permite crear roles, administrar permisos de seguridad, establecer la integridad referencial y mantener el control estricto del acceso de los usuarios a la base de datos mediante los comandos REVOKE y GRANT." 
+            },
+            { 
+                t: "Pregunta 8: Basándose en los gestores de bases de datos relacionales presentados en la sesión, identifique un conjunto exclusivo de software comercial y de código abierto que pertenezca a esta categoría.", 
+                o: [
+                    "a) MongoDB, Redis, Cassandra y plataformas NoSQL híbridas.", 
+                    "b) Excel, Word, Power BI y procesadores de texto planos.", 
+                    "c) Windows, Linux, Android y sistemas operativos de servidores locales.", 
+                    "d) MySQL, Microsoft SQL Server, PostgreSQL, MariaDB, Oracle Database y SQLite.", 
+                    "e) Firewall perimetral, Antivirus informático y parches de seguridad de software."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Los sistemas gestores de bases de datos relacionales explicados en clase incluyen soluciones líderes del mercado como MySQL, Microsoft SQL Server, PostgreSQL, MariaDB, Oracle Database y SQLite." 
+            },
+            { 
+                t: "Pregunta 9: Una empresa decide implementar el gestor relacional Oracle para administrar el sistema de planillas de su personal. Explique técnicamente el beneficio de esta decisión en función de las capacidades estudiadas.", 
+                o: [
+                    "a) Actúa como un antivirus que bloquea correos fraudulentos de phishing dirigidos al área de recursos humanos.", 
+                    "b) Funciona como una base de datos NoSQL optimizada para guardar archivos masivos de video sin estructura lógica.", 
+                    "c) Permite organizar la información del personal en tablas relacionadas, facilitando su gestión (extraer, modificar, almacenar) bajo estrictos controles de acceso y transacciones seguras.", 
+                    "d) Reemplaza de forma automática el uso de sistemas operativos e internet cableado en la corporación.", 
+                    "e) Sirve como una herramienta de visualización o dashboard interactivo para el gerente general."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Al ser Oracle un Sistema Gestor de Base de Datos Relacional, permite estructurar la información del personal en tablas conectadas entre sí, facilitando la extracción, modificación y almacenamiento seguro de las remuneraciones y roles. Además, garantiza el control de accesos confidenciales (DCL) y la consistencia transaccional (TCL) del proceso de pago." 
+            },
+            { 
+                t: "Pregunta 10: En la actividad de inicio de clase se construyeron dos tablas ficticias: una con los datos de alumnos/docentes y otra con los roles (Estudiante, Docente). Explique la utilidad analítica de estructurar la información dividida y relacionada.", 
+                o: [
+                    "a) Permite encriptar el hardware físico de las computadoras frente a desastres meteorológicos.", 
+                    "b) Facilita la propagación de malware del tipo ransomware en entornos controlados de práctica.", 
+                    "c) Evita la redundancia de datos, optimiza el almacenamiento y permite al gestor seleccionar rápidamente fragmentos específicos combinando las tablas según se necesite.", 
+                    "d) Elimina definitivamente la necesidad de utilizar comandos SQL como SELECT o INSERT.", 
+                    "e) Obliga a los analistas a realizar procesos manuales de integración de datos en bruto."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Dividir la información en tablas independientes y conectarlas mediante relaciones evita la duplicación innecesaria de datos (redundancia) y optimiza el almacenamiento. Permite que el sistema gestor seleccione rápidamente fragmentos específicos de datos combinando las tablas según los requerimientos lógicos del programa." 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = "";
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes ? partes.trim() : '';
+                const formula = partes ? partes.trim() : txt;
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
