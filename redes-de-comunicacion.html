@@ -236,7 +236,7 @@
         const tDisplay = document.getElementById('t-display');
         const sButton = document.getElementById('s-button');
 
-        function render() {
+              function render() {
             paused = false; viewRes = false; count = 3;
             clearInterval(clock);
             resBox.style.display = 'none';
@@ -255,9 +255,11 @@
             optionsBox.innerHTML = '';
             
             item.o.forEach((txt, i) => {
+                // Separamos correctamente la letra del texto usando el índice
                 const partes = txt.split(') ');
                 const letra = partes[0] ? partes[0].trim() : '';
-                const formula = partes[1] ? partes[1].trim() : txt;
+                // Volvemos a unir el resto del texto por si contenía más paréntesis internos
+                const formula = partes.slice(1).join(') ').trim();
 
                 const li = document.createElement('li');
                 li.className = 'option-item';
@@ -266,6 +268,7 @@
                 optionsBox.appendChild(li);
             });
         }
+
 
         function evaluate(chosen, correct) {
             optionsBox.classList.add('disabled');
