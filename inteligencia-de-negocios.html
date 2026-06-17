@@ -34,11 +34,11 @@
         .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
         .btn-back:hover { background-color: #e6e6e6; }
 
-        .btn-esquina-flecha {
+            .btn-esquina-flecha {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
+            top: 8px;
+            left: 8px;
+            padding: 3px 8px;
             background-color: #f2f2f2;
             border: 2px solid #333333;
             color: #333333;
@@ -52,11 +52,12 @@
         }
         .btn-esquina-flecha:hover { background-color: #e6e6e6; }
 
-        @media (max-width: 768px) {
+               @media (max-width: 768px) {
             html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
             .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
-            .problem-block { height: auto; max-height: 30vh; }
+            .problem-block { height: auto; max-height: 30vh; padding-top: 40px !important; }
         }
+
     </style>
 </head>
 <body>
