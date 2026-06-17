@@ -267,20 +267,20 @@
             });
         }
 
-
-        function evaluate(chosen, correct) {
+               function evaluate(chosen, correct) {
             optionsBox.classList.add('disabled');
             const lis = document.querySelectorAll('.option-item');
             if (chosen === correct) { 
                 lis[chosen].classList.add('correct'); 
                 score++; 
             } else { 
-                lis[chosen].xl.add('wrong'); 
+                lis[chosen].classList.add('wrong'); 
             }
             tDisplay.style.visibility = 'visible';
             sButton.style.visibility = 'visible';
             startClock();
         }
+
 
         function startClock() {
             tDisplay.textContent = `0${count}s`;
