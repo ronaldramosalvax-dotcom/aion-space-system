@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Inteligencia de Negocios</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: 2px solid #333333;
+            color: #333333;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            z-index: 999999;
+        }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
+            .problem-block { height: auto; max-height: 30vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title">Problema:</div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: white;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Pregunta 1: Definición y Flujo de BI\n\nEnunciado: Explique detalladamente el concepto de Inteligencia de Negocios (BI) según el Data Warehouse Institute y describa cómo se transforma el flujo de datos desde su origen hasta la toma de decisiones.", 
+                o: [
+                    "a) Es un sistema operativo en la nube que ejecuta código matemático de manera automática.", 
+                    "b) Es una base de datos NoSQL utilizada únicamente para almacenar bloques de contratos Blockchain.", 
+                    "c) Es la combinación de tecnología, herramientas y procesos que transforman datos en información, luego en conocimiento y finalmente en una estrategia comercial.", 
+                    "d) Es una herramienta exclusiva de diseño gráfico para construir logotipos corporativos.", 
+                    "e) Es un protocolo de red cableada que sirve para acelerar la velocidad de internet en las oficinas."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La Inteligencia de Negocios o BI es la combinación de tecnologías, herramientas y procesos que permiten transformar datos almacenados en información, esta información en conocimiento, y este conocimiento en un plan o estrategia comercial. El flujo sigue tres fases: Origen (datos en bruto en Excel, XML, BD), Procesamiento (mapeo ETL: Extraer, Transformar y Cargar) y Destino (almacenamiento centralizado en un Data Warehouse)." 
+            },
+            { 
+                t: "Pregunta 2: Diferencias entre Minería y Visualización de Datos\n\nEnunciado: En el contexto de un sistema de BI, distinga claramente las funciones que cumplen la Minería de Datos y la Visualización de Datos.", 
+                o: [
+                    "a) La minería limpia los virus del servidor y la visualización crea copias de respaldo en la nube.", 
+                    "b) La minería se encarga de hallar patrones ocultos en grandes volúmenes de datos y la visualización los transforma en tableros y gráficos fáciles de comprender.", 
+                    "c) La minería destruye los datos duplicados de Excel y la visualización escribe informes de texto extensos.", 
+                    "d) Ambas herramientas realizan exactamente la misma función técnica de almacenar archivos XML.", 
+                    "e) La minería sirve para programar en código Java y la visualización administra redes telefónicas."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La Minería de Datos es un conjunto de herramientas y técnicas aplicadas sobre grandes volúmenes de datos con la finalidad de hallar patrones ocultos y tendencias. Por otro lado, la Visualización de Datos toma el análisis de la minería y lo transforma en tableros de control, tablas y gráficos amigables para que la gerencia pueda comprenderlos fácilmente." 
+            },
+            { 
+                            { 
+                t: "Pregunta 3: Dashboards y Alta Disponibilidad (HA)\n\nEnunciado: Defina qué es un Dashboard y explique por qué es fundamental aplicar un tratamiento de Alta Disponibilidad (High Availability) dentro de la arquitectura de visualización de una empresa.", 
+                o: [
+                    "a) Un Dashboard es un cable de red y la Alta Disponibilidad mide los metros de fibra óptica instalados.", 
+                    "b) Un Dashboard es un procesador físico y la Alta Disponibilidad controla la temperatura del chip.", 
+                    "c) Un Dashboard es una base de datos SQL y la Alta Disponibilidad borra los registros antiguos automáticamente.", 
+                    "d) Un Dashboard es un tablero de control que muestra datos clave y la Alta Disponibilidad garantiza el acceso continuo y sin caídas a dicha información.", 
+                    "e) Un Dashboard es un antivirus empresarial y la Alta Disponibilidad bloquea los correos de phishing."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Un Dashboard es un tablero de control interactivo que gestiona la información y muestra datos clave para facilitar la toma de decisiones. La Alta Disponibilidad (HA) es un protocolo de diseño que garantiza el funcionamiento o acceso continuo y sin caídas al sistema por parte de los usuarios, asegurando que la información del Data Warehouse siempre esté disponible en el dashboard." 
+            },
+            { 
+                t: "Pregunta 4: Caso Práctico - SQL Server en la Empresa\n\nEnunciado: Una empresa requiere analizar sus operaciones comerciales utilizando SQL Server combinado con Inteligencia de Negocios. Describa el rol técnico de cada componente en esta solución.", 
+                o: [
+                    "a) SQL Server actúa como la fuente primaria de base de datos relacional cuyos datos se limpian vía ETL y se centralizan en un Data Warehouse para la analítica.", 
+                    "b) SQL Server funciona como un motor de videojuegos y el Data Warehouse diseña los escenarios 3D.", 
+                    "c) SQL Server es un firewall perimetral y el Data Warehouse es un antivirus de comportamiento humano.", 
+                    "d) SQL Server distribuye las señales de televisión digital y el Data Warehouse almacena videos de YouTube.", 
+                    "e) SQL Server es un lenguaje de programación web y el Data Warehouse es un navegador de internet."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>SQL Server actúa como la fuente primaria de base de datos relacional donde se registran las transacciones. Mediante un proceso de integración (ETL), los datos transaccionales se extraen, limpian y cargan de forma centralizada en un Data Warehouse, permitiendo realizar consultas eficientes y generar informes que otorgan ventajas competitivas." 
+            },
+            { 
+                t: "Pregunta 5: Ventajas y Desventajas de BI\n\nEnunciado: Identifique cuáles son las principales ventajas y desventajas que presenta la implementación de la Inteligencia de Negocios en las organizaciones.", 
+                o: [
+                    "a) Ventaja: Es completamente gratis. Desventaja: No permite usar gráficos ni barras de control.", 
+                    "b) Ventaja: Elimina la necesidad de usar computadoras. Desventaja: Solo funciona para llamadas de voz.", 
+                    "c) Ventaja: Aumenta la productividad y agiliza procesos comerciales. Desventaja: Implica un costo elevado, complejidad técnica y consume tiempo de implementación.", 
+                    "d) Ventaja: Reemplaza a todos los programadores. Desventaja: Bloquea las redes de telecomunicaciones.", 
+                    "e) Ventaja: Descarga archivos XML más rápido. Desventaja: Requiere cambiar de sistema operativo diariamente."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La implementación de BI ofrece ventajas contundentes como aumentar la productividad, mejorar la visibilidad de los datos, agilizar los procesos comerciales y ofrecer una vista integral. Sin embargo, también presenta desventajas críticas como su elevado costo económico, la complejidad técnica de su infraestructura y tiempos de implementación prolongados." 
+            },
+                        { 
+                t: "Pregunta 6: El proceso de Mapeo ETL\n\nEnunciado: Describa la función específica de cada una de las etapas del proceso ETL (Extraer, Transformar y Cargar) dentro de la preparación de datos para un sistema de BI.", 
+                o: [
+                    "a) Eliminar bases de datos antiguos, Transferir archivos por red y Limitar el acceso a internet.", 
+                    "b) Extraer los virus del sistema, Traducir códigos de programación y Cancelar licencias vencidas.", 
+                    "c) Extraer datos desde los orígenes en bruto, Transformarlos mediante limpieza y preprocesamiento, y Cargarlos limpios en el Data Warehouse.", 
+                    "d) Encriptar correos electrónicos, Transmitir señales de video y Localizar servidores distribuidos.", 
+                    "e) Evaluar costos operativos, Terminar contratos de partners y Liberar espacio en discos duros físicos."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El proceso ETL es el puente entre las fuentes primarias y el almacenamiento centralizado. Sus etapas son:<br>1. Extraer (Extract): Recolecta los datos en bruto desde sus orígenes (Excel, SQL, XML).<br>2. Transformar (Transform): Limpia, filtra, estandariza y preprocesa la información para eliminar duplicados o errores.<br>3. Cargar (Load): Inyecta los datos ya limpios y estructurados dentro del Data Warehouse o almacén de datos." 
+            },
+            { 
+                t: "Pregunta 7: Formato Amigable en Informes y Consultas\n\nEnunciado: En la generación de informes o realización de consultas analíticas, ¿por qué es fundamental que la información se presente en un formato amigable y qué herramientas se requieren para ello?", 
+                o: [
+                    "a) Para que los servidores distribuidos no consuman demasiada energía eléctrica en la nube.", 
+                    "b) Para que los analistas comprendan los datos con facilidad y sustenten decisiones, usando gráficos e informes escritos con procesadores de texto.", 
+                    "c) Con el fin de ocultar los datos confidenciales frente a posibles ataques de ingeniería social.", 
+                    "d) Para permitir que los lenguajes de programación compilen códigos matemáticos pesados en menos tiempo.", 
+                    "e) Para automatizar el borrado de archivos temporales pesados de las hojas de Excel."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Es fundamental porque la información debe estar diseñada para que los analistas de negocios la empleen de forma sencilla como sustento en la toma de decisiones estratégicas. Para lograr este impacto, se requiere indispensablemente del uso de gráficos visuales explicativos e informes escritos estructurados mediante procesadores de texto." 
+            },
+            { 
+                t: "Pregunta 8: Organización interna del Data Warehouse (Data Marts)\n\nEnunciado: El archivo de clase menciona que el Data Warehouse centraliza los datos recibidos y se encuentra organizado internamente en Data Marts. Explique la utilidad de esta organización.", 
+                o: [
+                    "a) Sirven para conectar routers físicos de redes locales mediante cables de fibra óptica.", 
+                    "b) Son bases de datos NoSQL diseñadas exclusivamente para almacenar bloques de transacciones de criptomonedas.", 
+                    "c) Son copias de seguridad de emergencia que se activan solo cuando se detecta un hackeo informático masivo.", 
+                    "d) Permiten segmentar y organizar el almacén centralizado en áreas específicas para optimizar y agilizar las consultas analíticas del negocio.", 
+                    "e) Son motores gráficos interactivos que se emplean para construir videojuegos corporativos y simulaciones."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Un Data Warehouse consolida de forma masiva los datos brutos preprocesados de toda la corporación. Para que las consultas de visualización sean eficientes y rápidas, se organiza internamente en Data Marts, los cuales son subconjuntos o segmentos de datos especializados y optimizados para un área específica de la empresa (por ejemplo, finanzas, ventas o marketing)." 
+            },
+            { 
+                t: "Pregunta 9: Caso Práctico - Caída del Sistema Analítico corporativo\n\nEnunciado: El gerente de finanzas de una empresa peruana se queja de que cada vez que intenta abrir su Dashboard para revisar las metas del mes, la pantalla se queda congelada porque el servidor central está saturado. ¿Qué protocolo de diseño de BI falló aquí y cómo soluciona el problema?", 
+                o: [
+                    "a) Falló el cifrado de datos de seguridad; se soluciona instalando un nuevo firewall perimetral.", 
+                    "b) Falló la notación Lambda; se soluciona reescribiendo la base de datos con consultas SQL.", 
+                    "c) Falló el protocolo de Alta Disponibilidad (HA); se soluciona garantizando un diseño que asegure acceso continuo a la información del Data Warehouse desde el Dashboard.", 
+                    "d) Falló el versionamiento Git; se soluciona creando una nueva rama de código fuente en la nube.", 
+                    "e) Falló el e-government empresarial; se soluciona migrando las hojas de cálculo físicas a carpetas compartidas."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El protocolo de diseño que falló es la Alta Disponibilidad o High Availability (HA). Este protocolo tiene como finalidad garantizar el funcionamiento y el acceso continuo a los datos por parte de los usuarios (humanos o programas). Para solucionarlo, se debe implementar una arquitectura HA en la disponibilidad de la información en el Data Warehouse, permitiendo que las capas de visualización (los dashboards) accedan sin interrupciones." 
+            },
+            { 
+                t: "Pregunta 10: Propósito comercial de la Inteligencia de Negocios\n\nEnunciado: Más allá del uso de herramientas tecnológicas avanzadas, explique cuál es el valor o 'tesoro de oportunidades' que le otorga la BI a una compañía en el mercado competitivo.", 
+                o: [
+                    "a) Reducir a cero el presupuesto invertido en licencias de software y servidores físicos.", 
+                    "b) Reemplazar por completo los procesos de venta físicos por pasarelas automáticas de e-business B2B.", 
+                    "c) Modificar el sistema operativo de las computadoras para que naveguen por internet de forma anónima.", 
+                    "d) Unificar y dar sentido a los datos corporativos, permitiendo aprender del pasado de la compañía para diseñar un mejor futuro comercial.", 
+                    "e) Transformar los esquemas lógicos de bases de datos relacionales en arquitecturas de hardware embebido."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El valor de la BI radica en que unifica todos los datos dispersos que genera la organización y les da sentido lógico. Esto beneficia a la empresa en su presente comercial inmediato y, además, le permite aprender del pasado de la compañía para predecir escenarios y de esa manera estruturar un mejor futuro estratégico." 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = `Problema ${index + 1}:`;
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes[1] ? partes[1].trim() : txt;
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                            if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
+
+
