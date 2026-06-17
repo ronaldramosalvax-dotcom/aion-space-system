@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Seguridad de Sistemas</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; }
+        .option-text { font-size: 16px; color: #333333; }
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #f2f2f2;
+            border: 2px solid #333333;
+            color: #333333;
+            border-radius: 4px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s;
+            z-index: 999999;
+        }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 85vh; width: 92%; border-radius: 6px; }
+            .problem-block { height: auto; max-height: 30vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title"></div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: white;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Pregunta 1: Defina el concepto de ciberseguridad y explique cuál es el objetivo principal de los ataques digitales según los fundamentos del curso.", 
+                o: [
+                    "a) Es el proceso de diseñar páginas web interactivas usando lenguajes NoSQL y hojas de cálculo.", 
+                    "b) Es un protocolo de comunicación telefónica cableada que sirve para transmitir datos de video.", 
+                    "c) Es la práctica de proteger sistemas, redes y programas de ataques digitales que buscan acceder, modificar o destruir información confidencial, extorsionar o interrumpir el negocio.", 
+                    "d) Es la instalación de sistemas operativos en servidores locales para duplicar las copias de seguridad de una empresa.", 
+                    "e) Es un componente físico de hardware que mide de forma continua la temperatura de los discos duros de la compañía."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>La ciberseguridad es la práctica de proteger sistemas, redes y programas de ataques digitales. Por lo general, estos ciberataques apuntan a acceder, modificar o destruir la información confidencial; extorsionar a los usuarios o interrumpir la continuidad del negocio." 
+            },
+            { 
+                t: "Pregunta 2: De acuerdo con la literatura técnica revisada en la sesión, ¿cómo se define formalmente una amenaza dentro de un sistema de información?", 
+                o: [
+                    "a) Es la eliminación de contraseñas humanas duplicadas en las hojas de datos de Excel.", 
+                    "b) Es la presencia de factores (personas, máquinas o sucesos) que, al tener la oportunidad, atacan un sistema produciendo daños al aprovecharse de su nivel de vulnerabilidad.", 
+                    "c) Es un error matemático que detiene el funcionamiento automático de las compuertas lógicas del procesador.",
+                    "d) Es un protocolo de alta disponibilidad que se activa cuando se interrumpe la conexión inalámbrica de internet.", 
+                    "e) Es el costo económico elevado que requiere la instalación de un dashboard corporativo en la nube."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se entiende por amenaza la presencia de uno o más factores de diversa índole (personas, máquinas o sucesos) que, de tener la oportunidad, atacarían al sistema produciéndole daños aprovechándose de su nivel de vulnerabilidad." 
+            },
+            { 
+                t: "Pregunta 3: Las amenazas informáticas se pueden clasificar según el tipo de alteración o daño que producen sobre la información. Explique cuál es el objetivo específico de una amenaza de interrupción.", 
+                o: [
+                    "a) Captar y leer la información confidencial de la empresa sin autorización previa.", 
+                    "b) Modificar las líneas de código fuente de los programas corporativos almacenados en la nube.", 
+                    "c) Deshabilitar el acceso a la información del sistema.", 
+                    "d) Insertar datos y registros completamente falsos dentro de una base de datos relacional SQL.", 
+                    "e) Actualizar los parches de seguridad para corregir fallos en el sistema operativo."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El objetivo exclusivo de una amenaza de interrupción es deshabilitar el acceso a la información del sistema, impidiendo que los usuarios autorizados puedan utilizar los recursos." 
+            },
+            { 
+                t: "Pregunta 4: Describa el impacto y las consecuencias que genera una amenaza de interceptación en los sistemas de comunicación de una organización.", 
+                o: [
+                    "a) Personas, programas o equipos no autorizados acceden a un recurso del sistema y captan información confidencial.", 
+                    "b) El sistema operativo deja de funcionar de forma definitiva por un incendio en las instalaciones físicas.", 
+                    "c) Los analistas de negocios limpian los datos transaccionales mediante un proceso de mapeo ETL.", 
+                    "d) Se agregan bloques de transacciones falsas utilizando contratos inteligentes de Blockchain.", 
+                    "e) Se suspende temporalmente el tráfico de red saliente debido a las reglas de un firewall perimetral."
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>En una amenaza de interceptación, personas, programas o equipos no autorizados podrían acceder a un recurso del sistema y captar información confidencial, vulnerando directamente el principio de privacidad de los datos." 
+            },
+            { 
+                t: "Pregunta 5: Establezca la diferencia operativa entre las amenazas de modificación y las de fabricación según la clasificación del tipo de alteración de la información.", 
+                o: [
+                    "a) La modificación borra el disco duro por completo y la fabricación instala un antivirus de sombrero blanco.", 
+                    "b) La modificación altera programas y datos existentes de un sistema, mientras que la fabricación agrega información falsa al conjunto de información del sistema.", 
+                    "c) Ambas realizan la misma acción técnica de encriptar archivos con fines de extorsión económica.", 
+                    "d) La modificación altera las contraseñas humanas y la fabricación capacita a los empleados contra fraudes.", 
+                    "e) La modificación detiene el tráfico de red entrante y la fabricación crea un nuevo dashboard analítico."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>En la amenaza de modificación, personas, programas o equipos no autorizados alteran y cambian los programas y datos existentes del sistema. En cambio, en la amenaza de fabricación, el objetivo es agregar o inyectar información falsa en el conjunto de información del sistema." 
+            },
+            { 
+                t: "Pregunta 6: Las amenazas a los sistemas se clasifican según su origen en accidentales e intencionales. Proporcione ejemplos de cada una de ellas basándose en el material del curso.", 
+                o: [
+                    "a) Accidentales: ataques de phishing por correo. Intencionales: caídas de la señal de televisión digital por lluvia.", 
+                    "b) Accidentales: virus informáticos externos. Intencionales: errores de digitación en las hojas de cálculo.", 
+                    "c) Accidentales: fallos en los sistemas de BI. Intencionales: actualización periódica de parches de seguridad.", 
+                    "d) Accidentales: desastres naturales, fallos en equipos, redes, sistemas operativos o errores humanos. Intencionales: introducción de software malicioso, intrusiones, robos o hurtos." , 
+                    "e) Ambas categorías provienen exclusivamente de hackers de sombrero negro ajenos a la organización."
+                ], 
+                c: 3, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Las amenazas accidentales incluyen accidentes meteorológicos, incendios, inundaciones, fallos en los equipos, redes, sistemas operativos o software, y errores humanos. Las intencionales se deben siempre a la acción humana premeditada, como la introducción de software malicioso, intrusión informática, robos o hurtos." 
+            },
+            { 
+                t: "Pregunta 7: Explique la diferencia conceptual entre el término Código Malicioso y los Programas potencialmente no deseados.", 
+                o: [
+                    "a) El código malicioso altera el hardware físico y los programas no deseados limpian la memoria caché.", 
+                    "b) El código malicioso engloba programas con fines dañinos explícitos (virus, bots, etc.), mientras que los programas potencialmente no deseados se instalan sin consentimiento para realizar seguimiento o robo de datos.", 
+                    "c) El código malicioso es creado por hackers de sombrero gris y los programas no deseados por personal interno.", 
+                    "d) Ambas tecnologías son herramientas legítimas que las empresas compran para mejorar su productividad.", 
+                    "e) El código malicioso se distribuye por llamadas de voz y los programas no deseados a través de fibra óptica."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El Código Malicioso engloba a todos los programas construidos con un objetivo malicioso explícito como virus, gusanos, bots y exploits. Por otro lado, los Programas potencialmente no deseados se instalan en las computadoras sin el consentimiento del usuario y pueden realizar acciones de seguimiento o robo de datos." 
+            },
+            { 
+                t: "Pregunta 8: El proceso de hacking busca y explota vulnerabilidades. Describa brevemente la clasificación de los hackers según sus intenciones y ética explicada en clase.", 
+                o: [
+                    "a) Blancos: programan en SQL. Grises: usan Excel. Negros: destruyen redes de telecomunicaciones.", 
+                    "b) Blancos: detectan fallos contratados por empresas; Grises: hallan fallos sin aprovecharse e informan; Negros: aprovechan vulnerabilidades para beneficio propio.", 
+                    "c) Blancos: administran el firewall corporativo. Grises y Negros: realizan ataques de phishing externos.", 
+                    "d) Todos operan fuera de la ley y buscan deshabilitar el acceso a la información confidencial.", 
+                    "e) Blancos: desarrollan sistemas operativos. Grises: instalan parches. Negros: configuran la biometría."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Los hackers se dividen en tres: Sombrero blanco (contratados por empresas para detectar fallos o vulnerabilidades), Sombrero gris (encuentran fallos pero no se aprovechan, sino que informan a las organizaciones) y Sombrero negro (aprovechan las vulnerabilidades para beneficio propio y dañar)." 
+            },
+            { 
+                t: "Pregunta 9: Identifique las funciones técnicas de las herramientas de protección tecnológica analizadas en la sesión: antivirus, antimalware y firewalls.", 
+                o: [
+                    "a) El antivirus actualiza parches, el antimalware encripta contraseñas y el firewall limpia bases de datos.", 
+                    "b) El antivirus detecta virus por patrones; el antimalware cubre amenazas más amplias (spyware, ransomware, troyanos); el firewall controla el tráfico de red entrante y saliente bajo reglas definidas.", 
+                    "c) Las tres herramientas realizan exactamente la misma función de proteger la identidad digital humana.", 
+                    "d) Son políticas estratégicas orientadas a sancionar económicamente al personal negligente.", 
+                    "e) Son programas gráficos diseñados para construir tableros de control analíticos interactivos."
+                ], 
+                c: 1, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>El antivirus detecta y elimina virus identificando patrones conocidos. El antimalware protege contra un software malicioso más amplio como spyware, ransomware y troyanos. El firewall es un dispositivo o programa que monitoriza y controla el tráfico de red entrante y saliente basado en reglas de seguridad." 
+            },
+            { 
+                t: "Pregunta 10: Explique qué consideraciones se deben tomar en cuenta para las protecciones basadas en el comportamiento humano y por qué es elemental una gestión conjunta de seguridad.", 
+                o: [
+                    "a) Se debe obligar a los empleados a cambiar de computadora diariamente para evitar ataques accidentales.", 
+                    "b) Implica comprar parches de seguridad automatizados que eliminen por completo la intervención humana.", 
+                    "c) Establecer políticas (contraseñas, respaldos, capacitaciones contra fraudes) y coordinar de forma conjunta personas, procesos y tecnologías para una defensa efectiva y sostenible.", 
+                    "d) Consiste en dividir a toda la empresa de forma permanente en equipos de atacantes y defensores.", 
+                    "e) Eliminar los accesos a internet para que el personal trabaje de forma estrictamente analógica y manual."
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN PARA EL EXAMEN ]</b><br><br>Se considera establecer políticas como contraseñas seguras, copias de seguridad, capacitaciones para evitar fraudes por correo o enlaces, y protección de la identidad digital. Es elemental que las personas, los procesos y las tecnologías trabajen de forma conjunta para asegurar que la detección, investigación y corrección de ataques sean efectivas y sostenibles en el tiempo." 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = "";
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes[1] ? partes[1].trim() : txt;
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2ea44f";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
