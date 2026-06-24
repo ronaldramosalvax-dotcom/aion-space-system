@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AION SPACE SYSTEM - Matemática II</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #000000; color: #333333; }
+        .quiz-container { display: flex; width: 900px; height: 580px; background-color: #ffffff; border: 2px solid #333333; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .main-content { display: flex; flex-direction: column; width: 82%; height: 100%; position: relative; }
+        .problem-block { background-color: #e3e5e8 !important; color: #000000 !important; height: 35%; padding: 25px; border-bottom: 2px solid #333333; font-size: 16px; overflow-y: auto; font-weight: bold; white-space: pre-line; }
+        .problem-title { font-weight: bold; font-size: 18px; margin-bottom: 8px; color: #000000 !important; }
+
+        .interactive-block { flex: 1; background-color: #ffffff; padding: 25px; display: flex; flex-direction: column; position: relative; }
+        .options-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+        .option-item { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px; }
+        .checkbox-anchor { width: 32px; height: 32px; border: 2px solid #333333; background-color: #ffffff; border-radius: 4px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #333333; }
+
+        /* Color azul para las respuestas correctas */
+        .option-item.correct .checkbox-anchor { background-color: #2b78e4 !important; border-color: #2b78e4 !important; color: #ffffff !important; }
+        .option-item.wrong .checkbox-anchor { background-color: #ff5722 !important; border-color: #ff5722 !important; color: #ffffff !important; }
+        .option-text { font-size: 16px; color: #333333; display: flex; align-items: center; gap: 4px; }
+        
+        .resolution-block { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; color: #333333; padding: 30px; display: none; z-index: 10; cursor: pointer; overflow-y: auto; border: 2px solid #333333; font-size: 15px; line-height: 1.6; }
+        .sidebar { width: 18%; border-left: 2px solid #333333; background-color: #fcfcfc; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px 10px; }
+        .progress-text { font-size: 14px; font-weight: bold; text-align: center; color: #333333; }
+        .progress-text span { color: #2b78e4; font-size: 20px; display: block; margin-top: 5px; }
+        .timer-controls { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+        .timer-display { font-size: 16px; font-weight: bold; color: #ff5722; visibility: hidden; }
+        .btn-stop { width: 65px; height: 65px; background-color: #ffc000; border: 2px solid #000; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px; color: #000; display: flex; justify-content: center; align-items: center; visibility: hidden; }
+        .results-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 40px; text-align: center; background-color: #ffffff; }
+        .results-screen h2 { font-size: 28px; color: #2b78e4; margin-bottom: 20px; }
+        .medal-box { font-size: 70px; margin: 20px 0; }
+        .disabled { pointer-events: none; }
+        .btn-back { margin-top: 25px; padding: 12px 24px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-back:hover { background-color: #e6e6e6; }
+
+        .btn-esquina-flecha { position: absolute; top: 20px; left: 20px; padding: 10px 20px; background-color: #f2f2f2; border: 2px solid #333333; color: #333333; border-radius: 4px; font-weight: bold; text-decoration: none; cursor: pointer; font-size: 18px; transition: background-color 0.2s; z-index: 999999; }
+        .btn-esquina-flecha:hover { background-color: #e6e6e6; }
+
+        /* Estilos para que las fracciones queden totalmente verticales */
+        .fracc { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; padding: 0 4px; font-size: 14px; font-weight: bold; line-height: 1; }
+        .fracc sup { border-bottom: 1.5px solid #000000; width: 100%; text-align: center; padding-bottom: 2px; font-size: 13px; position: static; display: block; }
+        .fracc sub { width: 100%; text-align: center; padding-top: 2px; font-size: 13px; position: static; display: block; }
+
+        @media (max-width: 768px) {
+            html, body { overflow: hidden !important; position: fixed; width: 100vw; height: 100vh; }
+            .quiz-container { position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%); height: auto; max-height: 86vh; width: 92%; border-radius: 6px; }
+            .options-list { gap: 8px !important; }
+            .option-text { font-size: 13px !important; }
+            .checkbox-anchor { width: 26px !important; height: 26px !important; font-size: 13px !important; }
+            .interactive-block { padding: 12px !important; }
+            .problem-block { padding: 15px !important; font-size: 13.5px !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-esquina-flecha">←</a>
+
+    <div class="quiz-container">
+        <div class="main-content" id="question-wrapper">
+            <div class="problem-block">
+                <div class="problem-title" id="p-title"></div>
+                <p id="p-text">Cargando...</p>
+            </div>
+
+            <div class="interactive-block" id="int-zone">
+                <ul class="options-list" id="options-box"></ul>
+                <div class="resolution-block" id="res-box">
+                    <h3 style="margin-bottom:15px; text-decoration:underline;">RESOLUCIÓN DEL PROBLEMA</h3>
+                    <div id="res-text"></div>
+                    <p style="margin-top:25px; font-size:12px; opacity:0.9; text-align:center; color: #666666;">[ Haz clic aquí para alternar la pantalla y ver las alternativas ]</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="side-bar">
+            <div class="progress-text">AION SPACE<span>Pregunta<br><font id="p-idx">1 / 10</font></span></div>
+            <div class="timer-controls">
+                <div class="timer-display" id="t-display">03s</div>
+                <button class="btn-stop" id="s-button">STOP</button>
+            </div>
+        </div>
+
+        <div class="results-screen" id="results-panel">
+            <h2>Práctica Finalizada</h2>
+            <p style="font-size: 18px;" id="r-score">Efectividad: 0%</p>
+            <div class="medal-box" id="r-medal"></div>
+            <p style="font-size: 20px; font-weight: bold;" id="r-name">Medalla</p>
+            <a href="index.html" class="btn-back">Volver a los Temas</a>
+        </div>
+    </div>
+
+    <script>
+        const problems = [
+            { 
+                t: "Usando métodos algebraicos, resuelve el siguiente sistema de ecuaciones lineales usando:\n\n5x - 2y + z = 24\n2x + 5y - 2z = -14\nx - 4y + 3z = 2", 
+                o: [
+                    "A) C.S. = {(3, -9, -13)}", 
+                    "B) C.S. = { ( <div class='fracc'><sup>69</sup><sub>19</sub></div> , -<div class='fracc'><sup>182</sup><sub>19</sub></div> , -<div class='fracc'><sup>253</sup><sub>19</sub></div> ) }", 
+                    "C) C.S. = { ( <div class='fracc'><sup>40</sup><sub>11</sub></div> , -<div class='fracc'><sup>150</sup><sub>11</sub></div> , -<div class='fracc'><sup>200</sup><sub>11</sub></div> ) }", 
+                    "D) C.S. = {(2, -5, -8)}", 
+                    "E) C.S. = Ø"
+                ], 
+                c: 1, 
+                r: "<b>[ PASO A PASO ALGEBRAICO ]</b><br><br><b>Operación:</b> 2·Ec(1) + Ec(2):<br>2(5x - 2y + z) + (2x + 5y - 2z) = 2(24) + (-14)<br>12x + y = 34 &nbsp;⇒&nbsp; <b>y = 34 - 12x &nbsp; Ec(@)</b><br><br><b>Operación:</b> -3·Ec(1) + Ec(3):<br>-3(5x - 2y + z) + (x - 4y + 3z) = -3(24) + 2<br>-14x + 2y = -70 &nbsp; <b>Ec(#)</b><br><br>Reemplazando Ec(@) en Ec(#):<br>-14x + 2(34 - 12x) = -70 &nbsp;⇒&nbsp; <b>x = <div class='fracc'><sup>69</sup><sub>19</sub></div></b><br><br>Sustituyendo el valor de <b>x</b> en Ec(@) obtenemos <b>y = -<div class='fracc'><sup>182</sup><sub>19</sub></div></b>. Finalmente, al reemplazar <b>x</b> e <b>y</b> en Ec(3), obtenemos <b>z = -<div class='fracc'><sup>253</sup><sub>19</sub></div></b>.<br><br><b>C.S. = { ( <div class='fracc'><sup>69</sup><sub>19</sub></div> , -<div class='fracc'><sup>182</sup><sub>19</sub></div> , -<div class='fracc'><sup>253</sup><sub>19</sub></div> ) }</b>" 
+            },
+            { 
+                t: "Resuelve por el método de REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n4x + 5y - z = -7\n-2x - 9y + 2z = 85\n0x + y + 7z = 21", 
+                o: [
+                    "A) Δ = -188; C.S. = { ( <div class='fracc'><sup>646</sup><sub>47</sub></div> , -<div class='fracc'><sup>539</sup><sub>47</sub></div> , <div class='fracc'><sup>218</sup><sub>47</sub></div> ) }", 
+                    "B) Δ = 188; C.S. = {(14, -11, 4)}", 
+                    "C) Δ = -150; C.S. = { ( <div class='fracc'><sup>500</sup><sub>47</sub></div> , -<div class='fracc'><sup>400</sup><sub>47</sub></div> , <div class='fracc'><sup>200</sup><sub>47</sub></div> ) }", 
+                    "D) Δ = -188; C.S. = {(13, -12, 5)}", 
+                    "E) Δ = 0; C.S. = Ø"
+                ], 
+                c: 0, 
+                r: "<b>[ SOLUCIÓN POR DETERMINANTES ]</b><br><br><b>Determinante del Sistema (Δ):</b><br>Δ = |Matriz 3x3| = -250 - (-62) = <b>-188</b><br><br><b>Determinantes Incógnitas:</b><br>Δ<sub>x</sub> = -2584 &nbsp;⇒&nbsp; x = Δ<sub>x</sub> / Δ = <b><div class='fracc'><sup>646</sup><sub>47</sub></div></b><br>Δ<sub>y</sub> = 2156 &nbsp;⇒&nbsp; y = Δ<sub>y</sub> / Δ = <b>-<div class='fracc'><sup>539</sup><sub>47</sub></div></b><br>Δ<sub>z</sub> = -872 &nbsp;⇒&nbsp; z = Δ<sub>z</sub> / Δ = <b><div class='fracc'><sup>218</sup><sub>47</sub></div></b><br><br><b>C.S. = { ( <div class='fracc'><sup>646</sup><sub>47</sub></div> , -<div class='fracc'><sup>539</sup><sub>47</sub></div> , <div class='fracc'><sup>218</sup><sub>47</sub></div> ) }</b>" 
+            },
+            { 
+                t: "3. Una tienda de productos tiene tres tipos de prendas, el modelo 1 con un precio de 10 soles, el modelo 2 con un precio de 20 soles y el modelo 3 con un precio de 50 soles. Cierto día vendieron en total 20 prendas por un total de 420 soles. Además, se sabe que de lo que vendieron ese día, el número de prendas tipo 2 menos en número de prendas tipo 3 es igual al número de prendas tipo 1. ¿Cuántas prendas de cada tipo se vendieron ese día? Resuelve el problema usando sistema de ecuaciones y la Matriz inversa.", 
+                o: [
+                    "A) Modelo 1: 5 prendas, Modelo 2: 12 prendas, Modelo 3: 3 prendas.", 
+                    "B) Modelo 1: 8 prendas, Modelo 2: 8 prendas, Modelo 3: 4 prendas.", 
+                    "C) Modelo 1: 7 prendas, Modelo 2: 10 prendas, Modelo 3: 3 prendas.", 
+                    "D) Modelo 1: 6 prendas, Modelo 2: 11 prendas, Modelo 3: 3 prendas.", 
+                    "E) El sistema no tiene solución comercial."
+                ], 
+                c: 2, 
+                r: "<b>[ MATRIZ INVERSA ]</b><br><br><b>Variables:</b> x=Prenda 1, y=Prenda 2, z=Prenda 3.<br><b>Sistema planteado:</b><br>x + y + z = 20 &nbsp; (Ec 1)<br>10x + 20y + 50z = 420 &nbsp; (Ec 2)<br>y - z = x &nbsp;⇒&nbsp; -x + y - z = 0 &nbsp; (Ec 3)<br><br><b>Determinante |A| = -8</b><br>Utilizando la matriz de cofactores y la adjunta, calculamos <b>A<sup>-1</sup></b>:<br>Multiplicando por la matriz de términos independientes de la ecuación <b>X = A<sup>-1</sup> · B</b>, obtenemos de forma exacta:<br><b>x = 7 prendas, y = 10 prendas, z = 3 prendas.</b>" 
+            },
+            { 
+                t: "4. He comprado 1 kg de naranja, 2 kg de manzana y 1 kg de durazno y he pagado por todo ello 22 soles. La diferencia entre el precio por kg de los duraznos y de las naranjas, es igual a la mitad del precio por kg de las manzanas. Si hubiera comprado 1 kg de cada fruta, hubiera pagado 18 soles. ¿Cuál es el precio por kg de las naranjas, manzanas y duraznos? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
+                o: [
+                    "A) Naranja: 5 soles, Manzana: 5 soles, Durazno: 8 soles.", 
+                    "B) Naranja: 6 soles, Manzana: 4 soles, Durazno: 8 soles.", 
+                    "C) Naranja: 4 soles, Manzana: 6 soles, Durazno: 8 soles.", 
+                    "D) Naranja: 7 soles, Manzana: 3 soles, Durazno: 8 soles.", 
+                    "E) Naranja: 6 soles, Manzana: 5 soles, Durazno: 7 soles."
+                ], 
+                c: 1, 
+                r: "<b>[ ELIMINACIÓN GAUSSIANA ]</b><br><br><b>Sistema:</b><br>x + 2y + z = 22<br>-2x - y + 2z = 0<br>x + y + z = 18<br><br><b>Operaciones de Fila:</b><br>F<sub>2</sub> + 2F<sub>1</sub> → F<sub>2</sub><br>F<sub>3</sub> - F<sub>1</sub> → F<sub>3</sub><br><br><b>Resolución Directa por Filas:</b><br>De F<sub>3</sub>: -1y = -4 &nbsp;⇒&nbsp; <b>y = 4 soles</b><br>De F<sub>2</sub>: 3y + 4z = 44 &nbsp;⇒&nbsp; 4z = 32 &nbsp;⇒&nbsp; <b>z = 8 soles</b><br>De F<sub>1</sub>: x + 2(4) + 8 = 22 &nbsp;⇒&nbsp; <b>x = 6 soles</b>" 
+            },
+            { 
+                t: "5. El siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + z = 6\n2x - y + 3z = 14\nx - 2y + 2z = 8", 
+                o: [
+                    "A) C.S. = { ( <div class='fracc'><sup>20-4t</sup><sub>3</sub></div> , <div class='fracc'><sup>t-2</sup><sub>3</sub></div> , t ) ; t ∈ ℝ }", 
+                    "B) C.S. = { (4t, t, 2 - 3t); t ∈ ℝ }", 
+                    "C) C.S. = { (6 - t, t, t); t ∈ ℝ }", 
+                    "D) C.S. = { (4 - 4t, t, 2 + 3t); t ∈ ℝ }", 
+                    "E) C.S. = Ø"
+                ], 
+                c: 3, 
+                r: "<b>[ SISTEMA COMPATIBLE INDETERMINADO ]</b><br><br>Reduciendo la matriz mediante Gauss (F<sub>2</sub>-2F<sub>1</sub> y F<sub>3</sub>-F<sub>1</sub>) y luego aplicando F<sub>3</sub>-F<sub>2</sub> llegamos a la fila final nula: <b>[0 0 0 | 0]</b>.<br><br><b>Parametrización por Fila 2:</b><br>-3y + z = 2 &nbsp;⇒&nbsp; Si asignamos <b>y = t</b> (con t ∈ ℝ), obtenemos de forma directa <b>z = 2 + 3t</b>.<br><br><b>Sustituyendo en Fila 1:</b><br>x + y + z = 6 &nbsp;⇒&nbsp; x + t + (2 + 3t) = 6 &nbsp;⇒&nbsp; <b>x = 4 - 4t</b><br><br><b>C.S. = { (4 - 4t, t, 2 + 3t); con t ∈ ℝ }</b>" 
+            },
+            { 
+                t: "6. Usando métodos algebraicos (reducción, sustitución o igualación), resuelve el siguiente sistema de ecuaciones lineales usando:\n\n2x + 3y - z = 12\nx - 2y + 2z = -2\n3x + y + z = 10", 
+                o: [
+                    "A) C.S. = {(2, 3, 1)}", 
+                    "B) C.S. = {(3, 1, -3)}", 
+                    "C) C.S. = {(2, 1, 5)}", 
+                    "D) C.S. = {(3, 1, 3)}", 
+                    "E) C.S. = Ø"
+                ], 
+                c: 0, 
+                r: "<b>[ PASO A PASO ALGEBRAICO ]</b><br><br><b>Operación:</b> Ec(1) + 2·Ec(2) para eliminar z:<br>(2x + 3y - z) + 2(x - 2y + 2z) = 12 + 2(-2)<br>4x - y = 8 &nbsp;⇒&nbsp; <b>y = 4x - 8 &nbsp; Ec(@)</b><br><br><b>Operación:</b> Ec(1) + Ec(3) para eliminar z:<br>(2x + 3y - z) + (3x + y + z) = 12 + 10<br>5x + 4y = 22 &nbsp; <b>Ec(#)</b><br><br>Reemplazando Ec(@) en Ec(#):<br>5x + 4(4x - 8) = 22 &nbsp;⇒&nbsp; 21x = 54 &nbsp;⇒&nbsp; <b>x = 2</b><br><br>Sustituyendo el valor de <b>x = 2</b> en Ec(@) obtenemos <b>y = 3</b>. Finalmente, al reemplazar <b>x</b> e <b>y</b> en Ec(3), obtenemos <b>z = 1</b>.<br><br><b>C.S. = {(2, 3, 1)}</b>" 
+            },
+            { 
+                t: "7. Resuelve por el método de la REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n2x - y + z = 3\nx + 2y - z = 1\n3x + y + 2z = 8", 
+                o: [
+                    "A) Δ = 14; C.S. = {(1, 2, 3)}", 
+                    "B) Δ = 10; C.S. = {(1, 2, 1)}", 
+                    "C) Δ = 10; C.S. = {(1, 1, 2)}", 
+                    "D) Δ = -12; C.S. = {(2, 1, 1)}", 
+                    "E) Δ = 0; C.S. = Ø"
+                ], 
+                c: 2, 
+                r: "<b>[ SOLUCIÓN POR DETERMINANTES ]</b><br><br><b>Determinante del Sistema (Δ):</b><br>Δ = |Matriz Principal| = 2(4 - (-1)) - (-1)(2 - (-3)) + 1(1 - 6) = 10 + 5 - 5 = <b>10</b><br><br><b>Determinantes Incógnitas:</b><br>Δ<sub>x</sub> = 10 &nbsp;⇒&nbsp; x = Δ<sub>x</sub> / Δ = 10 / 10 = <b>1</b><br>Δ<sub>y</sub> = 10 &nbsp;⇒&nbsp; y = Δ<sub>y</sub> / Δ = 10 / 10 = <b>1</b><br>Δ<sub>z</sub> = 20 &nbsp;⇒&nbsp; z = Δ<sub>z</sub> / Δ = 20 / 10 = <b>2</b><br><br><b>C.S. = {(1, 1, 2)}</b>" 
+            },
+            { 
+                t: "8. Una distribuidora tecnológica vende tres modelos de audífonos: el modelo Básico a 20 soles, el modelo Estándar a 40 soles y el modelo Premium a 100 soles. Cierto día vendieron en total 30 audífonos por un monto de 2,000 soles. Además, se sabe que la cantidad de audífonos del modelo Estándar vendidos superó en 5 unidades a la cantidad del modelo Básico. ¿Cuántos audífonos de cada tipo se vendieron ese día? Resuelve usando Matriz Inversa.", 
+                o: [
+                    "A) Modelo Básico: 5 audífonos, Modelo Estándar: 10 audífonos, Modelo Premium: 15 audífonos.", 
+                    "B) Modelo Básico: 10 audífonos, Modelo Estándar: 15 audífonos, Modelo Premium: 5 audífonos.", 
+                    "C) Modelo Básico: 8 audífonos, Modelo Estándar: 13 audífonos, Modelo Premium: 9 audífonos.", 
+                    "D) Modelo Básico: 12 audífonos, Modelo Estándar: 17 audífonos, Modelo Premium: 1 audífonos.", 
+                    "E) El sistema no tiene solución comercial."
+                ], 
+                c: 1, 
+                r: "<b>[ MATRIZ INVERSA ]</b><br><br><b>Variables:</b> x=Básico, y=Estándar, z=Premium.<br><b>Sistema Planteado:</b><br>x + y + z = 30 &nbsp; (Ecuación 1)<br>20x + 40y + 100z = 2000 &nbsp; (Ecuación 2)<br>y = x + 5 &nbsp;⇒&nbsp; -x + y + 0z = 5 &nbsp; (Ecuación 3)<br><br>Calculando la determinante de la matriz de coeficientes obtenemos <b>|A| = -80</b>. Invirtiendo la matriz por cofactores y adjunta, y operando el producto matricial <b>X = A<sup>-1</sup> · B</b> obtenemos de forma única:<br><b>x = 10 Básicos, y = 15 Estándar, z = 5 Premium.</b>" 
+            },
+            { 
+                t: "9. Un chef compró 2 kg de arroz, 1 kg de azúcar y 3 kg de harina gastando en total 25 soles. La diferencia entre el precio por kg de la harina y el arroz es igual a la mitad del precio por kg del azúcar. Si hubiese comprado únicamente 1 kg de cada producto, el gasto habría sido de 12 soles. ¿Cuál es el precio por kilogramo de cada insumo? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
+                o: [
+                    "A) Arroz: 4 soles, Azúcar: 3 soles, Harina: 5 soles", 
+                    "B) Arroz: 3 soles, Azúcar: 4 soles, Harina: 5 soles", 
+                    "C) Arroz: 5 soles, Azúcar: 2 soles, Harina: 5 soles", 
+                    "D) Arroz: 2 soles, Azúcar: 6 soles, Harina: 4 soles", 
+                    "E) Arroz: 3 soles, Azúcar: 5 soles, Harina: 4 soles"
+                ], 
+                c: 1, 
+                r: "<b>[ ELIMINACIÓN GAUSSIANA ]</b><br><br><b>Sistema inicial ordenado:</b><br>2x + y + 3z = 25<br>-x - 0.5y + z = 0 &nbsp;⇒&nbsp; -2x - y + 2z = 0<br>x + y + z = 12<br><br><b>Operaciones de Fila:</b><br>F<sub>2</sub> + F<sub>1</sub> → F<sub>2</sub> (Elimina x)<br>2F<sub>3</sub> - F<sub>1</sub> → F<sub>3</sub> (Elimina x)<br><br>Al triangular la matriz se obtiene:<br>De la Fila 2: 5z = 25 &nbsp;⇒&nbsp; <b>z = 5 soles (Harina)</b><br>De la Fila 3: y - z = -1 &nbsp;⇒&nbsp; y - 5 = -1 &nbsp;⇒&nbsp; <b>y = 4 soles (Azúcar)</b><br>De la Fila 1: 2x + 4 + 3(5) = 25 &nbsp;⇒&nbsp; 2x = 6 &nbsp;⇒&nbsp; <b>x = 3 soles (Arroz)</b>" 
+            },
+            { 
+                t: "10. El siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + 2z = 5\n2x - y + z = 4\nx - 2y - z = -1", 
+                o: [
+                    "A) C.S. = { (3 - t, 2 - t, t); t ∈ ℝ }", 
+                    "B) C.S. = { (3 + t, 2 - t, t); t ∈ ℝ }", 
+                    "C) C.S. = { (3 - 3t, 2 - t, t); t ∈ ℝ }", 
+                    "D) C.S. = { (3 - t, 2 - 3t, t); t ∈ ℝ }", 
+                    "E) C.S. = Ø"
+                ], 
+                c: 0, 
+                r: "<b>[ S.C.I. - PARAMETRIZACIÓN ]</b><br><br>Aplicando operaciones elementales (F<sub>2</sub> - 2F<sub>1</sub> y F<sub>3</sub> - F<sub>1</sub>) escalonamos la matriz reducida, obteniendo una fila inferior completamente nula <b>[0 0 0 | 0]</b> lo que valida las infinitas soluciones.<br><br><b>Análisis de la Fila 2 resultante:</b><br>-3y - 3z = -6 &nbsp;⇒&nbsp; y + z = 2<br>Asignando la variable libre como parámetro: <b>z = t</b> (con t ∈ ℝ), despejamos y obtenemos <b>y = 2 - t</b>.<br><br><b>Sustituyendo en Fila 1:</b><br>x + (2 - t) + 2t = 5 &nbsp;⇒&nbsp; x + 2 + t = 5 &nbsp;⇒&nbsp; <b>x = 3 - t</b><br><br><b>C.S. = { (3 - t, 2 - t, t); t ∈ ℝ }</b>" 
+            }
+        ];
+
+        let index = 0; let score = 0; let clock = null; let count = 3; let paused = false; let viewRes = false;
+
+        const pTitle = document.getElementById('p-title');
+        const pText = document.getElementById('p-text');
+        const optionsBox = document.getElementById('options-box');
+        const resBox = document.getElementById('res-box');
+        const resText = document.getElementById('res-text');
+        const pIdx = document.getElementById('p-idx');
+        const tDisplay = document.getElementById('t-display');
+        const sButton = document.getElementById('s-button');
+
+        function render() {
+            paused = false; viewRes = false; count = 3;
+            clearInterval(clock);
+            resBox.style.display = 'none';
+            tDisplay.style.visibility = 'hidden';
+            sButton.style.visibility = 'hidden';
+            sButton.textContent = "STOP";
+            sButton.style.backgroundColor = "#ffc000";
+            optionsBox.classList.remove('disabled');
+
+            const item = problems[index];
+            pTitle.textContent = "";
+            pIdx.textContent = `${index + 1} / 10`;
+            pText.textContent = item.t;
+            resText.innerHTML = item.r;
+
+            optionsBox.innerHTML = '';
+            
+            item.o.forEach((txt, i) => {
+                const partes = txt.split(') ');
+                const letra = partes[0] ? partes[0].trim() : '';
+                const formula = partes.slice(1).join(') ').trim();
+
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `<div class="checkbox-anchor">${letra}</div><div class="option-text">${formula}</div>`;
+                li.onclick = () => evaluate(i, item.c);
+                optionsBox.appendChild(li);
+            });
+        }
+
+        function evaluate(chosen, correct) {
+            optionsBox.classList.add('disabled');
+            const lis = document.querySelectorAll('.option-item');
+            
+            if (chosen === correct) { 
+                lis[chosen].classList.add('correct'); 
+                score++; 
+            } else { 
+                lis[chosen].classList.add('wrong'); 
+                lis[correct].classList.add('correct'); 
+            }
+            tDisplay.style.visibility = 'visible';
+            sButton.style.visibility = 'visible';
+            startClock();
+        }
+
+        function startClock() {
+            tDisplay.textContent = `0${count}s`;
+            clock = setInterval(() => {
+                if (!paused) {
+                    count--;
+                    tDisplay.textContent = `0${count}s`;
+                    if (count <= 0) { clearInterval(clock); step(); }
+                }
+            }, 1000);
+        }
+
+        sButton.onclick = function() {
+            if (!paused) {
+                paused = true;
+                tDisplay.textContent = "PAUSA";
+                sButton.textContent = "SIG.";
+                sButton.style.backgroundColor = "#2b78e4";
+                sButton.style.color = "#ffffff";
+                resBox.style.display = 'block';
+                viewRes = true;
+            } else { 
+                step(); 
+            }
+        };
+
+        document.getElementById('int-zone').onclick = function(e) {
+            if (!paused) return;
+            if (viewRes) { resBox.style.display = 'none'; viewRes = false; }
+            else if (!e.target.closest('#options-box')) { resBox.style.display = 'block'; viewRes = true; }
+        };
+
+        function step() {
+            index++;
+            if (index < 10) { render(); }
+            else { finish(); }
+        }
+
+        function finish() {
+            document.getElementById('question-wrapper').style.display = 'none';
+            document.getElementById('side-bar').style.display = 'none';
+            
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'flex';
+            
+            const pct = (score / 10) * 100;
+            document.getElementById('r-score').textContent = `Efectividad: ${pct}% (${score} de 10 correctas)`;
+            
+            const medalBox = document.getElementById('r-medal');
+            const nameBox = document.getElementById('r-name');
+            
+            if (score === 10) {
+                medalBox.textContent = "🌌";
+                nameBox.textContent = "Medalla de Rodio - Élite Cuántica";
+                nameBox.style.color = "#333333";
+            } else if (score >= 8) {
+                medalBox.textContent = "💎";
+                nameBox.textContent = "Medalla de Diamante - Director de Misión";
+                nameBox.style.color = "#b9f2ff";
+            } else if (score >= 6) {
+                medalBox.textContent = "🥇";
+                nameBox.textContent = "Medalla de Oro - Ingeniero de Vuelo";
+                nameBox.style.color = "#d4af37";
+            } else if (score >= 4) {
+                medalBox.textContent = "🥈";
+                nameBox.textContent = "Medalla de Plata - Técnico de Operaciones";
+                nameBox.style.color = "#aaa9ad";
+            } else {
+                medalBox.textContent = "🥉";
+                nameBox.textContent = "Medalla de Bronce - Cadete en Práctica";
+                nameBox.style.color = "#cd7f32";
+            }
+        }
+
+        render();
+    </script>
+
+    <audio id="bgMusicSecundario" preload="auto"></audio>
+    <script>
+      if (localStorage.getItem('aion_music_playing') === 'true') {
+        const bgMusic = document.getElementById('bgMusicSecundario');
+        bgMusic.src = "musica/track1.mp3";
+        bgMusic.volume = 0.25;
+        bgMusic.loop = true;
+
+        const inicializarAudioFlujo = () => {
+          bgMusic.play()
+            .then(() => {
+              const tiempoGuardado = localStorage.getItem('aion_music_time');
+              if (tiempoGuardado) bgMusic.currentTime = parseFloat(tiempoGuardado);
+            })
+            .catch(() => {});
+          document.removeEventListener('click', inicializarAudioFlujo);
+        };
+        setTimeout(inicializarAudioFlujo, 100);
+        document.addEventListener('click', inicializarAudioFlujo);
+      }
+
+      const bgMusicElement = document.getElementById('bgMusicSecundario');
+      if (bgMusicElement) {
+        bgMusicElement.addEventListener('timeupdate', () => {
+          if (localStorage.getItem('aion_music_playing') === 'true' && bgMusicElement.currentTime > 0) {
+            localStorage.setItem('aion_music_time', bgMusicElement.currentTime);
+          }
+        });
+      }
+    </script>
+</body>
+</html>
