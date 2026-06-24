@@ -241,7 +241,7 @@
             const item = problems[index];
             pTitle.textContent = "";
             pIdx.textContent = `${index + 1} / 10`;
-            pText.textContent = item.t;
+            pText.innerHTML = item.t.replace(/\n/g, '<br>');
             resText.innerHTML = item.r;
 
             optionsBox.innerHTML = '';
