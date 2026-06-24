@@ -96,7 +96,7 @@
     <script>
         const problems = [
             { 
-                t: "Ejercicio 1: Usando métodos algebraicos, resuelve el siguiente sistema de ecuaciones lineales usando:\n\n5x - 2y + z = 24\n2x + 5y - 2z = -14\nx - 4y + 3z = 2", 
+                t: "Ejercicio 1:\n\nUsando métodos algebraicos, resuelve el siguiente sistema de ecuaciones lineales usando:\n\n5x - 2y + z = 24\n2x + 5y - 2z = -14\nx - 4y + 3z = 2",
                 o: [
                     "A) C.S. = {(3, -9, -13)}", 
                     "B) C.S. = { ( <div class='fracc'><sup>69</sup><sub>19</sub></div> , -<div class='fracc'><sup>182</sup><sub>19</sub></div> , -<div class='fracc'><sup>253</sup><sub>19</sub></div> ) }", 
@@ -108,7 +108,7 @@
                 r: "<b>[ PASO A PASO ALGEBRAICO ]</b><br><br><b>Operación:</b> 2·Ec(1) + Ec(2):<br>2(5x - 2y + z) + (2x + 5y - 2z) = 2(24) + (-14)<br>12x + y = 34 &nbsp;⇒&nbsp; <b>y = 34 - 12x &nbsp; Ec(@)</b><br><br><b>Operación:</b> -3·Ec(1) + Ec(3):<br>-3(5x - 2y + z) + (x - 4y + 3z) = -3(24) + 2<br>-14x + 2y = -70 &nbsp; <b>Ec(#)</b><br><br>Reemplazando Ec(@) en Ec(#):<br>-14x + 2(34 - 12x) = -70 &nbsp;⇒&nbsp; <b>x = <div class='fracc'><sup>69</sup><sub>19</sub></div></b><br><br>Sustituyendo el valor de <b>x</b> en Ec(@) obtenemos <b>y = -<div class='fracc'><sup>182</sup><sub>19</sub></div></b>. Finalmente, al reemplazar <b>x</b> e <b>y</b> en Ec(3), obtenemos <b>z = -<div class='fracc'><sup>253</sup><sub>19</sub></div></b>.<br><br><b>C.S. = { ( <div class='fracc'><sup>69</sup><sub>19</sub></div> , -<div class='fracc'><sup>182</sup><sub>19</sub></div> , -<div class='fracc'><sup>253</sup><sub>19</sub></div> ) }</b>" 
             },
             { 
-                t: "Ejercicio 2: Resuelve por el método de REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n4x + 5y - z = -7\n-2x - 9y + 2z = 85\n0x + y + 7z = 21", 
+                t: "Ejercicio 2:\n\nResuelve por el método de REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n4x + 5y - z = -7\n-2x - 9y + 2z = 85\n0x + y + 7z = 21", 
                 o: [
                     "A) Δ = -188; C.S. = { ( <div class='fracc'><sup>646</sup><sub>47</sub></div> , -<div class='fracc'><sup>539</sup><sub>47</sub></div> , <div class='fracc'><sup>218</sup><sub>47</sub></div> ) }", 
                     "B) Δ = 188; C.S. = {(14, -11, 4)}", 
@@ -120,7 +120,7 @@
                 r: "<b>[ SOLUCIÓN POR DETERMINANTES ]</b><br><br><b>Determinante del Sistema (Δ):</b><br>Δ = <div class='matriz-inline'><div class='matriz-col'><span>4</span><span>-2</span><span>0</span></div><div class='matriz-col'><span>5</span><span>-9</span><span>1</span></div><div class='matriz-col'><span>-1</span><span>2</span><span>7</span></div></div> = -250 - (-62) = <b>-188</b><br><br><b>Determinantes Incógnitas:</b><br>Δ<sub>x</sub> = -2584 &nbsp;⇒&nbsp; x = Δ<sub>x</sub> / Δ = <b><div class='fracc'><sup>646</sup><sub>47</sub></div></b><br>Δ<sub>y</sub> = 2156 &nbsp;⇒&nbsp; y = Δ<sub>y</sub> / Δ = <b>-<div class='fracc'><sup>539</sup><sub>47</sub></div></b><br>Δ<sub>z</sub> = -872 &nbsp;⇒&nbsp; z = Δ<sub>z</sub> / Δ = <b><div class='fracc'><sup>218</sup><sub>47</sub></div></b><br><br><b>C.S. = { ( <div class='fracc'><sup>646</sup><sub>47</sub></div> , -<div class='fracc'><sup>539</sup><sub>47</sub></div> , <div class='fracc'><sup>218</sup><sub>47</sub></div> ) }</b>"
             },
             { 
-                t: "Ejercicio 3: Una tienda de productos tiene tres tipos de prendas, el modelo 1 con un precio de 10 soles, el modelo 2 con un precio de 20 soles y el modelo 3 con un precio de 50 soles. Cierto día vendieron en total 20 prendas por un total de 420 soles. Además, se sabe que de lo que vendieron ese día, el número de prendas tipo 2 menos en número de prendas tipo 3 es igual al número de prendas tipo 1. ¿Cuántas prendas de cada tipo se vendieron ese día? Resuelve el problema usando sistema de ecuaciones y la Matriz inversa.", 
+                t: "Ejercicio 3:\n\nUna tienda de productos tiene tres tipos de prendas, el modelo 1 con un precio de 10 soles, el modelo 2 con un precio de 20 soles y el modelo 3 con un precio de 50 soles. Cierto día vendieron en total 20 prendas por un total de 420 soles. Además, se sabe que de lo que vendieron ese día, el número de prendas tipo 2 menos en número de prendas tipo 3 es igual al número de prendas tipo 1. ¿Cuántas prendas de cada tipo se vendieron ese día? Resuelve el problema usando sistema de ecuaciones y la Matriz inversa.", 
                 o: [
                     "A) Modelo 1: 5 prendas, Modelo 2: 12 prendas, Modelo 3: 3 prendas.", 
                     "B) Modelo 1: 8 prendas, Modelo 2: 8 prendas, Modelo 3: 4 prendas.", 
@@ -132,7 +132,7 @@
                 r: "<b>[ MATRIZ INVERSA ]</b><br><br><b>Variables:</b> x=Prenda 1, y=Prenda 2, z=Prenda 3.<br><b>Sistema planteado:</b><br>x + y + z = 20 &nbsp; (Ec 1)<br>10x + 20y + 50z = 420 &nbsp; (Ec 2)<br>y - z = x &nbsp;⇒&nbsp; -x + y - z = 0 &nbsp; (Ec 3)<br><br><b>Determinante |A| = -8</b><br>Utilizando la matriz de cofactores y la adjunta, calculamos <b>A<sup>-1</sup></b>:<br>Multiplicando por la matriz de términos independientes de la ecuación <b>X = A<sup>-1</sup> · B</b>, obtenemos de forma exacta:<br><b>x = 7 prendas, y = 10 prendas, z = 3 prendas.</b>" 
             },
             { 
-                t: "Ejercicio 4: He comprado 1 kg de naranja, 2 kg de manzana y 1 kg de durazno y he pagado por todo ello 22 soles. La diferencia entre el precio por kg de los duraznos y de las naranjas, es igual a la mitad del precio por kg de las manzanas. Si hubiera comprado 1 kg de cada fruta, hubiera pagado 18 soles. ¿Cuál es el precio por kg de las naranjas, manzanas y duraznos? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
+                t: "Ejercicio 4:\n\nHe comprado 1 kg de naranja, 2 kg de manzana y 1 kg de durazno y he pagado por todo ello 22 soles. La diferencia entre el precio por kg de los duraznos y de las naranjas, es igual a la mitad del precio por kg de las manzanas. Si hubiera comprado 1 kg de cada fruta, hubiera pagado 18 soles. ¿Cuál es el precio por kg de las naranjas, manzanas y duraznos? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
                 o: [
                     "A) Naranja: 5 soles, Manzana: 5 soles, Durazno: 8 soles.", 
                     "B) Naranja: 6 soles, Manzana: 4 soles, Durazno: 8 soles.", 
@@ -144,7 +144,7 @@
                 r: "<b>[ ELIMINACIÓN GAUSSIANA ]</b><br><br><b>Sistema:</b><br>x + 2y + z = 22<br>-2x - y + 2z = 0<br>x + y + z = 18<br><br><b>Operaciones de Fila:</b><br>F<sub>2</sub> + 2F<sub>1</sub> → F<sub>2</sub><br>F<sub>3</sub> - F<sub>1</sub> → F<sub>3</sub><br><br><b>Resolución Directa por Filas:</b><br>De F<sub>3</sub>: -1y = -4 &nbsp;⇒&nbsp; <b>y = 4 soles</b><br>De F<sub>2</sub>: 3y + 4z = 44 &nbsp;⇒&nbsp; 4z = 32 &nbsp;⇒&nbsp; <b>z = 8 soles</b><br>De F<sub>1</sub>: x + 2(4) + 8 = 22 &nbsp;⇒&nbsp; <b>x = 6 soles</b>" 
             },
             { 
-                t: "Ejercicio 5: El siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + z = 6\n2x - y + 3z = 14\nx - 2y + 2z = 8", 
+                t: "Ejercicio 5:\n\nEl siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + z = 6\n2x - y + 3z = 14\nx - 2y + 2z = 8", 
                 o: [
                     "A) C.S. = { ( <div class='fracc'><sup>20-4t</sup><sub>3</sub></div> , <div class='fracc'><sup>t-2</sup><sub>3</sub></div> , t ) ; t ∈ ℝ }", 
                     "B) C.S. = { (4t, t, 2 - 3t); t ∈ ℝ }", 
@@ -156,7 +156,7 @@
                 r: "<b>[ SISTEMA COMPATIBLE INDETERMINADO ]</b><br><br>Reduciendo la matriz mediante Gauss (F<sub>2</sub>-2F<sub>1</sub> y F<sub>3</sub>-F<sub>1</sub>) y luego aplicando F<sub>3</sub>-F<sub>2</sub> llegamos a la fila final nula: <b>[0 0 0 | 0]</b>.<br><br><b>Parametrización por Fila 2:</b><br>-3y + z = 2 &nbsp;⇒&nbsp; Si asignamos <b>y = t</b> (con t ∈ ℝ), obtenemos de forma directa <b>z = 2 + 3t</b>.<br><br><b>Sustituyendo en Fila 1:</b><br>x + y + z = 6 &nbsp;⇒&nbsp; x + t + (2 + 3t) = 6 &nbsp;⇒&nbsp; <b>x = 4 - 4t</b><br><br><b>C.S. = { (4 - 4t, t, 2 + 3t); con t ∈ ℝ }</b>" 
             },
             { 
-                t: "Ejercicio 6: Usando métodos algebraicos (reducción, sustitución o igualación), resuelve el siguiente sistema de ecuaciones lineales usando:\n\n2x + 3y - z = 12\nx - 2y + 2z = -2\n3x + y + z = 10", 
+                t: "Ejercicio 6:\n\nUsando métodos algebraicos (reducción, sustitución o igualación), resuelve el siguiente sistema de ecuaciones lineales usando:\n\n2x + 3y - z = 12\nx - 2y + 2z = -2\n3x + y + z = 10", 
                 o: [
                     "A) C.S. = {(2, 3, 1)}", 
                     "B) C.S. = {(3, 1, -3)}", 
@@ -168,7 +168,7 @@
                 r: "<b>[ PASO A PASO ALGEBRAICO ]</b><br><br><b>Operación:</b> Ec(1) + 2·Ec(2) para eliminar z:<br>(2x + 3y - z) + 2(x - 2y + 2z) = 12 + 2(-2)<br>4x - y = 8 &nbsp;⇒&nbsp; <b>y = 4x - 8 &nbsp; Ec(@)</b><br><br><b>Operación:</b> Ec(1) + Ec(3) para eliminar z:<br>(2x + 3y - z) + (3x + y + z) = 12 + 10<br>5x + 4y = 22 &nbsp; <b>Ec(#)</b><br><br>Reemplazando Ec(@) en Ec(#):<br>5x + 4(4x - 8) = 22 &nbsp;⇒&nbsp; 21x = 54 &nbsp;⇒&nbsp; <b>x = 2</b><br><br>Sustituyendo el valor de <b>x = 2</b> en Ec(@) obtenemos <b>y = 3</b>. Finalmente, al reemplazar <b>x</b> e <b>y</b> en Ec(3), obtenemos <b>z = 1</b>.<br><br><b>C.S. = {(2, 3, 1)}</b>" 
             },
             { 
-                t: "Ejercicio 7: Resuelve por el método de la REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n2x - y + z = 3\nx + 2y - z = 1\n3x + y + 2z = 8", 
+                t: "Ejercicio 7:\n\nResuelve por el método de la REGLA DE CRAMER el siguiente sistema de ecuaciones lineales:\n\n2x - y + z = 3\nx + 2y - z = 1\n3x + y + 2z = 8", 
                 o: [
                     "A) Δ = 14; C.S. = {(1, 2, 3)}", 
                     "B) Δ = 10; C.S. = {(1, 2, 1)}", 
@@ -180,7 +180,7 @@
                 r: "<b>[ SOLUCIÓN POR DETERMINANTES ]</b><br><br><b>Determinante del Sistema (Δ):</b><br>Δ = |Matriz Principal| = 2(4 - (-1)) - (-1)(2 - (-3)) + 1(1 - 6) = 10 + 5 - 5 = <b>10</b><br><br><b>Determinantes Incógnitas:</b><br>Δ<sub>x</sub> = 10 &nbsp;⇒&nbsp; x = Δ<sub>x</sub> / Δ = 10 / 10 = <b>1</b><br>Δ<sub>y</sub> = 10 &nbsp;⇒&nbsp; y = Δ<sub>y</sub> / Δ = 10 / 10 = <b>1</b><br>Δ<sub>z</sub> = 20 &nbsp;⇒&nbsp; z = Δ<sub>z</sub> / Δ = 20 / 10 = <b>2</b><br><br><b>C.S. = {(1, 1, 2)}</b>" 
             },
             { 
-                t: "Ejercicio 8: Una distribuidora tecnológica vende tres modelos de audífonos: el modelo Básico a 20 soles, el modelo Estándar a 40 soles y el modelo Premium a 100 soles. Cierto día vendieron en total 30 audífonos por un monto de 2,000 soles. Además, se sabe que la cantidad de audífonos del modelo Estándar vendidos superó en 5 unidades a la cantidad del modelo Básico. ¿Cuántos audífonos de cada tipo se vendieron ese día? Resuelve usando Matriz Inversa.", 
+                t: "Ejercicio 8:\n\nUna distribuidora tecnológica vende tres modelos de audífonos: el modelo Básico a 20 soles, el modelo Estándar a 40 soles y el modelo Premium a 100 soles. Cierto día vendieron en total 30 audífonos por un monto de 2,000 soles. Además, se sabe que la cantidad de audífonos del modelo Estándar vendidos superó en 5 unidades a la cantidad del modelo Básico. ¿Cuántos audífonos de cada tipo se vendieron ese día? Resuelve usando Matriz Inversa.", 
                 o: [
                     "A) Modelo Básico: 5 audífonos, Modelo Estándar: 10 audífonos, Modelo Premium: 15 audífonos.", 
                     "B) Modelo Básico: 10 audífonos, Modelo Estándar: 15 audífonos, Modelo Premium: 5 audífonos.", 
@@ -192,7 +192,7 @@
                 r: "<b>[ MATRIZ INVERSA ]</b><br><br><b>Variables:</b> x=Básico, y=Estándar, z=Premium.<br><b>Sistema Planteado:</b><br>x + y + z = 30 &nbsp; (Ecuación 1)<br>20x + 40y + 100z = 2000 &nbsp; (Ecuación 2)<br>y = x + 5 &nbsp;⇒&nbsp; -x + y + 0z = 5 &nbsp; (Ecuación 3)<br><br>Calculando la determinante de la matriz de coeficientes obtenemos <b>|A| = -80</b>. Invirtiendo la matriz por cofactores y adjunta, y operando el producto matricial <b>X = A<sup>-1</sup> · B</b> obtenemos de forma única:<br><b>x = 10 Básicos, y = 15 Estándar, z = 5 Premium.</b>" 
             },
             { 
-                t: "Ejercicio 9: Un chef compró 2 kg de arroz, 1 kg de azúcar y 3 kg de harina gastando en total 25 soles. La diferencia entre el precio por kg de la harina y el arroz es igual a la mitad del precio por kg del azúcar. Si hubiese comprado únicamente 1 kg de cada producto, el gasto habría sido de 12 soles. ¿Cuál es el precio por kilogramo de cada insumo? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
+                t: "Ejercicio 9:\n\nUn chef compró 2 kg de arroz, 1 kg de azúcar y 3 kg de harina gastando en total 25 soles. La diferencia entre el precio por kg de la harina y el arroz es igual a la mitad del precio por kg del azúcar. Si hubiese comprado únicamente 1 kg de cada producto, el gasto habría sido de 12 soles. ¿Cuál es el precio por kilogramo de cada insumo? Resuelve el problema usando el método de la Eliminación Gaussiana.", 
                 o: [
                     "A) Arroz: 4 soles, Azúcar: 3 soles, Harina: 5 soles", 
                     "B) Arroz: 3 soles, Azúcar: 4 soles, Harina: 5 soles", 
@@ -204,7 +204,7 @@
                 r: "<b>[ ELIMINACIÓN GAUSSIANA ]</b><br><br><b>Sistema inicial ordenado:</b><br>2x + y + 3z = 25<br>-x - 0.5y + z = 0 &nbsp;⇒&nbsp; -2x - y + 2z = 0<br>x + y + z = 12<br><br><b>Operaciones de Fila:</b><br>F<sub>2</sub> + F<sub>1</sub> → F<sub>2</sub> (Elimina x)<br>2F<sub>3</sub> - F<sub>1</sub> → F<sub>3</sub> (Elimina x)<br><br>Al triangular la matriz se obtiene:<br>De la Fila 2: 5z = 25 &nbsp;⇒&nbsp; <b>z = 5 soles (Harina)</b><br>De la Fila 3: y - z = -1 &nbsp;⇒&nbsp; y - 5 = -1 &nbsp;⇒&nbsp; <b>y = 4 soles (Azúcar)</b><br>De la Fila 1: 2x + 4 + 3(5) = 25 &nbsp;⇒&nbsp; 2x = 6 &nbsp;⇒&nbsp; <b>x = 3 soles (Arroz)</b>" 
             },
             { 
-                t: "Ejercicio 10: El siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + 2z = 5\n2x - y + z = 4\nx - 2y - z = -1", 
+                t: "Ejercicio 10:\n\nEl siguiente sistema de ecuaciones lineales tiene infinitas soluciones. Usa el método de la eliminación Gaussiana para resolver el problema:\n\nx + y + 2z = 5\n2x - y + z = 4\nx - 2y - z = -1", 
                 o: [
                     "A) C.S. = { (3 - t, 2 - t, t); t ∈ ℝ }", 
                     "B) C.S. = { (3 + t, 2 - t, t); t ∈ ℝ }", 
